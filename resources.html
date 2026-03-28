@@ -12,6 +12,7 @@
             background-size: 400% 400%;
             animation: gradientMove 8s ease infinite;
             color: white; margin: 0;
+            overflow-x: hidden;
         }
         @keyframes gradientMove {
              0%{background-position:0% 50%;
@@ -59,6 +60,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 15px; /* Ensures space between text and button on mobile */
             transition: 0.3s;
         }
         .resource-item:hover {
@@ -67,11 +69,17 @@
         .btn-download {
             background: #22c55e;
             color: black;
-            padding: 5px 15px;
+            padding: 8px 15px; /* Slightly thicker padding for touch targets */
             border-radius: 4px;
             text-decoration: none;
             font-size: 14px;
             font-weight: bold;
+            transition: 0.3s ease;
+            white-space: nowrap; /* Prevents button text from wrapping */
+        }
+        .btn-download:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px #22c55e;
         }
     </style>
 </head>
