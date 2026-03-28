@@ -330,7 +330,7 @@ body.show {
 }
 
 /* 📱 MOBILE (UPDATED) */
-@media(max-width:768px){
+@media(max-width:900px){
     /* Reduce padding so header elements fit better */
     .nav {
         padding: 15px 20px; 
