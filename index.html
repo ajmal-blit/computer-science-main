@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Computer Science</title>
 <link rel="stylesheet" href="style.css">
+<script>
+        // If the browser doesn't have the login token, kick them back to login.html
+        if (sessionStorage.getItem("isLoggedIn") !== "true") {
+            window.location.replace("login.html");
+        }
+    </script>
 </head>
 
 <body>
@@ -33,7 +39,7 @@
 <section class="about">
     <h1 class="typing"></h1>
     <p class="sub-text">Where Technology Meets Innovation 🚀</p>
-    <button class="btn-nav">Get Started</button>
+    <button class="btn-nav" id="logoutBtn">Logout</button>
 </section>
 
 <section class="faculties">
