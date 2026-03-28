@@ -365,4 +365,8 @@ body.show {
     .btn-nav {
         display: none; 
     }
+
+    .typing {
+        font-size: 26px;
+    }
 } 
