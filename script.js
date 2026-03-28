@@ -1,3 +1,4 @@
+
 /* ✨ TYPING EFFECT */
 const text = "Welcome To Computer Science .";
 let i = 0;
@@ -87,3 +88,16 @@ popup.onclick = (e) => {
 window.addEventListener("load", () => {
     document.body.classList.add("show");
 });
+
+/* 🚪 LOGOUT LOGIC */
+const logoutBtn = document.getElementById("logoutBtn");
+
+if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+        // Destroy the secure session token
+        sessionStorage.removeItem("isLoggedIn");
+        
+        // Send them back to the login screen
+        window.location.replace("login.html");
+    });
+}
