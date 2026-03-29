@@ -94,10 +94,10 @@ const logoutBtn = document.getElementById("logoutBtn");
 
 if (logoutBtn) {
     logoutBtn.addEventListener("click", () => {
-        // Destroy the secure session token
-        sessionStorage.removeItem("isLoggedIn");
+        // 🔥 CHANGED: Destroy the persistent local storage tokens
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("loggedUserName");
         
-        // Send them back to the login screen
         window.location.replace("login.html");
     });
 }
