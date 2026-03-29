@@ -94,18 +94,6 @@
 </footer>
 
 <script src="script.js"></script>
-<script>
-    // Grab ALL buttons with the 'logout-btn' class
-const logoutButtons = document.querySelectorAll(".logout-btn");
 
-// Loop through each button and attach the click event
-logoutButtons.forEach(button => {
-    button.addEventListener("click", () => {
-        localStorage.removeItem("isLoggedIn");
-        localStorage.removeItem("loggedUserName");
-        window.location.replace("login.html");
-    });
-});
-</script>
 </body>
 </html>
