@@ -116,7 +116,7 @@
     </style>
     
     <script>
-        if (sessionStorage.getItem("isLoggedIn") !== "true") {
+        if (localStorage.getItem("isLoggedIn") !== "true") {
             window.location.replace("login.html");
         }
     </script>
@@ -217,8 +217,6 @@
         <span class="keyword">goto</span> <span class="keyword">start</span>;
     }
     <span class="function">printf</span>(<span class="string">"Calculation Complete For 5 Numbers !"</span>);
-
-    <span class="keyword">return</span> <span class="keyword">0</span>;
 }</pre>
         <div class="output-label">▶ Output</div>
 <pre class="output-block">Enter Number 1 : 25
@@ -339,10 +337,15 @@ Sum of two matrices:
 </footer>
 
 <script>
+        /* 🚪 LOGOUT LOGIC */
     const logoutBtn = document.getElementById("logoutBtn");
+
     if (logoutBtn) {
         logoutBtn.addEventListener("click", () => {
-            sessionStorage.removeItem("isLoggedIn");
+            // 🔥 CHANGED: Destroy the persistent local storage tokens
+            localStorage.removeItem("isLoggedIn");
+            localStorage.removeItem("loggedUserName");
+            
             window.location.replace("login.html");
         });
     }
