@@ -74,29 +74,26 @@
             color: #22c55e;
         }
 
-        .btn-nav {
-            padding: 8px 20px;
-            border: 2px solid #22c55e;
-            background: transparent;
-            color: white;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn-nav:hover {
-            background: #22c55e;
-            color: #020617;
-            box-shadow: 0 0 15px rgba(34, 197, 94, 0.4);
-            transform: translateY(-2px);
-        }
-
         .container {
              padding: 40px 20px;
              max-width: 900px;
              margin: auto;
+        }
+
+        /* 🔥 BACK TO HOME LINK STYLES */
+        .back-link {
+            display: inline-block;
+            color: #22c55e;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 25px;
+            transition: 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: #16a34a;
+            transform: translateX(-5px);
         }
         
         .resource-section {
@@ -159,7 +156,7 @@
         /* Mobile specific fixes */
         @media(max-width:768px){
             .nav { padding: 15px 20px; }
-            .nav-links { display: none; } /* Hide links on mobile for cleaner look if no hamburger is present */
+            .nav-links { display: none; }
         }
     </style>
 </head>
@@ -169,19 +166,12 @@
         <div class="head-nav">
             Computer <br><span>Science</span>
         </div>
-
-        <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="resources.html" style="color: #22c55e;">Resources</a></li>
-            <li><a href="insights.html">Insights</a></li>
-            <li><a href="#">Forums</a></li>
-        </ul>
-
-        <button class="btn-nav" id="logoutBtn">Logout</button>
     </nav>
 
     <div class="container">
         
+        <a href="index.html" class="back-link">← Go to Home</a>
+
         <div class="resource-section" style="background: rgba(34, 197, 94, 0.05); border-color: rgba(34, 197, 94, 0.2);">
             <h2 style="color: #22c55e;">Interactive Labs</h2>
             <ul class="resource-list">
@@ -223,19 +213,5 @@
         </div>
     </div>
 
-    <script>
-            /* 🚪 LOGOUT LOGIC */
-    const logoutBtn = document.getElementById("logoutBtn");
-
-    if (logoutBtn) {
-        logoutBtn.addEventListener("click", () => {
-            // 🔥 CHANGED: Destroy the persistent local storage tokens
-            localStorage.removeItem("isLoggedIn");
-            localStorage.removeItem("loggedUserName");
-            
-            window.location.replace("login.html");
-        });
-    }
-    </script>
 </body>
 </html>
