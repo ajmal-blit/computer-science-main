@@ -94,6 +94,14 @@
 </footer>
 
 <script src="script.js"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const userName = localStorage.getItem("loggedUserName");
+        if (userName) {
+            document.getElementById("welcomeMessage").innerText = "Welcome back, " + userName + "!";
+        }
+    });
+</script>
 
 </body>
 </html>
