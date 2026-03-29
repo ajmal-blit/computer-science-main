@@ -199,39 +199,37 @@
 <span class="keyword">#include</span> <span class="string">&lt;math.h&gt;</span>
 
 <span class="keyword">int</span> <span class="function">main</span>() {
-    <span class="keyword">int</span> count = <span class="keyword">1</span>;
-    <span class="keyword">float</span> num, root;
-
+    <span class="keyword">int</span> count = <span class="keyword">0</span>;
+    <span class="keyword">float</span> num, result;
+    
 <span class="keyword">start:</span>
-    <span class="function">printf</span>(<span class="string">"Enter number %d: "</span>, count);
-    <span class="function">scanf</span>(<span class="string">"%f"</span>, &amp;num);
-
-    <span class="keyword">if</span> (num &lt; <span class="keyword">0</span>) {
-        <span class="function">printf</span>(<span class="string">"Cannot calculate square root of a negative number.\n"</span>);
-    } <span class="keyword">else</span> {
-        root = <span class="function">sqrt</span>(num);
-        <span class="function">printf</span>(<span class="string">"Square root of %.2f is %.2f\n"</span>, num, root);
-    }
-
-    count++;
-    <span class="keyword">if</span> (count &lt;= <span class="keyword">5</span>) {
+    <span class="keyword">while</span>(count &lt; <span class="keyword">5</span>){
+        <span class="function">printf</span>(<span class="string">"Enter Number %d : "</span>, count+<span class="keyword">1</span>);
+        <span class="function">scanf</span>(<span class="string">"%f"</span>, &amp;num);
+        <span class="keyword">if</span>(num &lt;= <span class="keyword">0</span>){
+            <span class="function">printf</span>(<span class="string">"Square Root Of Negative Numbers Are Not Possible !\\n"</span>);
+        }
+        <span class="keyword">else</span>{
+            result = <span class="function">sqrt</span>(num);
+            <span class="function">printf</span>(<span class="string">"Square Root Of %.2f Is %.2f..\\n"</span>, num, result);
+        }
+        count++;
         <span class="keyword">goto</span> <span class="keyword">start</span>;
     }
-
-    <span class="keyword">return</span> <span class="keyword">0</span>;
+    <span class="function">printf</span>(<span class="string">"Calculation Complete For 5 Numbers !"</span>);
 }</pre>
         <div class="output-label">▶ Output</div>
-<pre class="output-block">Enter number 1: 16
-Square root of 16.00 is 4.00
-Enter number 2: 25
-Square root of 25.00 is 5.00
-Enter number 3: 9
-Square root of 9.00 is 3.00
-Enter number 4: 2
-Square root of 2.00 is 1.41
-Enter number 5: 100
-Square root of 100.00 is 10.00
-</pre>
+<pre class="output-block">Enter Number 1 : 25
+Square Root Of 25.00 Is 5.00..
+Enter Number 2 : -4
+Square Root Of Negative Numbers Are Not Possible !
+Enter Number 3 : 16
+Square Root Of 16.00 Is 4.00..
+Enter Number 4 : 2
+Square Root Of 2.00 Is 1.41..
+Enter Number 5 : 9
+Square Root Of 9.00 Is 3.00..
+Calculation Complete For 5 Numbers !</pre>
     </div>
 
     <div class="program-card">
