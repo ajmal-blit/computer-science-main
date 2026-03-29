@@ -6,6 +6,7 @@
 <title>Computer Science</title>
 <link rel="stylesheet" href="style.css">
 <script>
+    import { Analytics } from "@vercel/analytics/next"
     // 🔥 CHANGED: Now checks localStorage
     if (localStorage.getItem("isLoggedIn") !== "true") {
         window.location.replace("login.html");
