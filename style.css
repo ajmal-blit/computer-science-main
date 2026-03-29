@@ -366,6 +366,10 @@ body.show {
         display: none; 
     }
 
+    .about > button{
+        display: block;
+    }
+
     .typing {
         font-size: 26px;
     }
