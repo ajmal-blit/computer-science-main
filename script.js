@@ -89,15 +89,14 @@ window.addEventListener("load", () => {
     document.body.classList.add("show");
 });
 
-/* 🚪 LOGOUT LOGIC */
-const logoutBtn = document.getElementById("logoutBtn");
+// Grab ALL buttons with the 'logout-btn' class
+const logoutButtons = document.querySelectorAll(".logout-btn");
 
-if (logoutBtn) {
-    logoutBtn.addEventListener("click", () => {
-        // 🔥 CHANGED: Destroy the persistent local storage tokens
+// Loop through each button and attach the click event
+logoutButtons.forEach(button => {
+    button.addEventListener("click", () => {
         localStorage.removeItem("isLoggedIn");
         localStorage.removeItem("loggedUserName");
-        
         window.location.replace("login.html");
     });
-}
+});
