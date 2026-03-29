@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
     
     <script>
-        if (sessionStorage.getItem("isLoggedIn") !== "true") {
+        if (localStorage.getItem("isLoggedIn") !== "true") {
             window.location.replace("login.html");
         }
     </script>
@@ -224,11 +224,18 @@
     </div>
 
     <script>
-        /* 🚪 LOGOUT LOGIC */
-        document.getElementById("logoutBtn").addEventListener("click", () => {
-            sessionStorage.removeItem("isLoggedIn");
+            /* 🚪 LOGOUT LOGIC */
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", () => {
+            // 🔥 CHANGED: Destroy the persistent local storage tokens
+            localStorage.removeItem("isLoggedIn");
+            localStorage.removeItem("loggedUserName");
+            
             window.location.replace("login.html");
         });
+    }
     </script>
 </body>
 </html>
