@@ -27,7 +27,7 @@
         <li><a href="https://beta.gracevalleycollege.ac.in/">Forums</a></li>
     </ul>
 
-    <button class="btn-nav logout-btn">Logout</button>
+    <button class="btn-nav" id="logoutBtn">Logout</button>
 
     <div class="hamburger">
         <span></span>
@@ -41,7 +41,7 @@
     
     <h1 class="typing"></h1>
     <p class="sub-text">Where Technology Meets Innovation 🚀</p>
-    <button class="btn-nav logout-btn">Logout</button>
+    <button class="btn-nav" id="logoutBtn">Logout</button>
 </section>
 
 <section class="faculties">
@@ -95,17 +95,12 @@
 
 <script src="script.js"></script>
 <script>
-    // Grab ALL buttons with the 'logout-btn' class
-const logoutButtons = document.querySelectorAll(".logout-btn");
-
-// Loop through each button and attach the click event
-logoutButtons.forEach(button => {
-    button.addEventListener("click", () => {
-        localStorage.removeItem("isLoggedIn");
-        localStorage.removeItem("loggedUserName");
-        window.location.replace("login.html");
+    document.addEventListener("DOMContentLoaded", () => {
+        const userName = localStorage.getItem("loggedUserName");
+        if (userName) {
+            document.getElementById("welcomeMessage").innerText = "Welcome back, " + userName + "!";
+        }
     });
-});
 </script>
 </body>
 </html>
