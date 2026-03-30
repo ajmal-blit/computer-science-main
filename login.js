@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "GVAZSCS018": { password: "10-02-2008", name: "Safna SHeri" },
         "GVAZSCS019": { password: "23-07-2006", name: "Shamnad Pk" },
         "GVAZSCS020": { password: "23-10-2006", name: "Shelshal Jubin" },
-        "ADMIN": { password: "admin123", name: "Administrator" }
+        "ADMIN": { password: "computerscienceadmin", name: "Administrator" }
     };
 
     loginForm.addEventListener("submit", (e) => {
