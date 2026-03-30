@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "GVAZSCS012": { password: "17-05-2007", name: "Muhammed Shamil" },
         "GVAZSCS013": { password: "18-05-2008", name: "Muhammed Aflah" },
         "GVAZSCS014": { password: "17-01-2007", name: "Muhammed Bazilsha" },
-        "GVAZSCS015": { password: "12-04-2006", name: "Mountain Dooo" },
+        "GVAZSCS015": { password: "12-04-2006", name: "Rasique Pk" },
         "GVAZSCS016": { password: "23-04-2007", name: "Muhammed Sinan" },
         "GVAZSCS017": { password: "08-11-2006", name: "Munshifa P" },
         "GVAZSCS018": { password: "10-02-2008", name: "Safna SHeri" },
