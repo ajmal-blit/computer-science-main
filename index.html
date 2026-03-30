@@ -20,7 +20,6 @@
     <div class="head-nav">
         Computer <br><span>Science</span>
     </div>
-    <button class="init-btn btn-nav logout-btn">Logout</button>
 
     <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
@@ -28,15 +27,20 @@
         <li><a href="insights.html">Insights</a></li>
         <li><a href="events.html">Events</a></li>
         <li><a href="https://beta.gracevalleycollege.ac.in/">Forums</a></li>
+
+        <!-- 🔥 Logout INSIDE menu (for mobile) -->
+        <li class="mobile-only">
+            <button class="btn-nav logout-btn">Logout</button>
+        </li>
     </ul>
 
-
+    <!-- 🔥 Logout for desktop -->
+    <button class="btn-nav logout-btn desktop-only">Logout</button>
 
     <div class="hamburger">
         <span></span>
         <span></span>
         <span></span>
-
     </div>
 </nav>
 
