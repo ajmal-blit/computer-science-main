@@ -372,6 +372,7 @@ body.show {
     
     .init-btn{
         display: block;
+        margin-right: 20px;
     }
 
     .typing {
