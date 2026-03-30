@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap');
 
-/* 🔥 FIX: Prevent horizontal scrolling when menu is hidden */
+/* 🔥 FIX: Prevent horizontal scrolling */
 html, body {
     overflow-x: hidden;
 }
@@ -32,7 +32,6 @@ body.show {
 /* 🔥 NAVBAR */
 .nav{
     display:flex;
-    justify-content:space-between;
     align-items:center;
     padding:15px 40px;
     position:sticky;
@@ -59,6 +58,7 @@ body.show {
     display:flex;
     gap:25px;
     list-style:none;
+    margin-left: 40px;
 }
 
 .nav-links a{
@@ -103,7 +103,12 @@ body.show {
     background:#22c55e;
     color:black;
     box-shadow:0 0 15px #22c55e,0 0 30px #22c55e;
-    transform: scale(1.2);
+    transform: scale(1.1);
+}
+
+/* 🔥 LOGOUT POSITION (DESKTOP RIGHT) */
+.desktop-only{
+    margin-left:auto;
 }
 
 /* HAMBURGER */
@@ -111,6 +116,7 @@ body.show {
     display:none;
     flex-direction:column;
     cursor:pointer;
+    margin-left: 15px;
 }
 
 .hamburger span{
@@ -180,7 +186,6 @@ body.show {
     transition:0.3s;
 }
 
-/* HOVER */
 .card:hover{
     transform:translateY(-10px) scale(1.05);
     box-shadow:0 0 20px #22c55e;
@@ -200,7 +205,6 @@ body.show {
     animation: gradientMove 8s ease infinite;
 }
 
-/* 🌊 GRADIENT ANIMATION */
 @keyframes gradientMove{
     0%{background-position:0% 50%;}
     50%{background-position:100% 50%;}
@@ -228,20 +232,17 @@ body.show {
     transform:translateY(40px);
 }
 
-/* ✨ SHOW ANIMATION */
 .student-card.show{
     opacity:1;
     transform:translateY(0);
 }
 
-/* 💥 HOVER EFFECT */
 .student-card:hover{
     transform:translateY(-10px) scale(1.05);
     box-shadow:0 0 15px #22c55e,
                0 0 30px #22c55e;
 }
 
-/* TEXT */
 .student-card h3{
     font-size:16px;
 }
@@ -251,7 +252,7 @@ body.show {
     color:#a7f3d0;
 }
 
-/* 🔥 POPUP BACKGROUND */
+/* 🔥 POPUP */
 .student-popup{
     position:fixed;
     top:0;
@@ -265,16 +266,14 @@ body.show {
     opacity:0;
     visibility:hidden;
     transition:0.3s;
-    z-index: 2000;
+    z-index:2000;
 }
 
-/* SHOW */
 .student-popup.active{
     opacity:1;
     visibility:visible;
 }
 
-/* 💎 POPUP BOX */
 .popup-content{
     background:#1e293b;
     padding:30px;
@@ -286,28 +285,16 @@ body.show {
     position: relative;
 }
 
-/* ANIMATION */
 .student-popup.active .popup-content{
     transform:scale(1);
 }
 
-/* CLOSE BUTTON */
 .close-btn{
     position:absolute;
     top:10px;
     right:20px;
     font-size:25px;
     cursor:pointer;
-}
-
-/* TEXT */
-.popup-content h2{
-    margin-bottom:10px;
-}
-
-.popup-content p{
-    color:#a7f3d0;
-    white-space: pre-line;
 }
 
 /* FOOTER */
@@ -317,7 +304,7 @@ body.show {
     background:#020617;
 }
 
-/* SCROLL ANIMATION */
+/* SCROLL */
 .fade{
     opacity:0;
     transform:translateY(40px);
@@ -329,53 +316,59 @@ body.show {
     transform:translateY(0);
 }
 
-/* 📱 MOBILE (UPDATED) */
+/* 🔥 VISIBILITY CONTROL */
+.mobile-only{
+    display:none;
+}
+
+/* 📱 MOBILE */
 @media(max-width:900px){
-    /* Reduce padding so header elements fit better */
-    .nav {
-        padding: 15px 20px; 
+
+    .nav{
+        padding:15px 20px;
     }
 
-    .nav-links {
-        position: absolute;
-        top: 100%; /* Sits exactly below the nav regardless of height */
-        right: 0;
-        background: #1e293b;
-        flex-direction: column;
-        width: 200px;
-        transform: translateX(100%);
-        transition: 0.3s ease-in-out;
-        padding: 20px;
-        
-        /* Visual separation */
-        border-bottom-left-radius: 12px;
-        box-shadow: -5px 10px 15px rgba(0,0,0,0.5);
-        border-left: 1px solid rgba(255,255,255,0.05);
-        border-bottom: 1px solid rgba(255,255,255,0.05);
+    .nav-links{
+        position:absolute;
+        top:100%;
+        right:0;
+        background:#1e293b;
+        flex-direction:column;
+        width:220px;
+        transform:translateX(100%);
+        transition:0.3s ease-in-out;
+        padding:20px;
+        border-bottom-left-radius:12px;
+        box-shadow:-5px 10px 15px rgba(0,0,0,0.5);
     }
 
-    .nav-links.active {
-        transform: translateX(0);
+    .nav-links.active{
+        transform:translateX(0);
     }
 
-    .hamburger {
-        display: flex;
+    .nav-links li{
+        margin-bottom:10px;
     }
 
-    .btn-nav {
-        display: none; 
+    .hamburger{
+        display:flex;
+        margin-left:auto;
     }
 
-    .about > button{
-        display: block;
-    }
-    
-    .init-btn{
-        display: block;
-        margin-left: 60px;
+    .desktop-only{
+        display:none;
     }
 
-    .typing {
-        font-size: 26px;
+    .mobile-only{
+        display:block;
+        margin-top:10px;
     }
-} 
+
+    .mobile-only button{
+        width:100%;
+    }
+
+    .typing{
+        font-size:26px;
+    }
+}
