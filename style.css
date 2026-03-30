@@ -369,6 +369,10 @@ body.show {
     .about > button{
         display: block;
     }
+    
+    .init-btn{
+        display: block;
+    }
 
     .typing {
         font-size: 26px;
