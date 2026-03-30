@@ -33,6 +33,7 @@ body.show {
 .nav{
     display:flex;
     align-items:center;
+    justify-content:space-between;
     padding:15px 40px;
     position:sticky;
     top:0;
@@ -53,12 +54,15 @@ body.show {
     letter-spacing: 5px;
 }
 
-/* MENU */
+/* 🔥 CENTERED MENU (DESKTOP) */
 .nav-links{
     display:flex;
     gap:25px;
     list-style:none;
-    margin-left: 40px;
+
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);
 }
 
 .nav-links a{
@@ -106,9 +110,14 @@ body.show {
     transform: scale(1.1);
 }
 
-/* 🔥 LOGOUT POSITION (DESKTOP RIGHT) */
+/* 🔥 LOGOUT RIGHT */
 .desktop-only{
     margin-left:auto;
+}
+
+/* 🔥 MOBILE ONLY */
+.mobile-only{
+    display:none;
 }
 
 /* HAMBURGER */
@@ -116,7 +125,6 @@ body.show {
     display:none;
     flex-direction:column;
     cursor:pointer;
-    margin-left: 15px;
 }
 
 .hamburger span{
@@ -195,7 +203,7 @@ body.show {
     color:#a7f3d0;
 }
 
-/* 🎓 STUDENTS SECTION */
+/* 🎓 STUDENTS */
 .students{
     padding:60px 20px;
     text-align:center;
@@ -220,7 +228,7 @@ body.show {
     margin-top:30px;
 }
 
-/* CARD BASE */
+/* CARD */
 .student-card{
     width:180px;
     padding:18px;
@@ -239,8 +247,7 @@ body.show {
 
 .student-card:hover{
     transform:translateY(-10px) scale(1.05);
-    box-shadow:0 0 15px #22c55e,
-               0 0 30px #22c55e;
+    box-shadow:0 0 15px #22c55e,0 0 30px #22c55e;
 }
 
 .student-card h3{
@@ -316,11 +323,6 @@ body.show {
     transform:translateY(0);
 }
 
-/* 🔥 VISIBILITY CONTROL */
-.mobile-only{
-    display:none;
-}
-
 /* 📱 MOBILE */
 @media(max-width:900px){
 
@@ -332,12 +334,12 @@ body.show {
         position:absolute;
         top:100%;
         right:0;
-        background:#1e293b;
+        left:auto;
+        transform:translateX(100%);
         flex-direction:column;
         width:220px;
-        transform:translateX(100%);
-        transition:0.3s ease-in-out;
         padding:20px;
+        background:#1e293b;
         border-bottom-left-radius:12px;
         box-shadow:-5px 10px 15px rgba(0,0,0,0.5);
     }
