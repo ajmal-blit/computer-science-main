@@ -1,72 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Computer Science</title>
-<link rel="stylesheet" href="style.css">
-<script>
-    // Security check remains at the top
-    if (localStorage.getItem("isLoggedIn") !== "true") {
-        window.location.replace("login.html");
-    }
-</script>
-<style>
-    /* 🔥 SIDEBAR STYLES */
-    .side-menu {
-        position: fixed;
-        top: 0;
-        right: -280px; /* Hidden by default */
-        width: 280px;
-        height: 100%;
-        background: rgba(15, 23, 42, 0.95);
-        backdrop-filter: blur(15px);
-        display: flex;
-        flex-direction: column;
-        padding: 100px 40px;
-        gap: 25px;
-        transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        z-index: 2000;
-        border-left: 1px solid rgba(34, 197, 94, 0.2);
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computer Science Portal</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <script>
+        // 🔒 Security Check
+        if (localStorage.getItem("isLoggedIn") !== "true") {
+            window.location.replace("login.html");
+        }
+    </script>
 
-    .side-menu.active {
-        right: 0;
-    }
+    <style>
+        /* Ensure body is visible if JS fails */
+        body.show { opacity: 1 !important; }
 
-    .side-menu a {
-        color: white;
-        text-decoration: none;
-        font-size: 18px;
-        font-weight: 500;
-        transition: 0.3s;
-    }
+        /* 🔥 SIDEBAR STYLES */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            right: -280px;
+            width: 280px;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(15px);
+            display: flex;
+            flex-direction: column;
+            padding: 100px 40px;
+            gap: 25px;
+            transition: 0.4s ease-in-out;
+            z-index: 3000;
+            border-left: 1px solid rgba(34, 197, 94, 0.2);
+        }
 
-    .side-menu a:hover {
-        color: #22c55e;
-        padding-left: 10px;
-    }
+        .side-menu.active { right: 0; }
 
-    .logout-link {
-        color: #ef4444 !important; /* Distinct red for logout */
-        margin-top: 20px;
-        font-weight: bold;
-    }
+        .side-menu a {
+            color: white;
+            text-decoration: none;
+            font-size: 20px;
+            transition: 0.3s;
+        }
 
-    /* Override navbar to hide desktop links */
-    .nav-links {
-        display: none !important; /* Force hide desktop links */
-    }
+        .side-menu a:hover { color: #22c55e; transform: translateX(10px); }
 
-    .hamburger {
-        display: flex !important; /* Force show hamburger */
-    }
-</style>
+        .logout-link {
+            color: #ef4444 !important;
+            margin-top: 30px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Hide standard links for the clean look */
+        .nav-links { display: none !important; }
+        .hamburger { display: flex !important; cursor: pointer; }
+    </style>
 </head>
 
-<body>
-
-<nav class="nav">
+<body class="show"> <nav class="nav">
     <div class="head-nav">
         Computer <br><span>Science</span>
     </div>
@@ -85,18 +78,14 @@
     <a href="events.html">Events</a>
     <a href="https://beta.gracevalleycollege.ac.in/">Forums</a>
     <hr style="border: 0.5px solid rgba(255,255,255,0.1)">
-    <a class="logout-link" id="logoutBtn">Logout</a>
+    <div class="logout-link" id="logoutBtn">Logout</div>
 </div>
 
 <section class="about">
     <h2 id="welcomeMessage" style="color: #22c55e; font-size: 28px; margin-bottom: 15px; font-weight: bold;"></h2>
     <h1 class="typing"></h1>
     <p class="sub-text">Where Technology Meets Innovation 🚀</p>
-    </section>
-
-<footer class="footer">
-    <p>© 2026 Computer Science Department</p>
-</footer>
+</section>
 
 <script src="script.js"></script>
 <script>
@@ -105,31 +94,32 @@
         const sideMenu = document.getElementById("sideMenu");
         const logoutBtn = document.getElementById("logoutBtn");
 
-        // 1. Greet the user
+        // 1. Greet User
         const userName = localStorage.getItem("loggedUserName");
         if (userName) {
             document.getElementById("welcomeMessage").innerText = "Welcome back, " + userName + "!";
         }
 
-        // 2. Toggle Side Menu
-        menuToggle.addEventListener("click", () => {
+        // 2. Sidebar Toggle
+        menuToggle.onclick = (e) => {
+            e.stopPropagation();
             sideMenu.classList.toggle("active");
-        });
+        };
 
-        // 3. Close menu when clicking outside
-        document.addEventListener("click", (e) => {
-            if (!sideMenu.contains(e.target) && !menuToggle.contains(e.target)) {
+        // 3. Click outside to close
+        document.onclick = (e) => {
+            if (!sideMenu.contains(e.target) && sideMenu.classList.contains("active")) {
                 sideMenu.classList.remove("active");
             }
-        });
+        };
 
-        // 4. Secure Logout
+        // 4. Logout
         if (logoutBtn) {
-            logoutBtn.addEventListener("click", () => {
+            logoutBtn.onclick = () => {
                 localStorage.removeItem("isLoggedIn");
                 localStorage.removeItem("loggedUserName");
                 window.location.replace("login.html");
-            });
+            };
         }
     });
 </script>
