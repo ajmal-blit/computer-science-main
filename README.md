@@ -159,7 +159,5 @@ This project is open-source and available under the MIT License.
 ## 👨‍💻 Author
 
 Developed by the Computer Science Batch 2025-2028
-@muhd-aflah @ajmal-blit
-
 
 ---
