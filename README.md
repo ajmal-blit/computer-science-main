@@ -82,19 +82,6 @@ The platform is built with a focus on:
 
 ## 📁 Project Structure
 
-```
-/Frontend
-  ├── index.html
-  ├── forum.html
-  ├── style.css
-  ├── forum.css
-  ├── script.js
-  └── forum.js
-
-/backend
-  ├── server.js
-  └── .env
-```
 
 ---
 
