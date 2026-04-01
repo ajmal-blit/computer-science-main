@@ -115,34 +115,11 @@ cd backend
 npm install
 ```
 
-Create `.env` file:
-
-```env
-GROQ_API_KEY=your_api_key_here
-```
-
 Run server:
 
 ```bash
 node server.js
 ```
-
----
-
-### 4. Access Website
-
-* Frontend → `http://127.0.0.1:5500`
-* Backend → `http://localhost:5000`
-
----
-
-## 🔐 Environment Variables
-
-| Variable     | Description         |
-| ------------ | ------------------- |
-| GROQ_API_KEY | API key for AI chat |
-
----
 
 ## 📸 Screenshots (Optional)
 
