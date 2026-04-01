@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CS Forum | Computer Science</title>
+  <link rel="stylesheet" href="/forum.css">
+</head>
+<body>
+
+<div class="forum-container">
+
+ <a href="/Frontend/index.html" class="back-link">← Go to Home</a>
+
+  <!-- Header -->
+  <div class="forum-header-text">
+    <div>
+      <h1 class="forum-title">💬 CS Forum</h1>
+      <p class="forum-sub">Ask. Discuss. Grow.</p>
+    </div>
+    <div class="badge-count" id="postCountBadge">0 posts</div>
+  </div>
+
+  <!-- Create Post -->
+  <div class="create-post">
+    <input 
+      type="text" 
+      id="title" 
+      placeholder="Ask a question... e.g., 'How to learn React?'" 
+      autocomplete="off" 
+    />
+
+    <textarea 
+      id="content" 
+      placeholder="Explain your problem in detail... share context, code, or thoughts."
+    ></textarea>
+
+    <button class="btn-primary" id="publishBtn">
+      ✍️ Publish thread
+    </button>
+  </div>
+
+  <!-- Posts List -->
+  <div id="posts" class="posts-list">
+
+    <!-- Empty State -->
+    <div class="empty-state" id="emptyState">
+      No discussions yet 🚀 <br>
+      Be the first to ask something.
+    </div>
+
+  </div>
+
+</div>
+
+<script src="/forum.js"></script>
+
+</body>
+</html>
