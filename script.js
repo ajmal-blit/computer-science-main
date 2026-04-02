@@ -102,3 +102,41 @@ logoutButtons.forEach(button => {
 });
 
 
+document.addEventListener("DOMContentLoaded", () => {
+    // Check local storage for the user
+    const userName = localStorage.getItem("loggedUserName");
+    
+    // Grab all buttons with the class "logout-btn" (both mobile and desktop)
+    const authButtons = document.querySelectorAll(".logout-btn"); 
+    const welcomeMessage = document.getElementById("welcomeMessage");
+
+    if (userName) {
+        // --- USER IS LOGGED IN ---
+        if (welcomeMessage) {
+            welcomeMessage.innerText = "Welcome Back, " + userName + "!";
+        }
+        
+        authButtons.forEach(button => {
+            button.innerText = "Log Out";
+            
+            // Log them out when clicked
+            button.addEventListener("click", () => {
+                localStorage.removeItem("loggedUserName");
+                localStorage.setItem("isLoggedIn", "false");
+                // Reload the page to update the button and clear the welcome message
+                window.location.reload(); 
+            });
+        });
+    } else {
+        // --- USER IS NOT LOGGED IN ---
+        authButtons.forEach(button => {
+            button.innerText = "Log In";
+            
+            // Send them to the login page when clicked
+            button.addEventListener("click", () => {
+                window.location.href = "login.html";
+            });
+        });
+    }
+});
+
