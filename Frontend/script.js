@@ -1,104 +1,130 @@
+// ================= USER SYSTEM =================
+const user = JSON.parse(localStorage.getItem("user"));
 
-/* ✨ TYPING EFFECT */
+// Redirect if not logged in
+if (!user) {
+  window.location.href = "login.html";
+}
+
+// Welcome message
+document.addEventListener("DOMContentLoaded", () => {
+  const welcome = document.getElementById("welcomeMessage");
+  if (welcome && user) {
+    welcome.innerText = "Welcome Back, " + user.name + "!";
+  }
+});
+
+// ================= TYPING EFFECT =================
 const text = "Welcome To Computer Science ";
 let i = 0;
 
-function typeEffect(){
-    if(i < text.length){
-        document.querySelector(".typing").innerHTML += text.charAt(i);
-        i++;
-        setTimeout(typeEffect, 100);
+function typeEffect() {
+  const typingEl = document.querySelector(".typing");
+  if (!typingEl) return;
+
+  typingEl.innerHTML = ""; // prevent duplication
+
+  function type() {
+    if (i < text.length) {
+      typingEl.innerHTML += text.charAt(i);
+      i++;
+      setTimeout(type, 80);
     }
+  }
+
+  type();
 }
 
 typeEffect();
 
-/* 📱 HAMBURGER */
+// ================= HAMBURGER =================
 const ham = document.querySelector(".hamburger");
 const nav = document.querySelector(".nav-links");
 
-ham.addEventListener("click", () => {
+if (ham && nav) {
+  ham.addEventListener("click", () => {
     nav.classList.toggle("active");
-});
+  });
+}
 
-/* 🎬 SCROLL ANIMATION */
+// ================= SCROLL ANIMATION =================
 const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-        if(entry.isIntersecting){
-            entry.target.classList.add("show");
-        }
-    });
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("show");
+    }
+  });
 });
 
 document.querySelectorAll(".card, .about, .faculties").forEach(el => {
-    el.classList.add("fade");
-    observer.observe(el);
+  el.classList.add("fade");
+  observer.observe(el);
 });
 
-/* 🎬 STUDENT STAGGER ANIMATION */
+// ================= STUDENT STAGGER =================
 const studentCards = document.querySelectorAll(".student-card");
+const studentsSection = document.querySelector(".students");
 
-const studentObserver = new IntersectionObserver(entries => {
+if (studentsSection) {
+  const studentObserver = new IntersectionObserver(entries => {
     entries.forEach(entry => {
-        if(entry.isIntersecting){
-            studentCards.forEach((card, index) => {
-                setTimeout(() => {
-                    card.classList.add("show");
-                }, index * 100); // delay between cards
-            });
-        }
+      if (entry.isIntersecting) {
+        studentCards.forEach((card, index) => {
+          setTimeout(() => {
+            card.classList.add("show");
+          }, index * 80);
+        });
+      }
     });
-}, { threshold: 0.2 });
+  }, { threshold: 0.2 });
 
-studentObserver.observe(document.querySelector(".students"));
+  studentObserver.observe(studentsSection);
+}
 
-/* 🎯 POPUP LOGIC */
+// ================= POPUP =================
 const popup = document.getElementById("popup");
 const popupName = document.getElementById("popup-name");
 const popupReg = document.getElementById("popup-reg");
 const popupInfo = document.getElementById("popup-info");
 const closeBtn = document.querySelector(".close-btn");
 
-/* 🎓 CLICK STUDENT */
 document.querySelectorAll(".student-card").forEach(card => {
-    card.addEventListener("click", () => {
+  card.addEventListener("click", () => {
+    if (!popup) return;
 
-        const name = card.querySelector("h3").innerText;
-        const reg = card.querySelector("p").innerText;
+    const name = card.querySelector("h3")?.innerText;
+    const reg = card.querySelector("p")?.innerText;
 
-        popupName.innerText = name;
-        popupReg.innerText = reg;
-        popupInfo.innerText = "\nDEPARTMENT OF \nCOMPUTER SCIENCE";
+    popupName.innerText = name || "";
+    popupReg.innerText = reg || "";
+    popupInfo.innerText = "DEPARTMENT OF COMPUTER SCIENCE";
 
-        popup.classList.add("active");
-    });
+    popup.classList.add("active");
+  });
 });
 
-/* ❌ CLOSE */
-closeBtn.onclick = () => popup.classList.remove("active");
+// Close popup
+if (closeBtn && popup) {
+  closeBtn.onclick = () => popup.classList.remove("active");
 
-/* CLICK OUTSIDE */
-popup.onclick = (e) => {
-    if(e.target === popup){
-        popup.classList.remove("active");
+  popup.onclick = (e) => {
+    if (e.target === popup) {
+      popup.classList.remove("active");
     }
-};
+  };
+}
 
-/* 🎬 PAGE LOAD FADE IN */
+// ================= PAGE LOAD ANIMATION =================
 window.addEventListener("load", () => {
-    document.body.classList.add("show");
+  document.body.classList.add("show");
 });
 
-// Grab ALL buttons with the 'logout-btn' class
+// ================= LOGOUT =================
 const logoutButtons = document.querySelectorAll(".logout-btn");
 
-// Loop through each button and attach the click event
 logoutButtons.forEach(button => {
-    button.addEventListener("click", () => {
-        localStorage.removeItem("isLoggedIn");
-        localStorage.removeItem("loggedUserName");
-        window.location.replace("login.html");
-    });
+  button.addEventListener("click", () => {
+    localStorage.removeItem("user");
+    window.location.href = "login.html";
+  });
 });
-
-
