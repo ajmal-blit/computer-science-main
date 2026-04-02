@@ -52,8 +52,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 submitBtn.style.color = "#020617";
                 
                 // 🔥 CHANGED: Use localStorage to keep them logged in permanently
-                localStorage.setItem("isLoggedIn", "true");
-                localStorage.setItem("loggedUserName", user.name); 
+                localStorage.setItem("user", JSON.stringify({ 
+                     name: user.name,
+                     regNo: regNo
+                }));
                 
                 setTimeout(() => {
                     window.location.href = "index.html"; 
