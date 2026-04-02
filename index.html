@@ -30,12 +30,12 @@
 
         <!-- 🔥 Logout INSIDE menu (for mobile) -->
         <li class="mobile-only">
-            <button class="btn-nav logout-btn">Logout</button>
+            <button id="log-btn" class="btn-nav logout-btn">Logout</button>
         </li>
     </ul>
 
     <!-- 🔥 Logout for desktop -->
-    <button class="btn-nav logout-btn desktop-only">Logout</button>
+    <button id="log-btn" class="btn-nav logout-btn desktop-only">Logout</button>
 
     <div class="hamburger">
         <span></span>
@@ -107,6 +107,10 @@
         const userName = localStorage.getItem("loggedUserName");
         if (userName) {
             document.getElementById("welcomeMessage").innerText = "Welcome Back, " + userName + "!";
+            document.getElementById("log-btn").innerText = "Log Out";
+        }
+        else{
+            document.getElementById("log-btn").innerText = "Log In";
         }
     });
 </script>
