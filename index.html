@@ -103,14 +103,19 @@
 
 <script src="script.js"></script>
     <script>
+    const logoutButtons = document.querySelectorAll(".logout-btn");
     document.addEventListener("DOMContentLoaded", () => {
         const userName = localStorage.getItem("loggedUserName");
         if (userName) {
             document.getElementById("welcomeMessage").innerText = "Welcome Back, " + userName + "!";
-            document.getElementsById("log-btn").innerText = "Log Out";
+            logoutButtons.forEach(button => {
+                document.getElementsById("log-btn").innerText = "Log Out";
+            };
         }
         else{
-            document.getElementsById("log-btn").innerText = "Log In";
+            logoutButtons.forEach(button => {
+                document.getElementsById("log-btn").innerText = "Log In";
+            };
         }
     });
 </script>
