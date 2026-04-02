@@ -107,10 +107,10 @@
         const userName = localStorage.getItem("loggedUserName");
         if (userName) {
             document.getElementById("welcomeMessage").innerText = "Welcome Back, " + userName + "!";
-            document.getElementById("log-btn").innerText = "Log Out";
+            document.getElementsById("log-btn").innerText = "Log Out";
         }
         else{
-            document.getElementById("log-btn").innerText = "Log In";
+            document.getElementsById("log-btn").innerText = "Log In";
         }
     });
 </script>
