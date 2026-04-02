@@ -109,12 +109,12 @@
         if (userName) {
             document.getElementById("welcomeMessage").innerText = "Welcome Back, " + userName + "!";
             logoutButtons.forEach(button => {
-                document.getElementsById("log-btn").innerText = "Log Out";
+                document.getElementBy("log-btn").innerText = "Log Out";
             };
         }
         else{
             logoutButtons.forEach(button => {
-                document.getElementsById("log-btn").innerText = "Log In";
+                document.getElementById("log-btn").innerText = "Log In";
             };
         }
     });
