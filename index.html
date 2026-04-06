@@ -1,16 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Computer Science</title>
-<link rel="stylesheet" href="style.css">
-</head>
-<script>
-    if (localStorage.getItem("isLoggedIn") !== "true") {
-        window.location.replace("login.html");
-    }
-</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computer Science | Grace Valley</title>
+    <link rel="stylesheet" href="style.css">
+    </head>
 
 <body>
 
@@ -27,14 +22,12 @@
         <li><a href="dashboard.html">Dashboard</a></li>
         <li><a href="https://beta.gracevalleycollege.ac.in/">Forums</a></li>
 
-        <!-- Logout INSIDE menu (for mobile) -->
         <li class="mobile-only">
-            <button id = "logout-btn" class="btn-nav logout-btn">Logout</button>
+            <button class="btn-nav logout-btn">Login</button>
         </li>
     </ul>
 
-    <!-- Logout for desktop -->
-    <button id = "logout-btn" class="btn-nav logout-btn desktop-only"></button>
+    <button class="btn-nav logout-btn desktop-only">Login</button>
 
     <div class="hamburger">
         <span></span>
@@ -44,14 +37,11 @@
 </nav>
 
 <section class="about">
-    <h2 id="welcomeMessage" style="color: #22c55e; font-size: 28px; margin-bottom: 15px; font-weight: bold;"></h2>
+    <h2 id="welcomeMessage" style="color: #22c55e; font-size: clamp(1.2rem, 5vw, 1.8rem); margin-bottom: 15px; font-weight: bold;"></h2>
     
     <h1 class="typing"></h1>
     <p class="sub-text">Where Technology Meets Innovation 🚀</p>
-
 </section>
-
-
 
 <section class="faculties">
     <h2 class="title">Our Faculties</h2>
@@ -94,45 +84,51 @@
         <span class="close-btn">&times;</span>
         <h2 id="popup-name">Student Name</h2>
         <p id="popup-reg">Reg: 000</p>  
-        <p id="popup-info">Extra details about student...</p>
+        <p id="popup-info">DEPARTMENT OF <br> COMPUTER SCIENCE</p>
     </div>
 </div>
 
 <footer class="footer">
     <p>© 2026 Computer Science Department</p>
 </footer>
+
 <script src="script.js"></script>
+
 <script>
     document.addEventListener("DOMContentLoaded", () => {
+        // Check if a session exists in localStorage
+        const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
         const userName = localStorage.getItem("loggedUserName");
-        
-        // Grab ALL buttons that have the class 'logout-btn'
         const authButtons = document.querySelectorAll(".logout-btn");
         const welcomeMessage = document.getElementById("welcomeMessage");
 
-        if (userName) {
+        if (isLoggedIn && userName) {
+            // IF LOGGED IN: Show name and 'Log Out' option
             if (welcomeMessage) {
                 welcomeMessage.innerText = "Welcome Back, " + userName + "!";
             }
-            // Loop through each button and change its text
             authButtons.forEach(button => {
                 button.innerText = "Log Out";
+                button.style.background = "#ef4444"; // Red for Logout
+                button.onclick = () => {
+                    localStorage.clear(); // Wipe session data
+                    window.location.reload(); // Refresh to guest state
+                };
             });
         } else {
-            // Loop through each button and change its text
+            // IF GUEST: Show generic welcome and 'Log In' option
+            if (welcomeMessage) {
+                welcomeMessage.innerText = "Welcome to CS Department";
+            }
             authButtons.forEach(button => {
                 button.innerText = "Log In";
+                button.style.background = "#22c55e"; // Green for Login
+                button.onclick = () => {
+                    window.location.href = "login.html";
+                };
             });
         }
     });
-
-    document.querySelectorAll(".logout-btn").forEach(button => {
-    button.addEventListener("click", () => {
-        localStorage.removeItem("isLoggedIn");
-        localStorage.removeItem("loggedUserName");
-        window.location.href = "login.html"; 
-    });
-});
 </script>
 
 </body>
