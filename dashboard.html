@@ -168,5 +168,7 @@ document.addEventListener("DOMContentLoaded", () => {
             updateCount();
         });
     }
+    // 🔥 TEMP: Force upload everything (including passwords) to Firebase
+    database.ref('globalStudentDB').set(defaultData);
 });
 </script>
