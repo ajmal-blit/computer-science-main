@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 2. ✨ PERSONALIZED WELCOME & TYPING EFFECT
     const typingContainer = document.querySelector(".typing");
     // Use the name stored during Firebase login for the welcome message
-    const welcomeText = `Welcome Back, ${loggedUserName || 'Student'} .`; //
+    const welcomeText = `Welcome To Computer Science . '; //
     let i = 0;
 
     function typeEffect() {
