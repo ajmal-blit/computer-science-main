@@ -1,32 +1,22 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // 1. Firebase Configuration (Matches your CS Database Project)
+    const firebaseConfig = {
+        apiKey: "AIzaSyDz7PWoH4vbObyhYXhXNqi2Cr5uwjBdwJY",
+        authDomain: "cs-database-42dd0.firebaseapp.com",
+        databaseURL: "https://cs-database-42dd0-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "cs-database-42dd0",
+        storageBucket: "cs-database-42dd0.firebasestorage.app",
+        messagingSenderId: "265634068059",
+        appId: "1:265634068059:web:4437f49f445c18d574717e"
+    };
+
+    // 2. Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
     const loginForm = document.getElementById("loginForm");
     const submitBtn = document.getElementById("submitBtn");
     const errorMessage = document.getElementById("errorMessage");
-
-    // 🔥 UPGRADED: Dictionary now holds both passwords and names
-    const validUsers = {
-        "GVAZSCS001": { password: "01-03-2007", name: "Abdul Rashid" },
-        "GVAZSCS002": { password: "13-12-2007", name: "Ajmal Nt" },
-        "GVAZSCS003": { password: "18-07-2007", name: "Anshif Hyder" },
-        "GVAZSCS004": { password: "06-10-2007", name: "Fathima Hannin" },
-        "GVAZSCS005": { password: "03-02-2008", name: "Fathima Hanna" },
-        "GVAZSCS006": { password: "03-08-2006", name: "Fathima Huda" },
-        "GVAZSCS007": { password: "03-05-2006", name: "Jasfal C" },
-        "GVAZSCS008": { password: "23-07-2007", name: "Jumana Jebin" },
-        "GVAZSCS009": { password: "04-10-2007", name: "Mohammed Fadil" },
-        "GVAZSCS010": { password: "06-11-2006", name: "Muhammed Shaheer" },
-        "GVAZSCS011": { password: "18-04-2006", name: "Mohammed Sinan Ck" },
-        "GVAZSCS012": { password: "17-05-2007", name: "Muhammed Shamil" },
-        "GVAZSCS013": { password: "18-05-2008", name: "Muhammed Aflah" },
-        "GVAZSCS014": { password: "17-01-2007", name: "Muhammed Bazilsha" },
-        "GVAZSCS015": { password: "12-04-2006", name: "Rasique Pk" },
-        "GVAZSCS016": { password: "23-04-2007", name: "Muhammed Sinan Nk" },
-        "GVAZSCS017": { password: "08-11-2006", name: "Munshifa P" },
-        "GVAZSCS018": { password: "10-02-2008", name: "Safna Sheri" },
-        "GVAZSCS019": { password: "23-07-2006", name: "Shamnad Pk" },
-        "GVAZSCS020": { password: "23-10-2006", name: "Shelshal Jubin" },
-        "ADMIN": { password: "computerscienceadmin", name: "Administrator" }
-    };
 
     loginForm.addEventListener("submit", (e) => {
         e.preventDefault(); 
@@ -37,42 +27,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const originalText = submitBtn.innerText;
         submitBtn.innerText = "Authenticating...";
-        submitBtn.style.opacity = "0.8";
-        submitBtn.style.cursor = "wait";
         submitBtn.disabled = true; 
 
-        setTimeout(() => {
-            // Check if user exists, then check if password matches
-            const user = validUsers[regNo];
-            const isAuthTrue = (user !== undefined && user.password === password);
-
-            if (isAuthTrue) {
+        // 3. Fetch specific user from Firebase globalStudentDB
+        database.ref('globalStudentDB/' + regNo).once('value').then((snapshot) => {
+            const userData = snapshot.val();
+            
+            // Check if user exists and password matches the field in Firebase
+            if (userData && userData.password === password) {
                 submitBtn.innerText = "Access Granted";
-                submitBtn.style.background = "#fff";
-                submitBtn.style.color = "#020617";
                 
-                // 🔥 CHANGED: Use localStorage to keep them logged in permanently
+                // Store session in localStorage
                 localStorage.setItem("isLoggedIn", "true");
-                localStorage.setItem("loggedUserName", user.name); 
+                localStorage.setItem("loggedUserName", userData.name); 
                 localStorage.setItem("loggedUserReg", regNo);
                 
                 setTimeout(() => {
                     window.location.href = "index.html"; 
                 }, 800);
-
             } else {
                 errorMessage.style.display = "block";
                 errorMessage.innerText = "Invalid Registration Number or Password.";
                 resetButton(originalText);
             }
-            
-        }, 1500);
+        }).catch((error) => {
+            console.error("Firebase Error:", error);
+            errorMessage.style.display = "block";
+            errorMessage.innerText = "Connection Error. Please try again.";
+            resetButton(originalText);
+        });
     });
 
     function resetButton(text) {
         submitBtn.innerText = text;
-        submitBtn.style.opacity = "1";
-        submitBtn.style.cursor = "pointer";
         submitBtn.disabled = false;
         document.getElementById("passInput").value = ""; 
     }
