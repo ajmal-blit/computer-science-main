@@ -1,7 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // 1. Firebase Configuration (Updated with Asia-Southeast URL)
     const firebaseConfig = {
         apiKey: "AIzaSyDz7PWoH4vbObyhYXhXNqi2Cr5uwjBdwJY",
         authDomain: "cs-database-42dd0.firebaseapp.com",
+        // ⚠️ CRITICAL: Added .asia-southeast1 to the URL
         databaseURL: "https://cs-database-42dd0-default-rtdb.asia-southeast1.firebasedatabase.app",
         projectId: "cs-database-42dd0",
         storageBucket: "cs-database-42dd0.firebasestorage.app",
@@ -9,7 +11,10 @@ document.addEventListener("DOMContentLoaded", () => {
         appId: "1:265634068059:web:4437f49f445c18d574717e"
     };
 
-    firebase.initializeApp(firebaseConfig);
+    // 2. Initialize Firebase
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
     const database = firebase.database();
 
     const loginForm = document.getElementById("loginForm");
@@ -27,13 +32,16 @@ document.addEventListener("DOMContentLoaded", () => {
         submitBtn.innerText = "Authenticating...";
         submitBtn.disabled = true; 
 
+        // 3. Fetch specific user from Firebase
         database.ref('globalStudentDB/' + regNo).once('value').then((snapshot) => {
-            const user = snapshot.val();
-
-            if (user && user.password === password) {
+            const userData = snapshot.val();
+            
+            // Validate password against the cloud field
+            if (userData && userData.password === password) {
                 submitBtn.innerText = "Access Granted";
+                
                 localStorage.setItem("isLoggedIn", "true");
-                localStorage.setItem("loggedUserName", user.name); 
+                localStorage.setItem("loggedUserName", userData.name); 
                 localStorage.setItem("loggedUserReg", regNo);
                 
                 setTimeout(() => {
@@ -45,9 +53,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 resetButton(originalText);
             }
         }).catch((error) => {
-            console.error(error);
+            console.error("Login Error:", error);
             errorMessage.style.display = "block";
-            errorMessage.innerText = "Network Error.";
+            errorMessage.innerText = "Check your internet connection.";
             resetButton(originalText);
         });
     });
