@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. Firebase Configuration (Matches your CS Database Project)
     const firebaseConfig = {
         apiKey: "AIzaSyDz7PWoH4vbObyhYXhXNqi2Cr5uwjBdwJY",
         authDomain: "cs-database-42dd0.firebaseapp.com",
@@ -10,7 +9,6 @@ document.addEventListener("DOMContentLoaded", () => {
         appId: "1:265634068059:web:4437f49f445c18d574717e"
     };
 
-    // 2. Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
 
@@ -29,17 +27,13 @@ document.addEventListener("DOMContentLoaded", () => {
         submitBtn.innerText = "Authenticating...";
         submitBtn.disabled = true; 
 
-        // 3. Fetch specific user from Firebase globalStudentDB
         database.ref('globalStudentDB/' + regNo).once('value').then((snapshot) => {
-            const userData = snapshot.val();
-            
-            // Check if user exists and password matches the field in Firebase
-            if (userData && userData.password === password) {
+            const user = snapshot.val();
+
+            if (user && user.password === password) {
                 submitBtn.innerText = "Access Granted";
-                
-                // Store session in localStorage
                 localStorage.setItem("isLoggedIn", "true");
-                localStorage.setItem("loggedUserName", userData.name); 
+                localStorage.setItem("loggedUserName", user.name); 
                 localStorage.setItem("loggedUserReg", regNo);
                 
                 setTimeout(() => {
@@ -51,9 +45,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 resetButton(originalText);
             }
         }).catch((error) => {
-            console.error("Firebase Error:", error);
+            console.error(error);
             errorMessage.style.display = "block";
-            errorMessage.innerText = "Connection Error. Please try again.";
+            errorMessage.innerText = "Network Error.";
             resetButton(originalText);
         });
     });
