@@ -6,6 +6,11 @@
 <title>Computer Science</title>
 <link rel="stylesheet" href="style.css">
 </head>
+<script>
+    if (localStorage.getItem("isLoggedIn") !== "true") {
+        window.location.replace("login.html");
+    }
+</script>
 
 <body>
 
