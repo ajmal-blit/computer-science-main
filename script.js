@@ -1,69 +1,82 @@
-/* 🛡️ SESSION GUARD - Run immediately */
+/**
+ * CS DEPARTMENT - CORE UI & SESSION LOGIC
+ * Includes: Session Guard, Typing Effect, Animations, and Popup Logic
+ */
+
+// 1. 🛡️ IMMEDIATE SESSION CHECK (Runs before page renders)
 const isLoggedIn = localStorage.getItem("isLoggedIn");
 const loggedUserName = localStorage.getItem("loggedUserName");
+const loggedUserReg = localStorage.getItem("loggedUserReg"); //
 
 if (!isLoggedIn || isLoggedIn !== "true") {
-    // Redirect if no session found
-    window.location.replace("login.html");
+    // If no active session, kick back to login immediately
+    window.location.replace("login.html"); //
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    /* ✨ TYPING EFFECT */
-    const text = "Welcome To Computer Science .";
+    
+    // 2. ✨ PERSONALIZED WELCOME & TYPING EFFECT
+    const typingContainer = document.querySelector(".typing");
+    // Use the name stored during Firebase login for the welcome message
+    const welcomeText = `Welcome Back, ${loggedUserName || 'Student'} .`; //
     let i = 0;
 
-    function typeEffect(){
-        const typingEl = document.querySelector(".typing");
-        if(typingEl && i < text.length){
-            typingEl.innerHTML += text.charAt(i);
+    function typeEffect() {
+        if (typingContainer && i < welcomeText.length) {
+            typingContainer.innerHTML += welcomeText.charAt(i);
             i++;
             setTimeout(typeEffect, 100);
         }
     }
     typeEffect();
 
-    /* 📱 HAMBURGER MENU */
+    // 3. 📱 MOBILE NAVIGATION (HAMBURGER)
     const ham = document.querySelector(".hamburger");
     const nav = document.querySelector(".nav-links");
-    if(ham) {
+
+    if (ham && nav) {
         ham.addEventListener("click", () => {
             nav.classList.toggle("active");
         });
     }
 
-    /* 🎬 SCROLL FADE ANIMATIONS */
+    // 4. 🎬 SCROLL REVEAL ANIMATIONS
+    const observerOptions = { threshold: 0.1 };
     const observer = new IntersectionObserver(entries => {
         entries.forEach(entry => {
-            if(entry.isIntersecting){
+            if (entry.isIntersecting) {
                 entry.target.classList.add("show");
             }
         });
-    });
+    }, observerOptions);
 
-    document.querySelectorAll(".card, .about, .faculties").forEach(el => {
+    // Apply fade-in to main sections
+    document.querySelectorAll(".card, .about, .faculties, .students-title").forEach(el => {
         el.classList.add("fade");
         observer.observe(el);
     });
 
-    /* 🎬 STUDENT CARD STAGGER */
+    // 5. 🎓 STUDENT CARD STAGGERED REVEAL
     const studentCards = document.querySelectorAll(".student-card");
     const studentsSection = document.querySelector(".students");
-    if (studentsSection) {
+
+    if (studentsSection && studentCards.length > 0) {
         const studentObserver = new IntersectionObserver(entries => {
             entries.forEach(entry => {
-                if(entry.isIntersecting){
+                if (entry.isIntersecting) {
                     studentCards.forEach((card, index) => {
                         setTimeout(() => {
                             card.classList.add("show");
-                        }, index * 100);
+                        }, index * 80); // Staggered delay for smooth entrance
                     });
                 }
             });
         }, { threshold: 0.2 });
+
         studentObserver.observe(studentsSection);
     }
 
-    /* 🎯 STUDENT POPUP LOGIC */
+    // 6. 🎯 STUDENT PROFILE POPUP LOGIC
     const popup = document.getElementById("popup");
     const popupName = document.getElementById("popup-name");
     const popupReg = document.getElementById("popup-reg");
@@ -74,33 +87,46 @@ document.addEventListener("DOMContentLoaded", () => {
         card.addEventListener("click", () => {
             const name = card.querySelector("h3").innerText;
             const reg = card.querySelector("p").innerText;
-            popupName.innerText = name;
-            popupReg.innerText = reg;
-            popupInfo.innerText = "\nDEPARTMENT OF \nCOMPUTER SCIENCE";
-            popup.classList.add("active");
+
+            if (popupName && popupReg) {
+                popupName.innerText = name;
+                popupReg.innerText = reg;
+                popupInfo.innerText = "DEPARTMENT OF\nCOMPUTER SCIENCE";
+                popup.classList.add("active");
+            }
         });
     });
 
-    if(closeBtn) closeBtn.onclick = () => popup.classList.remove("active");
-    if(popup) {
+    // Close Popup Logic
+    if (closeBtn) {
+        closeBtn.onclick = () => popup.classList.remove("active");
+    }
+
+    if (popup) {
         popup.onclick = (e) => {
-            if(e.target === popup) popup.classList.remove("active");
+            if (e.target === popup) popup.classList.remove("active");
         };
     }
 
-    /* 🚪 LOGOUT LOGIC */
+    // 7. 🚪 LOGOUT LOGIC (Global)
     const logoutButtons = document.querySelectorAll(".logout-btn");
     logoutButtons.forEach(button => {
         button.addEventListener("click", () => {
+            // Clear all Firebase-related session data
             localStorage.removeItem("isLoggedIn");
             localStorage.removeItem("loggedUserName");
             localStorage.removeItem("loggedUserReg");
-            window.location.replace("login.html");
+            
+            // Redirect to login page
+            window.location.replace("login.html"); //
         });
     });
+
+    // 8. 🎬 FINAL PAGE LOAD FADE
+    document.body.classList.add("show");
 });
 
-/* 🎬 PAGE LOAD FADE IN */
+// Final fallback for page load
 window.addEventListener("load", () => {
-    document.body.classList.add("show");
+    document.body.style.opacity = "1";
 });
