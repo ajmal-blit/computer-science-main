@@ -16,10 +16,10 @@
 
     <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
-        <li><a href="resources.html">Resources</a></li>
-        <li><a href="insights.html">Insights</a></li>
-        <li><a href="events.html">Events</a></li>
-        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="#" onclick="checkAccess('resources.html')">Resources</a></li>
+        <li><a href="#" onclick="checkAccess('insights.html')">Insights</a></li>
+        <li><a href="#" onclick="checkAccess('events.html')">Events</a></li>
+        <li><a href="#" onclick="checkAccess('dashboard.html')">Dashboard</a></li>
         <li><a href="https://beta.gracevalleycollege.ac.in/">Forums</a></li>
 
         <li class="mobile-only">
@@ -96,6 +96,20 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", () => {
+
+        // Add this function inside your DOMContentLoaded or right below it
+        function checkAccess(page) {
+            const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+            
+            if (isLoggedIn) {
+                // If logged in, go to the page normally
+                window.location.href = page;
+            } else {
+                // If guest, show a message and go to login
+                alert("Please Log In to access the " + page.split('.')[0] + "! 🔒");
+                window.location.href = "login.html";
+            }
+        }
         // Check if a session exists in localStorage
         const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
         const userName = localStorage.getItem("loggedUserName");
