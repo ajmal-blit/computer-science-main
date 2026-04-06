@@ -1,15 +1,15 @@
 document.addEventListener("DOMContentLoaded", () => {
     // 1. Firebase Configuration (Updated with Asia-Southeast URL)
     const firebaseConfig = {
-        apiKey: "AIzaSyDz7PWoH4vbObyhYXhXNqi2Cr5uwjBdwJY",
-        authDomain: "cs-database-42dd0.firebaseapp.com",
-        // ⚠️ CRITICAL: Added .asia-southeast1 to the URL
-        databaseURL: "https://cs-database-42dd0-default-rtdb.asia-southeast1.firebasedatabase.app",
-        projectId: "cs-database-42dd0",
-        storageBucket: "cs-database-42dd0.firebasestorage.app",
-        messagingSenderId: "265634068059",
-        appId: "1:265634068059:web:4437f49f445c18d574717e"
-    };
+    apiKey: "AIzaSyDz7PWoH4vbObyhYXhXNqi2Cr5uwjBdwJY",
+    authDomain: "cs-database-42dd0.firebaseapp.com",
+    // Must include .asia-southeast1 for your region
+    databaseURL: "https://cs-database-42dd0-default-rtdb.asia-southeast1.firebasedatabase.app", 
+    projectId: "cs-database-42dd0",
+    storageBucket: "cs-database-42dd0.firebasestorage.app",
+    messagingSenderId: "265634068059",
+    appId: "1:265634068059:web:4437f49f445c18d574717e"
+};
 
     // 2. Initialize Firebase
     if (!firebase.apps.length) {
