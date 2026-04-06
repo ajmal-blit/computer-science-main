@@ -1,104 +1,66 @@
+document.addEventListener("DOMContentLoaded", () => {
+    // 1. Firebase Configuration (Matches your CS Database Project)
+    const firebaseConfig = {
+        apiKey: "AIzaSyDz7PWoH4vbObyhYXhXNqi2Cr5uwjBdwJY",
+        authDomain: "cs-database-42dd0.firebaseapp.com",
+        databaseURL: "https://cs-database-42dd0-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "cs-database-42dd0",
+        storageBucket: "cs-database-42dd0.firebasestorage.app",
+        messagingSenderId: "265634068059",
+        appId: "1:265634068059:web:4437f49f445c18d574717e"
+    };
 
-/* ✨ TYPING EFFECT */
-const text = "Welcome To Computer Science .";
-let i = 0;
+    // 2. Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
 
-function typeEffect(){
-    if(i < text.length){
-        document.querySelector(".typing").innerHTML += text.charAt(i);
-        i++;
-        setTimeout(typeEffect, 100);
-    }
-}
+    const loginForm = document.getElementById("loginForm");
+    const submitBtn = document.getElementById("submitBtn");
+    const errorMessage = document.getElementById("errorMessage");
 
-typeEffect();
+    loginForm.addEventListener("submit", (e) => {
+        e.preventDefault(); 
+        errorMessage.style.display = "none";
 
-/* 📱 HAMBURGER */
-const ham = document.querySelector(".hamburger");
-const nav = document.querySelector(".nav-links");
+        const regNo = document.getElementById("regInput").value.trim().toUpperCase();
+        const password = document.getElementById("passInput").value.trim();
 
-ham.addEventListener("click", () => {
-    nav.classList.toggle("active");
-});
+        const originalText = submitBtn.innerText;
+        submitBtn.innerText = "Authenticating...";
+        submitBtn.disabled = true; 
 
-/* 🎬 SCROLL ANIMATION */
-const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-        if(entry.isIntersecting){
-            entry.target.classList.add("show");
-        }
-    });
-});
-
-document.querySelectorAll(".card, .about, .faculties").forEach(el => {
-    el.classList.add("fade");
-    observer.observe(el);
-});
-
-/* 🎬 STUDENT STAGGER ANIMATION */
-const studentCards = document.querySelectorAll(".student-card");
-
-const studentObserver = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-        if(entry.isIntersecting){
-            studentCards.forEach((card, index) => {
+        // 3. Fetch specific user from Firebase globalStudentDB
+        database.ref('globalStudentDB/' + regNo).once('value').then((snapshot) => {
+            const userData = snapshot.val();
+            
+            // Check if user exists and password matches the field in Firebase
+            if (userData && userData.password === password) {
+                submitBtn.innerText = "Access Granted";
+                
+                // Store session in localStorage
+                localStorage.setItem("isLoggedIn", "true");
+                localStorage.setItem("loggedUserName", userData.name); 
+                localStorage.setItem("loggedUserReg", regNo);
+                
                 setTimeout(() => {
-                    card.classList.add("show");
-                }, index * 100); // delay between cards
-            });
-        }
+                    window.location.href = "index.html"; 
+                }, 800);
+            } else {
+                errorMessage.style.display = "block";
+                errorMessage.innerText = "Invalid Registration Number or Password.";
+                resetButton(originalText);
+            }
+        }).catch((error) => {
+            console.error("Firebase Error:", error);
+            errorMessage.style.display = "block";
+            errorMessage.innerText = "Connection Error. Please try again.";
+            resetButton(originalText);
+        });
     });
-}, { threshold: 0.2 });
 
-studentObserver.observe(document.querySelector(".students"));
-
-/* 🎯 POPUP LOGIC */
-const popup = document.getElementById("popup");
-const popupName = document.getElementById("popup-name");
-const popupReg = document.getElementById("popup-reg");
-const popupInfo = document.getElementById("popup-info");
-const closeBtn = document.querySelector(".close-btn");
-
-/* 🎓 CLICK STUDENT */
-document.querySelectorAll(".student-card").forEach(card => {
-    card.addEventListener("click", () => {
-
-        const name = card.querySelector("h3").innerText;
-        const reg = card.querySelector("p").innerText;
-
-        popupName.innerText = name;
-        popupReg.innerText = reg;
-        popupInfo.innerText = "\nDEPARTMENT OF \nCOMPUTER SCIENCE";
-
-        popup.classList.add("active");
-    });
-});
-
-/* ❌ CLOSE */
-closeBtn.onclick = () => popup.classList.remove("active");
-
-/* CLICK OUTSIDE */
-popup.onclick = (e) => {
-    if(e.target === popup){
-        popup.classList.remove("active");
+    function resetButton(text) {
+        submitBtn.innerText = text;
+        submitBtn.disabled = false;
+        document.getElementById("passInput").value = ""; 
     }
-};
-
-/* 🎬 PAGE LOAD FADE IN */
-window.addEventListener("load", () => {
-    document.body.classList.add("show");
 });
-
-// Grab ALL buttons with the 'logout-btn' class
-const logoutButtons = document.querySelectorAll(".logout-btn");
-
-// Loop through each button and attach the click event
-logoutButtons.forEach(button => {
-    button.addEventListener("click", () => {
-        localStorage.removeItem("isLoggedIn");
-        localStorage.removeItem("loggedUserName");
-        window.location.replace("login.html");
-    });
-});
-
-
