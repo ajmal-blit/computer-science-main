@@ -1,31 +1,31 @@
 /**
  * CS DEPARTMENT - CORE UI & SESSION LOGIC
- * Includes: Session Guard, Typing Effect, Animations, and Popup Logic
+ * Includes: Typing Effect, Animations, and Popup Logic
  */
 
-// 1. 🛡️ IMMEDIATE SESSION CHECK (Runs before page renders)
-const isLoggedIn = localStorage.getItem("isLoggedIn");
-const loggedUserName = localStorage.getItem("loggedUserName");
-const loggedUserReg = localStorage.getItem("loggedUserReg"); //
-
-if (!isLoggedIn || isLoggedIn !== "true") {
-    // If no active session, kick back to login immediately
-    window.location.replace("login.html"); //
-}
+// 1. 🛡️ REMOVED GLOBAL SESSION CHECK 
+// We now handle page protection inside each specific page's HTML 
+// or via the checkAccess() function for a better user experience.
 
 document.addEventListener("DOMContentLoaded", () => {
     
     // 2. ✨ PERSONALIZED WELCOME & TYPING EFFECT
     const typingContainer = document.querySelector(".typing");
-    // Use the name stored during Firebase login for the welcome message
-    const welcomeText = `Welcome To Computer Science . '; //
-    let i = 0;
+    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+    const loggedUserName = localStorage.getItem("loggedUserName");
 
+    // Use a dynamic greeting based on login status
+    let welcomeText = "Welcome to Computer Science Department";
+    if (isLoggedIn && loggedUserName) {
+        welcomeText = `Welcome Back, ${loggedUserName}!`;
+    }
+
+    let i = 0;
     function typeEffect() {
         if (typingContainer && i < welcomeText.length) {
             typingContainer.innerHTML += welcomeText.charAt(i);
             i++;
-            setTimeout(typeEffect, 100);
+            setTimeout(typeEffect, 80); // Slightly faster for better feel
         }
     }
     typeEffect();
@@ -50,9 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }, observerOptions);
 
-    // Apply fade-in to main sections
-    document.querySelectorAll(".card, .about, .faculties, .students-title").forEach(el => {
-        el.classList.add("fade");
+    document.querySelectorAll(".card, .about, .faculties, .students, .title").forEach(el => {
         observer.observe(el);
     });
 
@@ -67,11 +65,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     studentCards.forEach((card, index) => {
                         setTimeout(() => {
                             card.classList.add("show");
-                        }, index * 80); // Staggered delay for smooth entrance
+                        }, index * 50); 
                     });
                 }
             });
-        }, { threshold: 0.2 });
+        }, { threshold: 0.1 });
 
         studentObserver.observe(studentsSection);
     }
@@ -80,7 +78,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const popup = document.getElementById("popup");
     const popupName = document.getElementById("popup-name");
     const popupReg = document.getElementById("popup-reg");
-    const popupInfo = document.getElementById("popup-info");
     const closeBtn = document.querySelector(".close-btn");
 
     document.querySelectorAll(".student-card").forEach(card => {
@@ -91,13 +88,11 @@ document.addEventListener("DOMContentLoaded", () => {
             if (popupName && popupReg) {
                 popupName.innerText = name;
                 popupReg.innerText = reg;
-                popupInfo.innerText = "DEPARTMENT OF\nCOMPUTER SCIENCE";
                 popup.classList.add("active");
             }
         });
     });
 
-    // Close Popup Logic
     if (closeBtn) {
         closeBtn.onclick = () => popup.classList.remove("active");
     }
@@ -108,25 +103,22 @@ document.addEventListener("DOMContentLoaded", () => {
         };
     }
 
-    // 7. 🚪 LOGOUT LOGIC (Global)
+    // 7. 🚪 LOGOUT LOGIC
     const logoutButtons = document.querySelectorAll(".logout-btn");
     logoutButtons.forEach(button => {
         button.addEventListener("click", () => {
-            // Clear all Firebase-related session data
-            localStorage.removeItem("isLoggedIn");
-            localStorage.removeItem("loggedUserName");
-            localStorage.removeItem("loggedUserReg");
-            
-            // Redirect to login page
-            window.location.replace("login.html"); //
+            localStorage.clear(); // Clears all session data at once
+            window.location.href = "login.html"; 
         });
     });
-
-    // 8. 🎬 FINAL PAGE LOAD FADE
-    document.body.classList.add("show");
 });
 
-// Final fallback for page load
-window.addEventListener("load", () => {
-    document.body.style.opacity = "1";
-});
+// Helper for index.html links to prevent "Instant Replacements"
+function checkAccess(page) {
+    if (localStorage.getItem("isLoggedIn") === "true") {
+        window.location.href = page;
+    } else {
+        alert("Please Login to access this section! 🔒");
+        window.location.href = "login.html";
+    }
+}
