@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (typingContainer && i < welcomeText.length) {
             typingContainer.innerHTML += welcomeText.charAt(i);
             i++;
-            setTimeout(typeEffect, 20); // Speed of typing
+            setTimeout(typeEffect, 100); // Speed of typing
         }
     }
     // Start typing effect only if the container exists on the page
