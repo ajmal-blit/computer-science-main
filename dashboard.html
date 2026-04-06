@@ -58,6 +58,8 @@ document.addEventListener("DOMContentLoaded", () => {
             // Push all 20 students to Firebase if it's empty
             studentDB = defaultData;
             dbRef.set(defaultData);
+            // Add this line temporarily to force the update
+            database.ref('globalStudentDB').set(defaultData);
         }
         updateUI();
     });
