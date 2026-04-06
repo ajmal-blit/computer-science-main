@@ -11,10 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const loggedUserName = localStorage.getItem("loggedUserName");
 
     // Dynamic greeting based on login status
-    let welcomeText = "Welcome to Computer Science Department";
-    if (isLoggedIn && loggedUserName) {
-        welcomeText = `Welcome Back, ${loggedUserName}!`;
-    }
+    let welcomeText = "Welcome to Computer Science Department .";
 
     let i = 0;
     function typeEffect() {
