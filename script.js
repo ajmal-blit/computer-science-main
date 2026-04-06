@@ -1,20 +1,16 @@
 /**
  * CS DEPARTMENT - CORE UI & SESSION LOGIC
- * Includes: Typing Effect, Animations, and Popup Logic
+ * Includes: Typing Effect, Animations, Popup Logic, and Access Control
  */
-
-// 1. 🛡️ REMOVED GLOBAL SESSION CHECK 
-// We now handle page protection inside each specific page's HTML 
-// or via the checkAccess() function for a better user experience.
 
 document.addEventListener("DOMContentLoaded", () => {
     
-    // 2. ✨ PERSONALIZED WELCOME & TYPING EFFECT
+    // 1. ✨ PERSONALIZED WELCOME & TYPING EFFECT
     const typingContainer = document.querySelector(".typing");
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
     const loggedUserName = localStorage.getItem("loggedUserName");
 
-    // Use a dynamic greeting based on login status
+    // Dynamic greeting based on login status
     let welcomeText = "Welcome to Computer Science Department";
     if (isLoggedIn && loggedUserName) {
         welcomeText = `Welcome Back, ${loggedUserName}!`;
@@ -25,12 +21,15 @@ document.addEventListener("DOMContentLoaded", () => {
         if (typingContainer && i < welcomeText.length) {
             typingContainer.innerHTML += welcomeText.charAt(i);
             i++;
-            setTimeout(typeEffect, 80); // Slightly faster for better feel
+            setTimeout(typeEffect, 60); // Speed of typing
         }
     }
-    typeEffect();
+    // Start typing effect only if the container exists on the page
+    if (typingContainer) {
+        typeEffect();
+    }
 
-    // 3. 📱 MOBILE NAVIGATION (HAMBURGER)
+    // 2. 📱 MOBILE NAVIGATION (HAMBURGER)
     const ham = document.querySelector(".hamburger");
     const nav = document.querySelector(".nav-links");
 
@@ -40,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 4. 🎬 SCROLL REVEAL ANIMATIONS
+    // 3. 🎬 SCROLL REVEAL ANIMATIONS
     const observerOptions = { threshold: 0.1 };
     const observer = new IntersectionObserver(entries => {
         entries.forEach(entry => {
@@ -50,11 +49,12 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }, observerOptions);
 
+    // Apply observer to main sections
     document.querySelectorAll(".card, .about, .faculties, .students, .title").forEach(el => {
         observer.observe(el);
     });
 
-    // 5. 🎓 STUDENT CARD STAGGERED REVEAL
+    // 4. 🎓 STUDENT CARD STAGGERED REVEAL
     const studentCards = document.querySelectorAll(".student-card");
     const studentsSection = document.querySelector(".students");
 
@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     studentCards.forEach((card, index) => {
                         setTimeout(() => {
                             card.classList.add("show");
-                        }, index * 50); 
+                        }, index * 50); // 50ms delay between each card
                     });
                 }
             });
@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
         studentObserver.observe(studentsSection);
     }
 
-    // 6. 🎯 STUDENT PROFILE POPUP LOGIC
+    // 5. 🎯 STUDENT PROFILE POPUP LOGIC
     const popup = document.getElementById("popup");
     const popupName = document.getElementById("popup-name");
     const popupReg = document.getElementById("popup-reg");
@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const name = card.querySelector("h3").innerText;
             const reg = card.querySelector("p").innerText;
 
-            if (popupName && popupReg) {
+            if (popupName && popupReg && popup) {
                 popupName.innerText = name;
                 popupReg.innerText = reg;
                 popup.classList.add("active");
@@ -93,29 +93,48 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+    // Close Popup Logic
     if (closeBtn) {
-        closeBtn.onclick = () => popup.classList.remove("active");
+        closeBtn.addEventListener("click", () => {
+            if (popup) popup.classList.remove("active");
+        });
     }
 
     if (popup) {
-        popup.onclick = (e) => {
+        popup.addEventListener("click", (e) => {
+            // Close only if clicking outside the popup content
             if (e.target === popup) popup.classList.remove("active");
-        };
+        });
     }
 
-    // 7. 🚪 LOGOUT LOGIC
+    // 6. 🚪 LOGOUT LOGIC (For buttons on index.html)
     const logoutButtons = document.querySelectorAll(".logout-btn");
     logoutButtons.forEach(button => {
+        // If it says "Log Out", clear data. If it says "Log In", just go to login page.
         button.addEventListener("click", () => {
-            localStorage.clear(); // Clears all session data at once
-            window.location.href = "login.html"; 
+            if (button.innerText === "Log Out") {
+                localStorage.clear(); 
+                window.location.reload(); // Refresh the page to show Guest state
+            } else {
+                window.location.href = "login.html";
+            }
         });
     });
+
+    // 7. 🎬 FIX FOR BLANK SCREEN: Force body opacity to 1
+    // This ensures your CSS animations don't get stuck hidden
+    document.body.style.opacity = "1";
+    document.body.classList.add("show");
 });
 
-// Helper for index.html links to prevent "Instant Replacements"
+/**
+ * 8. 🛡️ GATEKEEPER FUNCTION FOR NAVIGATION LINKS
+ * This must be OUTSIDE the DOMContentLoaded block so your HTML can access it.
+ */
 function checkAccess(page) {
-    if (localStorage.getItem("isLoggedIn") === "true") {
+    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+    
+    if (isLoggedIn) {
         window.location.href = page;
     } else {
         alert("Please Login to access this section! 🔒");
