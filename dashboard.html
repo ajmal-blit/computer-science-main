@@ -25,7 +25,6 @@
             overflow-x: hidden;
         }
 
-        /* Animated Background Mesh */
         body::before {
             content: "";
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -34,71 +33,107 @@
             pointer-events: none;
         }
 
+        /* Responsive Back Button */
         .back-btn {
-            position: fixed; top: 25px; left: 25px; z-index: 1000;
-            padding: 12px 20px; border: 1px solid var(--primary);
+            position: fixed; top: 15px; left: 15px; z-index: 1000;
+            padding: 10px 15px; border: 1px solid var(--primary);
             background: rgba(15, 23, 42, 0.8); color: var(--primary);
             text-decoration: none; border-radius: 4px; font-weight: bold;
-            transition: 0.4s;
+            transition: 0.4s; font-size: 0.8rem;
             backdrop-filter: blur(10px);
         }
-        .back-btn:hover { background: var(--primary); color: #020617; box-shadow: 0 0 20px var(--primary); transform: scale(1.05); }
 
         section {
             min-height: 100vh;
             display: flex; flex-direction: column;
             justify-content: center; align-items: center;
-            padding: 40px 20px;
+            padding: 80px 15px 40px 15px; /* Added top padding for back button */
             opacity: 0; 
             transform: translateY(30px);
             transition: all 1s ease-out;
+            box-sizing: border-box;
         }
 
         section.reveal { opacity: 1; transform: translateY(0); }
 
         .hero-name {
-            font-size: clamp(3rem, 10vw, 6rem);
+            font-size: clamp(2.5rem, 8vw, 5rem);
             background: linear-gradient(to bottom, #fff 30%, var(--primary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin: 0;
             font-weight: 900;
+            text-align: center;
         }
 
         .section-label { 
             color: var(--primary); 
             text-transform: uppercase; 
-            letter-spacing: 8px; 
-            font-size: 0.8rem; 
-            margin-bottom: 20px; 
+            letter-spacing: 4px; 
+            font-size: 0.7rem; 
+            margin-bottom: 15px; 
             font-weight: bold;
+            text-align: center;
         }
 
         .content-card {
             background: var(--card-bg);
-            padding: 40px;
-            border-radius: 24px;
+            padding: 25px;
+            border-radius: 16px;
             border: 1px solid rgba(255,255,255,0.1);
             width: 100%;
-            max-width: 850px;
+            max-width: 800px;
             backdrop-filter: blur(20px);
+            box-sizing: border-box;
         }
 
         .list-item {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 18px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
-            transition: 0.3s;
+            padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+            gap: 10px;
+        }
+
+        /* 📱 MOBILE RESPONSIVE STATS */
+        .counter-container { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            gap: 20px; 
+            margin-top: 40px; 
+            width: 100%;
+        }
+
+        .stat-box { text-align: center; flex: 1; }
+
+        .divider { 
+            width: 1px; height: 60px; 
+            background: linear-gradient(to bottom, transparent, var(--primary), transparent); 
+        }
+
+        @media (max-width: 600px) {
+            .counter-container { flex-direction: column; gap: 30px; }
+            .divider { width: 80%; height: 1px; background: linear-gradient(to right, transparent, var(--primary), transparent); }
+            .hero-name { font-size: 2.8rem; }
+            .list-item { flex-direction: column; align-items: flex-start; }
+            .list-item div { margin-top: 10px; width: 100%; display: flex; justify-content: space-between; }
+        }
+
+        /* Admin Controls */
+        .admin-input {
+            width: 100%; background: rgba(15, 23, 42, 0.9); border: 1px solid var(--primary);
+            color: white; padding: 12px; border-radius: 8px; margin-bottom: 15px; box-sizing: border-box;
+        }
+
+        .admin-btn {
+            background: var(--primary); color: #020617; border: none;
+            padding: 15px; border-radius: 8px; font-weight: 900; cursor: pointer; width: 100%;
         }
 
         .grade-pill {
-            padding: 6px 18px;
-            border-radius: 8px;
-            font-weight: bold;
+            padding: 4px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: bold;
             border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: 0.3s;
         }
 
-        /* Grade Specific Colors */
         .grade-o  { background: rgba(234, 179, 8, 0.2);  color: #facc15; border-color: #facc15; }
         .grade-ap { background: rgba(34, 197, 94, 0.2);  color: #4ade80; border-color: #4ade80; }
         .grade-a  { background: rgba(59, 130, 246, 0.2);  color: #60a5fa; border-color: #60a5fa; }
@@ -107,48 +142,32 @@
         .grade-f  { background: rgba(239, 68, 68, 0.2);   color: #f87171; border-color: #f87171; }
         .grade-default { background: rgba(148, 163, 184, 0.1); color: #94a3b8; border-color: rgba(148, 163, 184, 0.3); }
 
-        /* Admin Controls */
-        .admin-input {
-            width: 100%; background: rgba(15, 23, 42, 0.9); border: 1px solid var(--primary);
-            color: white; padding: 12px; border-radius: 8px; margin-bottom: 15px;
-        }
-
-        .admin-btn {
-            background: var(--primary); color: #020617; border: none;
-            padding: 15px; border-radius: 8px; font-weight: 900; cursor: pointer; width: 100%; transition: 0.3s;
-        }
-
         .action-btn {
-            padding: 5px 10px; border-radius: 4px; font-size: 0.7rem; font-weight: bold;
-            cursor: pointer; border: 1px solid transparent; transition: 0.2s; margin-left: 5px;
+            padding: 5px 8px; border-radius: 4px; font-size: 0.65rem; font-weight: bold;
+            cursor: pointer; border: 1px solid transparent; margin-left: 5px;
         }
         .btn-status { border-color: var(--accent-blue); color: var(--accent-blue); background: transparent; }
-        .btn-status:hover { background: var(--accent-blue); color: white; }
         .btn-remove { border-color: var(--accent-red); color: var(--accent-red); background: transparent; }
-        .btn-remove:hover { background: var(--accent-red); color: white; }
-
-        .counter-container { display: flex; align-items: center; gap: 40px; margin-top: 50px; }
-        .divider { width: 2px; height: 80px; background: linear-gradient(to bottom, transparent, var(--primary), transparent); }
     </style>
 </head>
 <body>
 
-    <a href="index.html" class="back-btn">← BACK TO HOME</a>
+    <a href="index.html" class="back-btn">← HOME</a>
 
     <section id="hero">
-        <p class="section-label">Welcome Back</p>
+        <p class="section-label">DASHBOARD</p>
         <h1 id="user-name" class="hero-name">...</h1>
-        <p id="user-reg" style="font-size: 1.6rem; opacity: 0.4; font-weight: 300; margin-top: 15px;">Reg No: ...</p>
+        <p id="user-reg" style="font-size: 1.1rem; opacity: 0.5; font-weight: 300; margin-top: 10px;">Reg No: ...</p>
         
         <div class="counter-container">
-            <div>
-                <p class="section-label" style="letter-spacing: 3px;">FIRST SEMESTER SGPA</p>
-                <h2 class="count-up stat-value" id="user-sgpa" data-target="0" style="font-size: 3.5rem; margin: 0;">0.000</h2>
+            <div class="stat-box">
+                <p class="section-label" style="letter-spacing: 2px; margin-bottom: 5px;">SGPA</p>
+                <h2 class="count-up" id="user-sgpa" data-target="0" style="font-size: 2.5rem; margin: 0;">0.000</h2>
             </div>
             <div class="divider"></div>
-            <div>
-                <p class="section-label" style="letter-spacing: 3px;">Attendance</p>
-                <h2 class="count-up stat-value" id="user-attendance" data-target="0" style="font-size: 3.5rem; margin: 0;">0</h2>
+            <div class="stat-box">
+                <p class="section-label" style="letter-spacing: 2px; margin-bottom: 5px;">ATTENDANCE</p>
+                <h2 class="count-up" id="user-attendance" data-target="0" style="font-size: 2.5rem; margin: 0;">0</h2>
             </div>
         </div>
     </section>
@@ -156,7 +175,6 @@
     <section id="admin-section" style="display: none; background: #060b18;">
         <p class="section-label">Admin Control Panel</p>
         <div class="content-card" style="border: 1px solid var(--primary);">
-            <h2 style="margin-bottom: 20px;">Task Management</h2>
             <select id="student-select" class="admin-input">
                 <option value="GVAZSCS001">Abdul Rashid M</option>
                 <option value="GVAZSCS002">Ajmal Nt</option>
@@ -185,14 +203,14 @@
     </section>
 
     <section id="academics" style="background: #060b18;">
-        <p class="section-label">SEMESTER RESULTS</p>
+        <p class="section-label">ACADEMIC RESULTS</p>
         <div class="content-card">
             <div id="subject-container"></div>
         </div>
     </section>
 
     <section id="tasks">
-        <p class="section-label">ASSIGNMENT ANALYSIS</p>
+        <p class="section-label">ASSIGNMENTS</p>
         <div class="content-card" style="border-left: 5px solid var(--primary);">
             <div id="task-container"></div>
         </div>
@@ -200,7 +218,6 @@
 
     <script>
     document.addEventListener("DOMContentLoaded", () => {
-        // 1. Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDz7PWoH4vbObyhYXhXNqi2Cr5uwjBdwJY",
             authDomain: "cs-database-42dd0.firebaseapp.com",
@@ -211,10 +228,7 @@
             appId: "1:265634068059:web:4437f49f445c18d574717e"
         };
 
-        // Initialize Firebase
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
         const dbRef = database.ref('globalStudentDB');
 
@@ -224,7 +238,6 @@
 
         let studentDB = {};
 
-        // 2. Real-time Listener for Cloud Updates
         dbRef.on('value', (snapshot) => {
             const cloudData = snapshot.val();
             if (cloudData) {
@@ -235,23 +248,17 @@
 
         function updateUI() {
             const data = studentDB[regNo] || { name: "Guest", sgpa: 0, attendance: 0, grades: [], tasks: [] };
-            
             document.getElementById("user-name").innerText = data.name;
             document.getElementById("user-reg").innerText = "Reg No: " + (regNo || "N/A");
             document.getElementById("user-sgpa").setAttribute('data-target', data.sgpa || 0);
             document.getElementById("user-attendance").setAttribute('data-target', data.attendance || 0);
 
-            // Render Academic Grades
             const subBox = document.getElementById("subject-container");
             subBox.innerHTML = "";
             if(data.grades) {
                 data.grades.forEach(item => {
                     const colorClass = getGradeStyle(item.g);
-                    subBox.innerHTML += `
-                        <div class="list-item">
-                            <span>${item.s}</span>
-                            <span class="grade-pill ${colorClass}">${item.g === "null" ? "Pending" : item.g}</span>
-                        </div>`;
+                    subBox.innerHTML += `<div class="list-item"><span>${item.s}</span><span class="grade-pill ${colorClass}">${item.g === "null" ? "Pending" : item.g}</span></div>`;
                 });
             }
             renderTasks();
@@ -269,11 +276,9 @@
             return "grade-default";
         }
 
-        // Task Rendering logic
         window.renderTasks = () => {
             const taskBox = document.getElementById("task-container");
             taskBox.innerHTML = "";
-            
             if (isAdmin) {
                 Object.keys(studentDB).forEach(sID => {
                     if(sID === "ADMIN") return;
@@ -293,28 +298,10 @@
         function createTaskHTML(task, ownerID, index, showAdminTools) {
             const isSub = task.status === "submitted";
             const ownerName = showAdminTools ? `<small style="display:block; color:var(--primary); font-size:0.6rem;">FOR: ${studentDB[ownerID].name}</small>` : "";
-            let adminButtons = showAdminTools ? `
-                <div>
-                    <button class="action-btn btn-status" onclick="toggleStatus('${ownerID}', ${index})">TOGGLE</button>
-                    <button class="action-btn btn-remove" onclick="removeTask('${ownerID}', ${index})">REMOVE</button>
-                </div>` : "";
-
-            return `
-                <div class="list-item">
-                    <span>
-                        ${ownerName}
-                        <span style="color: ${isSub ? '#22c55e' : '#ef4444'}; margin-right:10px;">●</span>${task.text}
-                    </span>
-                    <div style="display:flex; align-items:center;">
-                        <span style="font-size: 0.6rem; padding: 3px 8px; border: 1px solid ${isSub ? '#22c55e' : '#ef4444'}; color: ${isSub ? '#22c55e' : '#ef4444'}">
-                            ${task.status.toUpperCase()}
-                        </span>
-                        ${adminButtons}
-                    </div>
-                </div>`;
+            let adminButtons = showAdminTools ? `<div><button class="action-btn btn-status" onclick="toggleStatus('${ownerID}', ${index})">STATUS</button><button class="action-btn btn-remove" onclick="removeTask('${ownerID}', ${index})">DEL</button></div>` : "";
+            return `<div class="list-item"><span>${ownerName}<span style="color: ${isSub ? '#22c55e' : '#ef4444'}; margin-right:8px;">●</span>${task.text}</span><div style="display:flex; align-items:center;"><span style="font-size: 0.6rem; padding: 2px 6px; border: 1px solid ${isSub ? '#22c55e' : '#ef4444'}; color: ${isSub ? '#22c55e' : '#ef4444'}">${task.status.toUpperCase()}</span>${adminButtons}</div></div>`;
         }
 
-        // Admin Management Actions
         window.pushTask = () => {
             const target = document.getElementById("student-select").value;
             const text = document.getElementById("task-input").value;
@@ -332,19 +319,11 @@
         };
 
         window.removeTask = (ownerID, index) => {
-            if(confirm("Delete this task?")) {
+            if(confirm("Delete task?")) {
                 studentDB[ownerID].tasks.splice(index, 1);
                 dbRef.set(studentDB);
             }
         };
-
-        // Scroll and Count animations
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('reveal');
-            });
-        }, { threshold: 0.2 });
-        document.querySelectorAll('section').forEach(section => observer.observe(section));
 
         function startCounters() {
             document.querySelectorAll('.count-up').forEach(counter => {
@@ -362,6 +341,13 @@
                 updateCount();
             });
         }
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('reveal');
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('section').forEach(section => observer.observe(section));
     });
     </script>
 </body>
