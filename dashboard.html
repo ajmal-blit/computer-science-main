@@ -1,133 +1,368 @@
-<script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-database-compat.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STUDENT DASHBOARD | CS DEPARTMENT</title>
+    <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-database-compat.js"></script>
 
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-    const firebaseConfig = {
-        apiKey: "AIzaSyDz7PWoH4vbObyhYXhXNqi2Cr5uwjBdwJY",
-        authDomain: "cs-database-42dd0.firebaseapp.com",
-        databaseURL: "https://cs-database-42dd0-default-rtdb.asia-southeast1.firebasedatabase.app",
-        projectId: "cs-database-42dd0",
-        storageBucket: "cs-database-42dd0.firebasestorage.app",
-        messagingSenderId: "265634068059",
-        appId: "1:265634068059:web:4437f49f445c18d574717e"
-    };
+    <style>
+        :root {
+            --primary: #22c55e;
+            --bg: #020617;
+            --card-bg: rgba(30, 41, 59, 0.4);
+            --accent-red: #ef4444;
+            --accent-blue: #3b82f6;
+        }
 
-    if (!firebase.apps.length) {
-        firebase.initializeApp(firebaseConfig);
-    }
-    const database = firebase.database();
-    const dbRef = database.ref('globalStudentDB');
+        body { 
+            background: var(--bg); 
+            scroll-behavior: smooth; 
+            margin: 0; 
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
 
-    const regNo = localStorage.getItem("loggedUserReg");
-    const isAdmin = regNo === "ADMIN";
-    if (isAdmin) document.getElementById("admin-section").style.display = "flex";
+        /* Animated Background Mesh */
+        body::before {
+            content: "";
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(34, 197, 94, 0.05) 0%, transparent 50%);
+            z-index: -1;
+            pointer-events: none;
+        }
 
-    let studentDB = {};
+        .back-btn {
+            position: fixed; top: 25px; left: 25px; z-index: 1000;
+            padding: 12px 20px; border: 1px solid var(--primary);
+            background: rgba(15, 23, 42, 0.8); color: var(--primary);
+            text-decoration: none; border-radius: 4px; font-weight: bold;
+            transition: 0.4s;
+            backdrop-filter: blur(10px);
+        }
+        .back-btn:hover { background: var(--primary); color: #020617; box-shadow: 0 0 20px var(--primary); transform: scale(1.05); }
 
-    // LISTEN TO CLOUD CHANGES
-    dbRef.on('value', (snapshot) => {
-        const cloudData = snapshot.val();
-        if (cloudData) {
-            studentDB = cloudData;
-            updateUI();
+        section {
+            min-height: 100vh;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            padding: 40px 20px;
+            opacity: 0; 
+            transform: translateY(30px);
+            transition: all 1s ease-out;
+        }
+
+        section.reveal { opacity: 1; transform: translateY(0); }
+
+        .hero-name {
+            font-size: clamp(3rem, 10vw, 6rem);
+            background: linear-gradient(to bottom, #fff 30%, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+            font-weight: 900;
+        }
+
+        .section-label { 
+            color: var(--primary); 
+            text-transform: uppercase; 
+            letter-spacing: 8px; 
+            font-size: 0.8rem; 
+            margin-bottom: 20px; 
+            font-weight: bold;
+        }
+
+        .content-card {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 24px;
+            border: 1px solid rgba(255,255,255,0.1);
+            width: 100%;
+            max-width: 850px;
+            backdrop-filter: blur(20px);
+        }
+
+        .list-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 18px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: 0.3s;
+        }
+
+        .grade-pill {
+            padding: 6px 18px;
+            border-radius: 8px;
+            font-weight: bold;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: 0.3s;
+        }
+
+        /* Grade Specific Colors */
+        .grade-o  { background: rgba(234, 179, 8, 0.2);  color: #facc15; border-color: #facc15; }
+        .grade-ap { background: rgba(34, 197, 94, 0.2);  color: #4ade80; border-color: #4ade80; }
+        .grade-a  { background: rgba(59, 130, 246, 0.2);  color: #60a5fa; border-color: #60a5fa; }
+        .grade-bp { background: rgba(168, 85, 247, 0.2); color: #c084fc; border-color: #c084fc; }
+        .grade-b  { background: rgba(249, 115, 22, 0.2);  color: #fb923c; border-color: #fb923c; }
+        .grade-f  { background: rgba(239, 68, 68, 0.2);   color: #f87171; border-color: #f87171; }
+        .grade-default { background: rgba(148, 163, 184, 0.1); color: #94a3b8; border-color: rgba(148, 163, 184, 0.3); }
+
+        /* Admin Controls */
+        .admin-input {
+            width: 100%; background: rgba(15, 23, 42, 0.9); border: 1px solid var(--primary);
+            color: white; padding: 12px; border-radius: 8px; margin-bottom: 15px;
+        }
+
+        .admin-btn {
+            background: var(--primary); color: #020617; border: none;
+            padding: 15px; border-radius: 8px; font-weight: 900; cursor: pointer; width: 100%; transition: 0.3s;
+        }
+
+        .action-btn {
+            padding: 5px 10px; border-radius: 4px; font-size: 0.7rem; font-weight: bold;
+            cursor: pointer; border: 1px solid transparent; transition: 0.2s; margin-left: 5px;
+        }
+        .btn-status { border-color: var(--accent-blue); color: var(--accent-blue); background: transparent; }
+        .btn-status:hover { background: var(--accent-blue); color: white; }
+        .btn-remove { border-color: var(--accent-red); color: var(--accent-red); background: transparent; }
+        .btn-remove:hover { background: var(--accent-red); color: white; }
+
+        .counter-container { display: flex; align-items: center; gap: 40px; margin-top: 50px; }
+        .divider { width: 2px; height: 80px; background: linear-gradient(to bottom, transparent, var(--primary), transparent); }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="back-btn">← BACK TO HOME</a>
+
+    <section id="hero">
+        <p class="section-label">Welcome Back</p>
+        <h1 id="user-name" class="hero-name">...</h1>
+        <p id="user-reg" style="font-size: 1.6rem; opacity: 0.4; font-weight: 300; margin-top: 15px;">Reg No: ...</p>
+        
+        <div class="counter-container">
+            <div>
+                <p class="section-label" style="letter-spacing: 3px;">FIRST SEMESTER SGPA</p>
+                <h2 class="count-up stat-value" id="user-sgpa" data-target="0" style="font-size: 3.5rem; margin: 0;">0.000</h2>
+            </div>
+            <div class="divider"></div>
+            <div>
+                <p class="section-label" style="letter-spacing: 3px;">Attendance</p>
+                <h2 class="count-up stat-value" id="user-attendance" data-target="0" style="font-size: 3.5rem; margin: 0;">0</h2>
+            </div>
+        </div>
+    </section>
+
+    <section id="admin-section" style="display: none; background: #060b18;">
+        <p class="section-label">Admin Control Panel</p>
+        <div class="content-card" style="border: 1px solid var(--primary);">
+            <h2 style="margin-bottom: 20px;">Task Management</h2>
+            <select id="student-select" class="admin-input">
+                <option value="GVAZSCS001">Abdul Rashid M</option>
+                <option value="GVAZSCS002">Ajmal Nt</option>
+                <option value="GVAZSCS003">Anshif Hyder</option>
+                <option value="GVAZSCS004">Fathima Hannin</option>
+                <option value="GVAZSCS005">Fathima Hanna</option>
+                <option value="GVAZSCS006">Fathima Huda Pc</option>
+                <option value="GVAZSCS007">Jasfal C</option>
+                <option value="GVAZSCS008">Jumana Jebin</option>
+                <option value="GVAZSCS009">Mohammed Fadil</option>
+                <option value="GVAZSCS010">Muhammed Shaheer</option>
+                <option value="GVAZSCS011">Mohammed Sinan Ck</option>
+                <option value="GVAZSCS012">Muhammed Shamil</option>
+                <option value="GVAZSCS013">Muhammed Aflah A</option>
+                <option value="GVAZSCS014">Muhammed Bazilsha</option>
+                <option value="GVAZSCS015">Muhammed Rasique Pk</option>
+                <option value="GVAZSCS016">Muhammed Sinan Nk</option>
+                <option value="GVAZSCS017">Munshifa P</option>
+                <option value="GVAZSCS018">Safna Sheri</option>
+                <option value="GVAZSCS019">Shamnad Pk</option>
+                <option value="GVAZSCS020">Shelshal Jubin</option>
+            </select>
+            <input type="text" id="task-input" class="admin-input" placeholder="New Task Description...">
+            <button class="admin-btn" onclick="pushTask()">PUSH NEW TASK</button>
+        </div>
+    </section>
+
+    <section id="academics" style="background: #060b18;">
+        <p class="section-label">SEMESTER RESULTS</p>
+        <div class="content-card">
+            <div id="subject-container"></div>
+        </div>
+    </section>
+
+    <section id="tasks">
+        <p class="section-label">ASSIGNMENT ANALYSIS</p>
+        <div class="content-card" style="border-left: 5px solid var(--primary);">
+            <div id="task-container"></div>
+        </div>
+    </section>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // 1. Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDz7PWoH4vbObyhYXhXNqi2Cr5uwjBdwJY",
+            authDomain: "cs-database-42dd0.firebaseapp.com",
+            databaseURL: "https://cs-database-42dd0-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "cs-database-42dd0",
+            storageBucket: "cs-database-42dd0.firebasestorage.app",
+            messagingSenderId: "265634068059",
+            appId: "1:265634068059:web:4437f49f445c18d574717e"
+        };
+
+        // Initialize Firebase
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const database = firebase.database();
+        const dbRef = database.ref('globalStudentDB');
+
+        const regNo = localStorage.getItem("loggedUserReg");
+        const isAdmin = regNo === "ADMIN";
+        if (isAdmin) document.getElementById("admin-section").style.display = "flex";
+
+        let studentDB = {};
+
+        // 2. Real-time Listener for Cloud Updates
+        dbRef.on('value', (snapshot) => {
+            const cloudData = snapshot.val();
+            if (cloudData) {
+                studentDB = cloudData;
+                updateUI();
+            }
+        });
+
+        function updateUI() {
+            const data = studentDB[regNo] || { name: "Guest", sgpa: 0, attendance: 0, grades: [], tasks: [] };
+            
+            document.getElementById("user-name").innerText = data.name;
+            document.getElementById("user-reg").innerText = "Reg No: " + (regNo || "N/A");
+            document.getElementById("user-sgpa").setAttribute('data-target', data.sgpa || 0);
+            document.getElementById("user-attendance").setAttribute('data-target', data.attendance || 0);
+
+            // Render Academic Grades
+            const subBox = document.getElementById("subject-container");
+            subBox.innerHTML = "";
+            if(data.grades) {
+                data.grades.forEach(item => {
+                    const colorClass = getGradeStyle(item.g);
+                    subBox.innerHTML += `
+                        <div class="list-item">
+                            <span>${item.s}</span>
+                            <span class="grade-pill ${colorClass}">${item.g === "null" ? "Pending" : item.g}</span>
+                        </div>`;
+                });
+            }
+            renderTasks();
+            startCounters();
+        }
+
+        function getGradeStyle(g) {
+            const grade = String(g).toUpperCase();
+            if (grade === "O") return "grade-o";
+            if (grade === "A+") return "grade-ap";
+            if (grade === "A") return "grade-a";
+            if (grade === "B+") return "grade-bp";
+            if (grade === "B") return "grade-b";
+            if (grade === "F") return "grade-f";
+            return "grade-default";
+        }
+
+        // Task Rendering logic
+        window.renderTasks = () => {
+            const taskBox = document.getElementById("task-container");
+            taskBox.innerHTML = "";
+            
+            if (isAdmin) {
+                Object.keys(studentDB).forEach(sID => {
+                    if(sID === "ADMIN") return;
+                    const tasks = studentDB[sID].tasks || [];
+                    tasks.forEach((task, index) => {
+                        taskBox.innerHTML += createTaskHTML(task, sID, index, true);
+                    });
+                });
+            } else {
+                const myTasks = studentDB[regNo]?.tasks || [];
+                myTasks.forEach((task, index) => {
+                    taskBox.innerHTML += createTaskHTML(task, regNo, index, false);
+                });
+            }
+        };
+
+        function createTaskHTML(task, ownerID, index, showAdminTools) {
+            const isSub = task.status === "submitted";
+            const ownerName = showAdminTools ? `<small style="display:block; color:var(--primary); font-size:0.6rem;">FOR: ${studentDB[ownerID].name}</small>` : "";
+            let adminButtons = showAdminTools ? `
+                <div>
+                    <button class="action-btn btn-status" onclick="toggleStatus('${ownerID}', ${index})">TOGGLE</button>
+                    <button class="action-btn btn-remove" onclick="removeTask('${ownerID}', ${index})">REMOVE</button>
+                </div>` : "";
+
+            return `
+                <div class="list-item">
+                    <span>
+                        ${ownerName}
+                        <span style="color: ${isSub ? '#22c55e' : '#ef4444'}; margin-right:10px;">●</span>${task.text}
+                    </span>
+                    <div style="display:flex; align-items:center;">
+                        <span style="font-size: 0.6rem; padding: 3px 8px; border: 1px solid ${isSub ? '#22c55e' : '#ef4444'}; color: ${isSub ? '#22c55e' : '#ef4444'}">
+                            ${task.status.toUpperCase()}
+                        </span>
+                        ${adminButtons}
+                    </div>
+                </div>`;
+        }
+
+        // Admin Management Actions
+        window.pushTask = () => {
+            const target = document.getElementById("student-select").value;
+            const text = document.getElementById("task-input").value;
+            if(!text) return;
+            if(!studentDB[target].tasks) studentDB[target].tasks = [];
+            studentDB[target].tasks.push({ text: text, status: "pending" });
+            dbRef.set(studentDB); 
+            document.getElementById("task-input").value = "";
+        };
+
+        window.toggleStatus = (ownerID, index) => {
+            const current = studentDB[ownerID].tasks[index].status;
+            studentDB[ownerID].tasks[index].status = (current === "pending") ? "submitted" : "pending";
+            dbRef.set(studentDB);
+        };
+
+        window.removeTask = (ownerID, index) => {
+            if(confirm("Delete this task?")) {
+                studentDB[ownerID].tasks.splice(index, 1);
+                dbRef.set(studentDB);
+            }
+        };
+
+        // Scroll and Count animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('reveal');
+            });
+        }, { threshold: 0.2 });
+        document.querySelectorAll('section').forEach(section => observer.observe(section));
+
+        function startCounters() {
+            document.querySelectorAll('.count-up').forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                let count = 0;
+                const updateCount = () => {
+                    if (count < target) {
+                        count += (target / 50);
+                        counter.innerText = (counter.id === "user-sgpa") ? count.toFixed(3) : Math.ceil(count) + "%";
+                        setTimeout(updateCount, 20);
+                    } else {
+                        counter.innerText = (counter.id === "user-sgpa") ? target.toFixed(3) : target + "%";
+                    }
+                };
+                updateCount();
+            });
         }
     });
-
-    function updateUI() {
-        const data = studentDB[regNo] || { name: "Guest", sgpa: 0, attendance: 0, grades: [], tasks: [] };
-        document.getElementById("user-name").innerText = data.name;
-        document.getElementById("user-reg").innerText = "Reg No: " + (regNo || "N/A");
-        document.getElementById("user-sgpa").setAttribute('data-target', data.sgpa);
-        document.getElementById("user-attendance").setAttribute('data-target', data.attendance);
-
-        const subBox = document.getElementById("subject-container");
-        subBox.innerHTML = "";
-        if(data.grades) {
-            data.grades.forEach(item => {
-                const colorClass = getGradeStyle(item.g);
-                subBox.innerHTML += `<div class="list-item"><span>${item.s}</span><span class="grade-pill ${colorClass}">${item.g === "null" ? "Pending" : item.g}</span></div>`;
-            });
-        }
-        renderTasks();
-        startCounters();
-    }
-
-    function getGradeStyle(g) {
-        const grade = String(g).toUpperCase();
-        if (grade === "O") return "grade-o";
-        if (grade === "A+") return "grade-ap";
-        if (grade === "A") return "grade-a";
-        if (grade === "B+") return "grade-bp";
-        if (grade === "B") return "grade-b";
-        if (grade === "F") return "grade-f";
-        return "grade-default";
-    }
-
-    window.renderTasks = () => {
-        const taskBox = document.getElementById("task-container");
-        taskBox.innerHTML = "";
-        if (isAdmin) {
-            Object.keys(studentDB).forEach(sID => {
-                if(sID === "ADMIN") return;
-                const tasks = studentDB[sID].tasks || [];
-                tasks.forEach((task, index) => {
-                    taskBox.innerHTML += createTaskHTML(task, sID, index, true);
-                });
-            });
-        } else {
-            const myTasks = studentDB[regNo]?.tasks || [];
-            myTasks.forEach((task, index) => {
-                taskBox.innerHTML += createTaskHTML(task, regNo, index, false);
-            });
-        }
-    };
-
-    function createTaskHTML(task, ownerID, index, showAdminTools) {
-        const isSub = task.status === "submitted";
-        const ownerName = showAdminTools ? `<small style="display:block; color:var(--primary); font-size:0.6rem;">FOR: ${studentDB[ownerID].name}</small>` : "";
-        let adminButtons = showAdminTools ? `<div><button class="action-btn btn-status" onclick="toggleStatus('${ownerID}', ${index})">TOGGLE</button><button class="action-btn btn-remove" onclick="removeTask('${ownerID}', ${index})">REMOVE</button></div>` : "";
-        return `<div class="list-item"><span>${ownerName}<span style="color: ${isSub ? '#22c55e' : '#ef4444'}; margin-right:10px;">●</span>${task.text}</span><div style="display:flex; align-items:center;"><span style="font-size: 0.6rem; padding: 3px 8px; border: 1px solid ${isSub ? '#22c55e' : '#ef4444'}; color: ${isSub ? '#22c55e' : '#ef4444'}">${task.status.toUpperCase()}</span>${adminButtons}</div></div>`;
-    }
-
-    window.pushTask = () => {
-        const target = document.getElementById("student-select").value;
-        const text = document.getElementById("task-input").value;
-        if(!text) return;
-        if(!studentDB[target].tasks) studentDB[target].tasks = [];
-        studentDB[target].tasks.push({ text: text, status: "pending" });
-        dbRef.set(studentDB); 
-        document.getElementById("task-input").value = "";
-    };
-
-    window.toggleStatus = (ownerID, index) => {
-        const current = studentDB[ownerID].tasks[index].status;
-        studentDB[ownerID].tasks[index].status = (current === "pending") ? "submitted" : "pending";
-        dbRef.set(studentDB);
-    };
-
-    window.removeTask = (ownerID, index) => {
-        if(confirm("Delete this task?")) {
-            studentDB[ownerID].tasks.splice(index, 1);
-            dbRef.set(studentDB);
-        }
-    };
-
-    function startCounters() {
-        document.querySelectorAll('.count-up').forEach(counter => {
-            const target = +counter.getAttribute('data-target');
-            let count = 0;
-            const updateCount = () => {
-                if (count < target) {
-                    count += (target / 50);
-                    counter.innerText = (counter.id === "user-sgpa") ? count.toFixed(3) : Math.ceil(count) + "%";
-                    setTimeout(updateCount, 20);
-                } else {
-                    counter.innerText = (counter.id === "user-sgpa") ? target.toFixed(3) : target + "%";
-                }
-            };
-            updateCount();
-        });
-    }
-});
-</script>
+    </script>
+</body>
+</html>
