@@ -2,6 +2,54 @@
  * CS DEPARTMENT - CORE UI & SESSION LOGIC
  * Includes: Typing Effect, Animations, Popup Logic, and Access Control
  */
+    document.addEventListener("DOMContentLoaded", () => {
+
+        // Add this function inside your DOMContentLoaded or right below it
+        function checkAccess(page) {
+            const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+            
+            if (isLoggedIn) {
+                // If logged in, go to the page normally
+                window.location.href = page;
+            } else {
+                // If guest, show a message and go to login
+                alert("Please Log In to access the " + page.split('.')[0] + "! 🔒");
+                window.location.href = "login.html";
+            }
+        }
+        // Check if a session exists in localStorage
+        const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+        const userName = localStorage.getItem("loggedUserName");
+        const authButtons = document.querySelectorAll(".logout-btn");
+        const welcomeMessage = document.getElementById("welcomeMessage");
+
+        if (isLoggedIn && userName) {
+            // IF LOGGED IN: Show name and 'Log Out' option
+            if (welcomeMessage) {
+                welcomeMessage.innerText = "Welcome Back, " + userName + "!";
+            }
+            authButtons.forEach(button => {
+                button.innerText = "Log Out";
+                button.style.background = "#ef4444"; // Red for Logout
+                button.onclick = () => {
+                    localStorage.clear(); // Wipe session data
+                    window.location.reload(); // Refresh to guest state
+                };
+            });
+        } else {
+            // IF GUEST: Show generic welcome and 'Log In' option
+            if (welcomeMessage) {
+                welcomeMessage.innerText = "Welcome to CS Department";
+            }
+            authButtons.forEach(button => {
+                button.innerText = "Log In";
+                button.style.background = "#22c55e"; // Green for Login
+                button.onclick = () => {
+                    window.location.href = "login.html";
+                };
+            });
+        }
+    });
 
 document.addEventListener("DOMContentLoaded", () => {
     
