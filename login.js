@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
             
             // Checks if user exists and if password matches the cloud field
             if (userData && userData.password === password) {
-                submitBtn.innerText = "Access Granted";
+                submitBtn.innerText = "Loading .....";
                 
                 // Store persistent session data
                 localStorage.setItem("isLoggedIn", "true");
