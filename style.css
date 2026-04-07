@@ -359,49 +359,58 @@ body.show {
     color:#a7f3d0;
 }
 
-/* 🔥 POPUP */
-.student-popup{
-    Position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:rgba(0,0,0,0.7);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    opacity:0;
-    visibility:hidden;
-    transition:0.3s;
-    z-index:2000;
+/* 🔥 POPUP - Centered & Refined */
+.student-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.85); /* Darker overlay for better focus */
+    display: flex;
+    justify-content: center; /* Centers horizontally */
+    align-items: center;     /* Centers vertically */
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 2000;
 }
 
-.student-popup.active{
-    opacity:1;
-    visibility:visible;
+.student-popup.active {
+    opacity: 1;
+    visibility: visible;
 }
 
-.popup-content{
-    background:#1e293b;
-    padding:30px;
-    border-radius:12px;
-    text-align:center;
-    width:300px;
-    transform:scale(0.7);
-    transition:0.3s;
-    Position: relative;
+.popup-content {
+    background: #1e293b;
+    padding: 40px;
+    border-radius: 16px;
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+    transform: scale(0.7); /* Animation start point */
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Smooth pop effect */
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(34, 197, 94, 0.2);
 }
 
-.student-popup.active .popup-content{
-    transform:scale(1);
+.student-popup.active .popup-content {
+    transform: scale(1); /* Animation end point */
 }
 
-.close-btn{
-    Position:absolute;
-    top:10px;
-    right:20px;
-    font-size:25px;
-    cursor:pointer;
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 30px;
+    color: #94a3b8;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.close-btn:hover {
+    color: #22c55e;
 }
 
 /* FOOTER */
