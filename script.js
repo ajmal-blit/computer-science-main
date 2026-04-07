@@ -76,24 +76,29 @@ document.addEventListener("DOMContentLoaded", () => {
     const popupName = document.getElementById("popup-name");
     const popupReg = document.getElementById("popup-reg");
     const closeBtn = document.querySelector(".close-btn");
-
+    
     document.querySelectorAll(".student-card").forEach(card => {
         card.addEventListener("click", () => {
+            // Get data from the card you clicked
             const name = card.querySelector("h3").innerText;
             const reg = card.querySelector("p").innerText;
-
-            if (popupName && popupReg && popup) {
+    
+            if (popup && popupName && popupReg) {
                 popupName.innerText = name;
                 popupReg.innerText = reg;
-                popup.classList.add("active");
+                
+                // This line triggers the CSS transition
+                popup.classList.add("active"); 
+            } else {
+                console.error("Popup elements not found in HTML!");
             }
         });
     });
-
-    // Close Popup Logic
+    
+    // Close logic
     if (closeBtn) {
         closeBtn.addEventListener("click", () => {
-            if (popup) popup.classList.remove("active");
+            popup.classList.remove("active");
         });
     }
 
