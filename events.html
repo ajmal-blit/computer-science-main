@@ -7,13 +7,19 @@
     <link rel="stylesheet" href="style.css">
     
     <script>
-        // Secure page lock
         if (localStorage.getItem("isLoggedIn") !== "true") {
             window.location.replace("login.html");
         }
     </script>
 
     <style>
+        body {
+            background-color: #0f172a; /* Matching your dark theme */
+            color: #e2e8f0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+        }
+
         .event-container {
             max-width: 900px;
             margin: 40px auto;
@@ -47,11 +53,6 @@
             color: #22c55e;
         }
 
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
         .showcase-card {
             background: rgba(30, 41, 59, 0.7);
             backdrop-filter: blur(16px);
@@ -59,10 +60,20 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px;
             padding: 30px;
+            margin-bottom: 50px; /* Space between cards */
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             opacity: 0; 
             transform: translateY(30px);
-            animation: fadeUp 0.6s ease 0.2s forwards;
+            animation: fadeUp 0.6s ease forwards;
+        }
+
+        /* Staggered animation for the second card */
+        .showcase-card:nth-child(2) { animation-delay: 0.2s; }
+        .showcase-card:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .showcase-card > h2 {
@@ -76,19 +87,12 @@
 
         .event-hero {
             width: 100%;
-            height: 550px; /* 🔥 INCREASED: Was 400px */
+            height: 550px; 
             object-fit: cover;
             border-radius: 8px;
             margin-bottom: 25px;
             border: 1px solid rgba(255, 255, 255, 0.05);
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-}
-
-        /* 🔥 Don't forget to increase the mobile height too! */
-        @media(max-width: 600px) {
-            .event-hero { height: 350; } /* Increased from 250px */
-            .showcase-card { padding: 20px; }
-            .showcase-card > h2 { font-size: 24px; }
         }
 
         .event-info-grid {
@@ -102,10 +106,7 @@
             border-left: 4px solid #22c55e;
         }
 
-        .info-item {
-            display: flex;
-            flex-direction: column;
-        }
+        .info-item { display: flex; flex-direction: column; }
 
         .info-label {
             font-size: 13px;
@@ -116,10 +117,7 @@
             font-weight: bold;
         }
 
-        .info-value {
-            font-size: 16px;
-            color: #e2e8f0;
-        }
+        .info-value { font-size: 16px; color: #e2e8f0; }
 
         .event-desc {
             color: #cbd5e1;
@@ -128,11 +126,6 @@
             margin-bottom: 40px;
         }
 
-        .event-desc p {
-            margin-bottom: 15px;
-        }
-
-        /* 🔥 NEW: Section Headings */
         .section-heading {
             color: #22c55e;
             font-size: 22px;
@@ -141,7 +134,6 @@
             padding-bottom: 10px;
         }
 
-        /* 🔥 NEW: Multiple Definitions / Highlights Grid */
         .highlights-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -163,24 +155,12 @@
             transform: translateY(-5px);
         }
 
-        .highlight-box h4 {
-            color: #a7f3d0;
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
+        .highlight-box h4 { color: #a7f3d0; margin-bottom: 10px; }
 
-        .highlight-box p {
-            color: #cbd5e1;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        /* 🔥 NEW: Photo Gallery Grid */
         .photo-gallery {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 15px;
-            margin-bottom: 40px;
         }
 
         .gallery-img {
@@ -190,44 +170,37 @@
             border-radius: 8px;
             transition: 0.3s ease;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            cursor: pointer;
         }
 
         .gallery-img:hover {
             transform: scale(1.05);
             border-color: #22c55e;
-            box-shadow: 0 5px 15px rgba(34, 197, 94, 0.3);
-            z-index: 2;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         @media(max-width: 600px) {
-            .event-hero { height: 250px; }
+            .event-hero { height: 350px; }
             .showcase-card { padding: 20px; }
-            .showcase-card > h2 { font-size: 24px; }
         }
     </style>
 </head>
-<body class="show">
-
-    <nav class="nav">
-        <div class="head-nav">
-            Computer <br><span>Science</span>
-        </div>
-
-    </nav>
+<body>
 
     <div class="event-container">
         <a href="index.html" class="back-link">← Go to Home</a>
-
         <h1 class="page-title">Department <span>Events</span></h1>
 
         <div class="showcase-card">
             <h2>WEB FORGE - Computer Science</h2>
-            
-        <video class="event-hero" autoplay loop muted playsinline>
-            <source src="assets/video.mp4" type="video/mp4">
+            <video class="event-hero" autoplay loop muted playsinline>
+                <source src="assets/video.mp4" type="video/mp4">
                 Your browser does not support the video tag.
-        </video>
+            </video>
             
             <div class="event-info-grid">
                 <div class="info-item">
@@ -244,49 +217,42 @@
                 </div>
                 <div class="info-item">
                     <span class="info-label">👩‍🏫 Coordinators</span>
-                    <span class="info-value">Muhammed Aflah A</span>
-                    <span class="info-value">Ajmal NT</span>
-                    <span class="info-value">Shelshal Jubin KC</span>
+                    <span class="info-value">Muhammed Aflah A, Ajmal NT, Shelshal Jubin KC</span>
                 </div>
             </div>
 
             <div class="event-desc">
-                <p>The Department Of Computer Science Conducted "WEB FORGE" A 2 Hour Web Page Developement Program Focused On HTML And CSS. Through This Program Students Learned The Basics Of Web Development And Web Designing</p>
+                <p>A 2-hour web development program focused on HTML and CSS basics.</p>
             </div>
 
             <h3 class="section-heading">Event Highlights</h3>
             <div class="highlights-grid">
                 <div class="highlight-box">
-                    <h4>🎤 Good Seminars</h4>
-                    <p>The Three Of The Coordinators Mr Aflah A, Mr Ajmal NT, Mr Shelshal Jubin KC Well Handled The Event</p>
+                    <h4>🎤 Expert Seminars</h4>
+                    <p>Coordinators successfully managed the technical sessions.</p>
                 </div>
                 <div class="highlight-box">
-                    <h4>💻 2 Hour Master Class</h4>
-                    <p>Throught This 2 Hours Students Well Understood The Logic And Idea Of Basic Web Development</p>
+                    <h4>💻 Master Class</h4>
+                    <p>Students gained hands-on experience in web design logic.</p>
                 </div>
                 <div class="highlight-box">
-                    <h4>🤝 Special Mentions</h4>
-                    <p>Seetha Miss And Rekha Miss Both Teachers Give Their Best To Make The Event Successfull </p>
+                    <h4>🤝 Mentorship</h4>
+                    <p>Supported by Seetha Miss and Rekha Miss.</p>
                 </div>
             </div>
 
             <h3 class="section-heading">Event Gallery</h3>
             <div class="photo-gallery">
-                <img src="assets/WhatsApp Image 2026-03-29 at 4.00.18 AM.jpeg" alt="Coding" class="gallery-img">
-                <img src="assets/WhatsApp Image 2026-03-29 at 4.00.18 AM (1).jpeg" alt="Seminar" class="gallery-img">
-                <img src="assets/WhatsApp Image 2026-03-29 at 4.00.19 AM.jpeg" alt="Teamwork" class="gallery-img">
+                <img src="assets/img1.jpg" alt="Coding" class="gallery-img">
+                <img src="assets/img2.jpg" alt="Seminar" class="gallery-img">
+                <img src="assets/img3.jpg" alt="Team" class="gallery-img">
             </div>
-
-        </div>
-    </div>
-
-    <div class="showcase-card">
+        </div> <div class="showcase-card">
             <h2>WEBSITE LAUNCH - Computer Science</h2>
-            
-        <video class="event-hero" autoplay loop muted playsinline>
-            <source src="assets/website-video.mp4" type="video/mp4">
+            <video class="event-hero" autoplay loop muted playsinline>
+                <source src="assets/website-video.mp4" type="video/mp4">
                 Your browser does not support the video tag.
-        </video>
+            </video>
             
             <div class="event-info-grid">
                 <div class="info-item">
@@ -303,67 +269,41 @@
                 </div>
                 <div class="info-item">
                     <span class="info-label">👩‍🏫 Coordinators</span>
-                    <span class="info-value">Muhammed Aflah A</span>
-                    <span class="info-value">Ajmal NT</span>
-                    <span class="info-value">Muhammed Shaheer</span>
+                    <span class="info-value">Muhammed Aflah A, Ajmal NT, Muhammed Shaheer</span>
                 </div>
             </div>
 
             <div class="event-desc">
-                <p>The Computer Science Department of Grace Valley College of Arts & science, successfully launched a website for the department on 31st March 2026 at smart room.The  program was started by Mr. Mohammed  Shaheer , first year BSc CS, with the active participation of faculty members and students. The program began with a welcome speech by Rekha M, Assistant Professor of Computer Science department followed by the official launch by the chief guest ,  Dr .M Usman Principal Of the College .The features of the website was showcased by the first year BSc CS students Mr.Ajmal N T , Muhammed Aflah.HoD Mrs. Seetha Lakshmi R and Assistant Professor Varna K delivered felicitation highlighting the importance of digital platforms.The event concluded with a vote of thanks by Fathima Hanin first year BSc CS, expressing gratitude to all.</p>
+                <p>Official launch of the Computer Science Department website by Dr. M Usman, Principal of the College.</p>
             </div>
 
             <h3 class="section-heading">Event Highlights</h3>
             <div class="highlights-grid">
                 <div class="highlight-box">
-                    <h4>Well Strucured Program</h4>
-                    <p>The Event Was Well Planned / Structured By The Co-ordinators. And Also The Support Of Students, Faculties And Others Gave The Event Good Results</p>
+                    <h4>Well Structured</h4>
+                    <p>Flawless execution by the student coordinators and faculty.</p>
                 </div>
                 <div class="highlight-box">
-                    <h4>A Website Exclusive For Computer Science Department</h4>
-                    <p>By This Event A Website Exclusive For Computer Science Department Officially Is Live . </p>
-                </div>
-                <div class="highlight-box">
-                    <h4>About Website</h4>
-                    <p>The Website Act As A Portal For Students Of Computer Science Department, Where Students Can Find Study Meterials , And Other Academic Elements. Also There Is A Assignment Submittion For Students And For Teachers They Can Toggle Status, Assign New Works To Students Etc.</p>
+                    <h4>Resource Portal</h4>
+                    <p>Students can now access study materials and submit assignments online.</p>
                 </div>
                 <div class="highlight-box">
                     <h4>🤝 Special Thanks</h4>
-                    <p>Special Thanks To Mr Principle Dr Usman Sir For Coming And Inagurating The Event.</p>
-                </div>
-                <div class="highlight-box">
-                    <h4>🤝 Special Mentions</h4>
-                    <p>Seetha Miss And Rekha Miss Both Teachers Give Their Best To Make The Event Successfull </p>
+                    <p>To our Principal for inaugurating this digital milestone.</p>
                 </div>
             </div>
 
             <h3 class="section-heading">Event Gallery</h3>
             <div class="photo-gallery">
-                <img src="assets/WhatsApp Image 2026-03-29 at 4.00.18 AM.jpeg" alt="Coding" class="gallery-img">
-                <img src="assets/WhatsApp Image 2026-03-29 at 4.00.18 AM (1).jpeg" alt="Seminar" class="gallery-img">
-                <img src="assets/WhatsApp Image 2026-03-29 at 4.00.19 AM.jpeg" alt="Teamwork" class="gallery-img">
+                <img src="assets/img1.jpg" alt="Launch" class="gallery-img">
+                <img src="assets/img2.jpg" alt="Presentation" class="gallery-img">
+                <img src="assets/img3.jpg" alt="Faculty" class="gallery-img">
             </div>
-
-        </div>
-    </div>
-
-    
+        </div> </div>
 
     <footer class="footer">
         <p>© 2026 Computer Science Department</p>
     </footer>
 
-    <script src="script.js"></script>
-    <script>
-        // Logout logic
-        const logoutButtons = document.querySelectorAll(".logout-btn");
-        logoutButtons.forEach(button => {
-            button.addEventListener("click", () => {
-                localStorage.removeItem("isLoggedIn");
-                localStorage.removeItem("loggedUserName");
-                window.location.replace("login.html");
-            });
-        });
-    </script>
 </body>
 </html>
