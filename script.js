@@ -1,133 +1,103 @@
 /**
  * CS DEPARTMENT - CORE UI & SESSION LOGIC
- * Includes: Typing Effect, Animations, Popup Logic, and Access Control
+ * Optimized for Smooth Opening and Mobile Navigation
  */
 
-window.onload = () => {
-    // Small delay ensures the browser is ready to animate
-    setTimeout(() => {
-        document.body.classList.add("show");
-    }, 50);
-};
-    document.addEventListener("DOMContentLoaded", () => {
-
-        // Add this function inside your DOMContentLoaded or right below it
-        function checkAccess(page) {
-            const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-            
-            if (isLoggedIn) {
-                // If logged in, go to the page normally
-                window.location.href = page;
-            } else {
-                // If guest, show a message and go to login
-                alert("Please Log In to access the " + page.split('.')[0] + "! 🔒");
-                window.location.href = "login.html";
-            }
-        }
-        // Check if a session exists in localStorage
-        const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-        const userName = localStorage.getItem("loggedUserName");
-        const authButtons = document.querySelectorAll(".logout-btn");
-        const welcomeMessage = document.getElementById("welcomeMessage");
-
-        if (isLoggedIn && userName) {
-            // IF LOGGED IN: Show name and 'Log Out' option
-            if (welcomeMessage) {
-                welcomeMessage.innerText = "Welcome Back, " + userName + "!";
-            }
-            authButtons.forEach(button => {
-                button.innerText = "Log Out";
-                button.style.background = "#ef4444"; // Red for Logout
-                button.onclick = () => {
-                    localStorage.clear(); // Wipe session data
-                    window.location.reload(); // Refresh to guest state
-                };
-            });
-        } else {
-            // IF GUEST: Show generic welcome and 'Log In' option
-            if (welcomeMessage) {
-                welcomeMessage.innerText = "Welcome to CS Department";
-            }
-            authButtons.forEach(button => {
-                button.innerText = "Log In";
-                button.style.background = "#22c55e"; // Green for Login
-                button.onclick = () => {
-                    window.location.href = "login.html";
-                };
-            });
-        }
-    });
+// 1. 🛡️ GATEKEEPER FUNCTION (Defined globally so HTML can access it)
+function checkAccess(page) {
+    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+    
+    if (isLoggedIn) {
+        window.location.href = page;
+    } else {
+        alert("Please Login to access the " + page.split('.')[0] + "! 🔒");
+        window.location.href = "login.html";
+    }
+}
 
 document.addEventListener("DOMContentLoaded", () => {
     
-    // 1. ✨ PERSONALIZED WELCOME & TYPING EFFECT
-    const typingContainer = document.querySelector(".typing");
+    // 2. ✨ SESSION & AUTH UI LOGIC
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-    const loggedUserName = localStorage.getItem("loggedUserName");
+    const userName = localStorage.getItem("loggedUserName");
+    const authButtons = document.querySelectorAll(".logout-btn");
+    const welcomeMessage = document.getElementById("welcomeMessage");
 
-    // Dynamic greeting based on login status
+    if (isLoggedIn && userName) {
+        if (welcomeMessage) welcomeMessage.innerText = "Welcome Back, " + userName + "!";
+        authButtons.forEach(button => {
+            button.innerText = "Log Out";
+            button.style.background = "#ef4444"; // Red for Logout
+            button.onclick = () => {
+                localStorage.clear();
+                window.location.reload();
+            };
+        });
+    } else {
+        if (welcomeMessage) welcomeMessage.innerText = "Welcome to CS Department";
+        authButtons.forEach(button => {
+            button.innerText = "Log In";
+            button.style.background = "#22c55e"; // Green for Login
+            button.onclick = () => { window.location.href = "login.html"; };
+        });
+    }
+
+    // 3. ⌨️ TYPING EFFECT
+    const typingContainer = document.querySelector(".typing");
     let welcomeText = "Welcome to Computer Science .";
-
     let i = 0;
+
     function typeEffect() {
         if (typingContainer && i < welcomeText.length) {
             typingContainer.innerHTML += welcomeText.charAt(i);
             i++;
-            setTimeout(typeEffect, 100); // Speed of typing
+            setTimeout(typeEffect, 100);
         }
     }
-    // Start typing effect only if the container exists on the page
-    if (typingContainer) {
-        typeEffect();
-    }
+    if (typingContainer) typeEffect();
 
-    // 📱 MOBILE NAVIGATION (SLIDING ANIMATION)
+    // 4. 📱 MOBILE NAVIGATION (SLIDING ANIMATION)
     const ham = document.querySelector(".hamburger");
     const nav = document.querySelector(".nav-links");
     
     if (ham && nav) {
         ham.addEventListener("click", () => {
-            nav.classList.toggle("active"); // Opens the menu
-            ham.classList.toggle("is-active"); // Animates the lines
+            nav.classList.toggle("active");
+            ham.classList.toggle("is-active");
         });
     }
 
-    // 3. 🎬 SCROLL REVEAL ANIMATIONS
-    const observerOptions = { threshold: 0.1 };
+    // 5. 🎬 SCROLL REVEAL ANIMATIONS (Intersection Observer)
     const observer = new IntersectionObserver(entries => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add("show");
             }
         });
-    }, observerOptions);
+    }, { threshold: 0.1 });
 
-    // Apply observer to main sections
     document.querySelectorAll(".card, .about, .faculties, .students, .title").forEach(el => {
         observer.observe(el);
     });
 
-    // 4. 🎓 STUDENT CARD STAGGERED REVEAL
+    // 6. 🎓 STUDENT CARD STAGGERED REVEAL
     const studentCards = document.querySelectorAll(".student-card");
     const studentsSection = document.querySelector(".students");
 
     if (studentsSection && studentCards.length > 0) {
         const studentObserver = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    studentCards.forEach((card, index) => {
-                        setTimeout(() => {
-                            card.classList.add("show");
-                        }, index * 50); // 50ms delay between each card
-                    });
-                }
-            });
+            if (entries[0].isIntersecting) {
+                studentCards.forEach((card, index) => {
+                    setTimeout(() => {
+                        card.classList.add("show");
+                    }, index * 50);
+                });
+            }
         }, { threshold: 0.1 });
-
         studentObserver.observe(studentsSection);
     }
 
-    // 5. 🎯 STUDENT PROFILE POPUP LOGIC
+    // 7. 🎯 STUDENT PROFILE POPUP LOGIC
     const popup = document.getElementById("popup");
     const popupName = document.getElementById("popup-name");
     const popupReg = document.getElementById("popup-reg");
@@ -135,67 +105,27 @@ document.addEventListener("DOMContentLoaded", () => {
     
     document.querySelectorAll(".student-card").forEach(card => {
         card.addEventListener("click", () => {
-            // Get data from the card you clicked
             const name = card.querySelector("h3").innerText;
             const reg = card.querySelector("p").innerText;
     
             if (popup && popupName && popupReg) {
                 popupName.innerText = name;
                 popupReg.innerText = reg;
-                
-                // This line triggers the CSS transition
                 popup.classList.add("active"); 
-            } else {
-                console.error("Popup elements not found in HTML!");
             }
         });
     });
     
-    // Close logic
-    if (closeBtn) {
-        closeBtn.addEventListener("click", () => {
-            popup.classList.remove("active");
-        });
-    }
-
+    if (closeBtn) closeBtn.addEventListener("click", () => popup.classList.remove("active"));
     if (popup) {
         popup.addEventListener("click", (e) => {
-            // Close only if clicking outside the popup content
             if (e.target === popup) popup.classList.remove("active");
         });
     }
 
-    // 6. 🚪 LOGOUT LOGIC (For buttons on index.html)
-    const logoutButtons = document.querySelectorAll(".logout-btn");
-    logoutButtons.forEach(button => {
-        // If it says "Log Out", clear data. If it says "Log In", just go to login page.
-        button.addEventListener("click", () => {
-            if (button.innerText === "Log Out") {
-                localStorage.clear(); 
-                window.location.reload(); // Refresh the page to show Guest state
-            } else {
-                window.location.href = "login.html";
-            }
-        });
-    });
-
-    // 7. 🎬 FIX FOR BLANK SCREEN: Force body opacity to 1
-    // This ensures your CSS animations don't get stuck hidden
-    document.body.style.opacity = "1";
-    document.body.classList.add("show");
+    // 8. 🚪 FORCE SHOW (Fix for Blank Screen)
+    setTimeout(() => {
+        document.body.style.opacity = "1";
+        document.body.classList.add("show");
+    }, 50);
 });
-
-/**
- * 8. 🛡️ GATEKEEPER FUNCTION FOR NAVIGATION LINKS
- * This must be OUTSIDE the DOMContentLoaded block so your HTML can access it.
- */
-function checkAccess(page) {
-    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-    
-    if (isLoggedIn) {
-        window.location.href = page;
-    } else {
-        alert("Please Login to access this section! 🔒");
-        window.location.href = "login.html";
-    }
-}
