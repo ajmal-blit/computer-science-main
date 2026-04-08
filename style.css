@@ -1,11 +1,63 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap');
 
-/* =========================================
-   1. GLOBAL RESET & BASE STYLES
-   ========================================= */
+/* --- GLOBAL RESET --- */
 html, body {
     overflow-x: hidden;
+    scroll-behavior: smooth;
 }
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+/* --- THE OPENING ANIMATION --- */
+body {
+    background: #0f172a;
+    color: white;
+    /* State before animation starts */
+    opacity: 0;
+    transform: translateY(20px); 
+    /* Smooth transition settings */
+    transition: opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1), 
+                transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Triggered by JS classList.add("show") */
+body.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* --- HERO TEXT REVEAL --- */
+.about {
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(45deg, #22c55e, #0f172a);
+    /* Extra animation for the hero section itself */
+    animation: heroReveal 1.5s ease-out forwards;
+}
+
+@keyframes heroReveal {
+    from { clip-path: inset(0 0 100% 0); }
+    to { clip-path: inset(0 0 0 0); }
+}
+
+.typing {
+    font-size: 40px;
+    font-weight: 700;
+    border-right: 3px solid white;
+    padding-right: 5px;
+    animation: blink 0.7s infinite;
+}
+
+@keyframes blink { 50% { border-color: transparent; } }
 
 html {
     scroll-behavior: smooth;
