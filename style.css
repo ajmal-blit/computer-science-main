@@ -118,10 +118,13 @@ body.show {
 .desktop-only { margin-left: auto; }
 .mobile-only { display: none; }
 
+/* --- SLIDING HAMBURGER ANIMATION --- */
 .hamburger {
     display: none;
     flex-direction: column;
     cursor: pointer;
+    overflow: hidden; /* Keeps the sliding lines contained */
+    padding: 5px;
 }
 
 .hamburger span {
@@ -129,6 +132,31 @@ body.show {
     height: 3px;
     background: white;
     margin: 4px;
+    border-radius: 10px;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Bouncy slide effect */
+    position: relative;
+}
+
+/* TOP LINE: Slides in and rotates */
+.hamburger.is-active span:nth-child(1) {
+    transform: translateY(11px) rotate(45deg);
+    background: #22c55e;
+}
+
+/* MIDDLE LINE: Slides out to the left */
+.hamburger.is-active span:nth-child(2) {
+    transform: translateX(-50px);
+    opacity: 0;
+}
+
+/* BOTTOM LINE: Slides in and rotates */
+.hamburger.is-active span:nth-child(3) {
+    transform: translateY(-11px) rotate(-45deg);
+    background: #22c55e;
+}
+
+@media(max-width:900px) {
+    .hamburger { display: flex; }
 }
 
 /* --- HERO SECTION --- */
