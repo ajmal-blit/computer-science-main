@@ -119,9 +119,25 @@
         .gallery-img { width: 100%; height: 180px; object-fit: cover; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1); transition: 0.3s; }
         .gallery-img:hover { transform: scale(1.05); border-color: #22c55e; }
 
+        /* This targeting phones and small screens */
         @media(max-width: 600px) {
-            .event-hero { height: 350px; }
-            .showcase-card { padding: 20px; }
+            /* Increase main video/hero height on phone */
+            .event-hero { 
+                height: 450px; 
+            } 
+
+            /* Increase gallery image height on phone */
+            .gallery-img {
+                height: 250px;
+            }
+
+            .showcase-card { 
+                padding: 15px; 
+            }
+            
+            .showcase-card > h2 { 
+                font-size: 22px; 
+            }
         }
     </style>
 </head>
