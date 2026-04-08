@@ -312,6 +312,7 @@ body.show {
         background: #1e293b;
         border-bottom-left-radius: 12px;
         box-shadow: -5px 10px 15px rgba(0,0,0,0.5);
+        transition: transform 0.5s ease;
     }
     .nav-links.active { transform: translateX(0); }
     .hamburger { display: flex; margin-left: auto; }
