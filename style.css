@@ -13,90 +13,28 @@ html, body {
     font-family: 'Roboto Condensed', sans-serif;
 }
 
-/* --- THE NEW OPENING --- */
+/* =========================================
+   NEW OPENING ANIMATION LOGIC
+   ========================================= */
 body {
+    opacity: 0;
     background: #0f172a;
     color: white;
-    /* Starts slightly smaller and faded */
-    opacity: 0;
-    transform: scale(1.05); 
-    transition: opacity 0.4s ease-out, transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
-    filter: blur(5px); /* Adds a focus effect */
+    /* Snap-in effect: Starts slightly zoomed out and dark */
+    transform: scale(1.02);
+    filter: brightness(0.5);
+    transition: opacity 0.8s ease-out, 
+                transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                filter 0.8s ease;
 }
 
-/* Instant focus when "show" is added */
 body.show {
     opacity: 1;
     transform: scale(1);
-    filter: blur(0);
+    filter: brightness(1);
 }
 
-/* --- THE NAVIGATION REVEAL --- */
-.nav {
-    /* ... your existing styles ... */
-    animation: navDrop 0.8s ease forwards;
-}
-
-@keyframes navDrop {
-    from { transform: translateY(-100%); }
-    to { transform: translateY(0); }
-}
-
-/* --- HERO TEXT REVEAL --- */
-.about {
-    height: 80vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    background: linear-gradient(45deg, #22c55e, #0f172a);
-    /* Extra animation for the hero section itself */
-    animation: heroReveal 1.5s ease-out forwards;
-}
-
-@keyframes heroReveal {
-    from { clip-path: inset(0 0 100% 0); }
-    to { clip-path: inset(0 0 0 0); }
-}
-
-.typing {
-    font-size: 40px;
-    font-weight: 700;
-    border-right: 3px solid white;
-    padding-right: 5px;
-    animation: blink 0.7s infinite;
-}
-
-@keyframes blink { 50% { border-color: transparent; } }
-
-html {
-    scroll-behavior: smooth;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Roboto Condensed', sans-serif;
-}
-
-body {
-    opacity: 0;
-    transform: translateY(10px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
-    background: #0f172a;
-    color: white;
-}
-
-body.show {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* =========================================
-   2. NAVIGATION BAR
-   ========================================= */
+/* --- NAVBAR --- */
 .nav {
     display: flex;
     align-items: center;
@@ -107,6 +45,13 @@ body.show {
     background: rgba(15, 23, 42, 0.7);
     backdrop-filter: blur(10px);
     z-index: 1000;
+    /* Nav drops down on load */
+    animation: navDrop 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes navDrop {
+    from { transform: translateY(-100%); }
+    to { transform: translateY(0); }
 }
 
 .head-nav {
@@ -121,7 +66,7 @@ body.show {
     letter-spacing: 5px;
 }
 
-/* Centered Menu (Desktop) */
+/* --- CENTERED MENU (DESKTOP) --- */
 .nav-links {
     display: flex;
     gap: 25px;
@@ -149,15 +94,10 @@ body.show {
     transition: 0.3s;
 }
 
-.nav-links a:hover::after {
-    width: 100%;
-}
+.nav-links a:hover::after { width: 100%; }
+.nav-links a:hover { color: #22c55e; }
 
-.nav-links a:hover {
-    color: #22c55e;
-}
-
-/* Navigation Button */
+/* --- BUTTONS --- */
 .btn-nav {
     padding: 8px 18px;
     border: 2px solid green;
@@ -191,9 +131,7 @@ body.show {
     margin: 4px;
 }
 
-/* =========================================
-   3. HERO / ABOUT SECTION
-   ========================================= */
+/* --- HERO SECTION --- */
 .about {
     height: 80vh;
     display: flex;
@@ -208,29 +146,34 @@ body.show {
     font-size: 40px;
     border-right: 3px solid white;
     padding-right: 5px;
-    animation: blink 0.7s infinite;
+    animation: blink 0.7s infinite, glitchText 1s ease-out forwards;
+    animation-delay: 0s, 0.4s;
 }
 
-@keyframes blink { 
-    50% { border-color: transparent; } 
+@keyframes glitchText {
+    0% { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
 }
+
+@keyframes blink { 50% { border-color: transparent; } }
 
 .sub-text {
     margin-top: 10px;
     color: #a7f3d0;
+    opacity: 0;
+    animation: fadeIn 1s ease forwards;
+    animation-delay: 1s;
 }
 
-/* =========================================
-   4. FACULTIES SECTION
-   ========================================= */
+@keyframes fadeIn { to { opacity: 1; } }
+
+/* --- FACULTIES --- */
 .faculties {
     padding: 60px 20px;
     text-align: center;
 }
 
-.title { 
-    font-size: 30px; 
-}
+.title { font-size: 30px; }
 
 .container-faculties {
     display: flex;
@@ -255,9 +198,7 @@ body.show {
 
 .card p { color: #a7f3d0; }
 
-/* =========================================
-   5. STUDENTS SECTION
-   ========================================= */
+/* --- STUDENTS SECTION --- */
 .students {
     padding: 60px 20px;
     text-align: center;
@@ -285,7 +226,7 @@ body.show {
     width: 180px;
     padding: 18px;
     border-radius: 12px;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255,255,255,0.05);
     backdrop-filter: blur(12px);
     transition: 0.4s ease;
     opacity: 0;
@@ -305,21 +246,32 @@ body.show {
 .student-card h3 { font-size: 16px; }
 .student-card p { font-size: 13px; color: #a7f3d0; }
 
-/* =========================================
-   6. FOOTER
-   ========================================= */
+/* --- FOOTER --- */
 .footer {
     text-align: center;
     padding: 20px;
     background: #020617;
 }
 
-/* =========================================
-   7. MOBILE RESPONSIVENESS (Original + Fix)
-   ========================================= */
-@media (max-width: 900px) {
+/* --- EVENT PAGE SPECIFIC --- */
+.event-hero {
+    width: 100%;
+    height: 550px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 25px;
+}
+
+.gallery-img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* --- MOBILE OPTIMIZATION --- */
+@media(max-width:900px){
     .nav { padding: 15px 20px; }
-    
     .nav-links {
         position: absolute;
         top: 100%;
@@ -333,32 +285,14 @@ body.show {
         border-bottom-left-radius: 12px;
         box-shadow: -5px 10px 15px rgba(0,0,0,0.5);
     }
-
-    .nav-links.active { 
-        transform: translateX(0); 
-    }
-
-    .hamburger { 
-        display: flex; 
-        margin-left: auto; 
-    }
-
+    .nav-links.active { transform: translateX(0); }
+    .hamburger { display: flex; margin-left: auto; }
     .desktop-only { display: none; }
     .mobile-only { display: block; margin-top: 10px; }
     .mobile-only button { width: 100%; }
-    
-    .typing { 
-        font-size: 26px; 
-    }
+    .typing { font-size: 26px; }
 
-    /* 🔥 TARGET: Increase height of images/video on phone */
-    .event-hero {
-        height: 480px !important; /* Larger for mobile view */
-        object-fit: cover;
-    }
-
-    .gallery-img {
-        height: 250px !important; /* Larger for mobile gallery */
-        object-fit: cover;
-    }
+    /* Increase image height for phone as requested */
+    .event-hero { height: 480px !important; }
+    .gallery-img { height: 260px !important; }
 }
