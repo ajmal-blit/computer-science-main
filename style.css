@@ -93,8 +93,8 @@ body.show {
 /* 💚 BUTTON */
 .btn-nav{
     padding:8px 18px;
-    border:2px solid #22c55e;
-    background:transparent;
+    border:2px solid green;
+    background:green;
     color:white;
     border-radius:6px;
     cursor:pointer;
