@@ -81,13 +81,14 @@ document.addEventListener("DOMContentLoaded", () => {
         typeEffect();
     }
 
-    // 2. 📱 MOBILE NAVIGATION (HAMBURGER)
+    // 📱 MOBILE NAVIGATION (SLIDING ANIMATION)
     const ham = document.querySelector(".hamburger");
     const nav = document.querySelector(".nav-links");
-
+    
     if (ham && nav) {
         ham.addEventListener("click", () => {
-            nav.classList.toggle("active");
+            nav.classList.toggle("active"); // Opens the menu
+            ham.classList.toggle("is-active"); // Animates the lines
         });
     }
 
