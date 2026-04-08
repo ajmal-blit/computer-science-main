@@ -2,6 +2,13 @@
  * CS DEPARTMENT - CORE UI & SESSION LOGIC
  * Includes: Typing Effect, Animations, Popup Logic, and Access Control
  */
+
+window.onload = () => {
+    // Small delay ensures the browser is ready to animate
+    setTimeout(() => {
+        document.body.classList.add("show");
+    }, 50);
+};
     document.addEventListener("DOMContentLoaded", () => {
 
         // Add this function inside your DOMContentLoaded or right below it
