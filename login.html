@@ -3,76 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Login | Computer Science</title>
+    <title>Academic Resources | Computer Science</title>
     
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Outfit:wght@300;600;800&display=swap" rel="stylesheet">
+    <!-- Modern Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     
-    <link rel="stylesheet" href="login.css">
-    
-    <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-database-compat.js"></script>
-    
-    <!-- Three.js and GSAP Libraries -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    
+    <script>
+        if (localStorage.getItem("isLoggedIn") !== "true") {
+            window.location.replace("login.html");
+        }
+    </script>
 </head>
-<body>
+<body class="show">
 
-    <!-- 3D Canvas Background (shares from our animations.js logic) -->
+    <!-- 3D CANVAS BACKGROUND -->
     <canvas id="bg-canvas"></canvas>
 
-    <div class="login-container">
-        <!-- GSAP uses login-card to fade up -->
-        <div class="login-card" style="opacity: 0">
-            <div class="login-header">
-                <h2>Student Login</h2>
-                <p>Welcome back. Authenticate to proceed.</p>
-            </div>
+    <nav class="nav">
+        <div class="head-nav">
+            Computer <span>Science</span>
+        </div>
+    </nav>
 
-            <div id="errorMessage" class="error-message">Invalid credentials. Please try again.</div>
+    <div class="scroll-container">
+        <div class="container">
 
-            <form id="loginForm">
-                <div class="input-group" style="opacity: 0">
-                    <label for="regInput">Registration Number</label>
-                    <input type="text" id="regInput" placeholder="e.g. GVAZSCS001" required autocomplete="username">
-                </div>
-                
-                <div class="input-group" style="opacity: 0">
-                    <label for="passInput">Password</label>
-                    <input type="password" id="passInput" placeholder="••••••••" required autocomplete="current-password">
-                </div>
+        <a href="index.html" class="back-link">← Go to Home</a>
 
-                <button type="submit" class="btn-submit" id="submitBtn" style="opacity: 0">Sign In</button>
-            </form>
+        <h1 style="
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(2rem, 5vw, 4.5rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            text-align: center;
+            margin: 1.5rem 0 2.5rem;
+            line-height: 1.1;
+        ">Academic <span style="color: var(--accent-color);">Resources</span></h1>
+
+        <div class="resource-section" style="background: rgba(34, 197, 94, 0.05); border-color: rgba(34, 197, 94, 0.2);">
+            <h2 style="color: #22c55e;">Interactive Labs</h2>
+            <ul class="resource-list">
+                <li class="resource-item">
+                    <span><strong>C Programming Lab</strong> (5 Important Programs With Output)</span>
+                    <a href="c-programs.html" class="btn-download" style="background: #eab308; color: #020617;">View Code</a>
+                </li>
+            </ul>
+        </div>
+
+    <div class="resource-section">
+        <h2>Syllabus</h2>
+        <ul class="resource-list">
+            <li class="resource-item">
+                <span>C Programming Syllabus</span>
+                <a href="pdfs/c-syllabus.pdf" class="btn-download" download>Download</a>
+            </li>
+
+            <li class="resource-item">
+                <span>Minor 3 Syllabus</span>
+                <a href="pdfs/minor-1.pdf" class="btn-download" download>Download</a>
+            </li>
+        </ul>
+    </div>
+
+        <div class="resource-section">
+            <h2>Major Materials</h2>
+            <ul class="resource-list">
+                <li class="resource-item">
+                    <span>C Programming Notes - PDF</span>
+                    <a href="pdfs/c-programming-notes.pdf" class="btn-download" download>Download</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="resource-section">
+            <h2>Minor 3 Materials</h2>
+            <ul class="resource-list">
+                <li class="resource-item">
+                    <span>Minor Paper 1</span>
+                    <a href="pdfs/graph-theory.pdf" class="btn-download" download>Download</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="resource-section">
+            <h2>Minor 4 Materials</h2>
+            <ul class="resource-list">
+                <li class="resource-item">
+                    <span>Minor Paper 2</span>
+                    <a href="pdfs/probability.pdf" class="btn-download" download>Download</a>
+                </li>
+            </ul>
         </div>
     </div>
 
-    <!-- Reusing the 3D animation abstract keys -->
-    <script src="animations.js"></script>
-    <script src="login.js"></script>
+    <footer class="footer">
+        <p>© 2026 Computer Science Department</p>
+    </footer>
     
-    <!-- GSAP Load Animations specifically for the Login prompt -->
-    <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const tl = gsap.timeline();
-        
-        tl.fromTo(".login-card", 
-            { y: 50, opacity: 0 },
-            { y: 0, opacity: 1, duration: 1, ease: "power3.out" }
-        )
-        .fromTo(".input-group", 
-            { y: 20, opacity: 0 },
-            { y: 0, opacity: 1, duration: 0.6, stagger: 0.1, ease: "power2.out" },
-            "-=0.5"
-        )
-        .fromTo(".btn-submit", 
-            { y: 20, opacity: 0 },
-            { y: 0, opacity: 1, duration: 0.6, ease: "power2.out" },
-            "-=0.4"
-        );
-    });
-    </script>
+    <!-- Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <script src="animations.js"></script>
 </body>
 </html>
