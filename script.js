@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 3. ⌨️ TYPING EFFECT
     const typingContainer = document.querySelector(".typing");
-    let welcomeText = "Welcome to<br><span style='color: var(--accent-color)'>Computer Science.</span>";
+    let welcomeText = "Welcome to<br><span style='color: var(--accent-color)'>Computer Science</span>";
     let i = 0;
 
     function typeEffect() {
