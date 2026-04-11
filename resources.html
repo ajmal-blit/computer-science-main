@@ -1,143 +1,111 @@
-/**
- * CS DEPARTMENT - CORE UI & SESSION LOGIC
- * Optimized for Smooth Opening and Mobile Navigation
- */
-
-// 1. 🛡️ GATEKEEPER FUNCTION (Defined globally so HTML can access it)
-function checkAccess(page) {
-    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-
-    if (isLoggedIn) {
-        window.location.href = page;
-    } else {
-        alert("Please Login to access the " + page.split('.')[0] + "! 🔒");
-        window.location.href = "login.html";
-    }
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    // 2. ✨ SESSION & AUTH UI LOGIC
-    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-    const userName = localStorage.getItem("loggedUserName");
-    const authButtons = document.querySelectorAll(".logout-btn");
-    const welcomeMessage = document.getElementById("welcomeMessage");
-
-    if (isLoggedIn && userName) {
-        if (welcomeMessage) welcomeMessage.innerText = "Welcome Back, " + userName + "!";
-        authButtons.forEach(button => {
-            button.innerText = "Log Out";
-            button.style.background = "#ef4444"; // Red for Logout
-            button.onclick = () => {
-                localStorage.clear();
-                window.location.reload();
-            };
-        });
-    } else {
-        if (welcomeMessage) welcomeMessage.innerText = "Welcome to CS Department";
-        authButtons.forEach(button => {
-            button.innerText = "Log In";
-            button.style.background = "#22c55e"; // Green for Login
-            button.onclick = () => { window.location.href = "login.html"; };
-        });
-    }
-
-    // 3. ⌨️ TYPING EFFECT
-    const typingContainer = document.querySelector(".typing");
-    let welcomeText = "Welcome to<br><span style='color: var(--accent-color)'>Computer Science</span>";
-    let i = 0;
-
-    function typeEffect() {
-        if (typingContainer && i < welcomeText.length) {
-            // Check for HTML tags to inject instantly without breaking markup
-            if (welcomeText.charAt(i) === '<') {
-                let tag = "";
-                while (welcomeText.charAt(i) !== '>' && i < welcomeText.length) {
-                    tag += welcomeText.charAt(i);
-                    i++;
-                }
-                tag += '>';
-                typingContainer.innerHTML += tag;
-                i++; // Move to next char after '>'
-            } else {
-                typingContainer.innerHTML += welcomeText.charAt(i);
-                i++;
-            }
-            setTimeout(typeEffect, 100); // Slightly faster for a smoother feel
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Resources | Computer Science</title>
+    
+    <!-- Modern Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    
+    <script>
+        if (localStorage.getItem("isLoggedIn") !== "true") {
+            window.location.replace("login.html");
         }
-    }
-    if (typingContainer) typeEffect();
+    </script>
+</head>
+<body class="show">
 
-    // 4. 📱 MOBILE NAVIGATION (SLIDING ANIMATION)
-    const ham = document.querySelector(".hamburger");
-    const nav = document.querySelector(".nav-links");
+    <!-- 3D CANVAS BACKGROUND -->
+    <canvas id="bg-canvas"></canvas>
 
-    if (ham && nav) {
-        ham.addEventListener("click", () => {
-            nav.classList.toggle("active");
-            ham.classList.toggle("is-active");
-        });
-    }
+    <nav class="nav">
+        <div class="head-nav">
+            Computer <span>Science</span>
+        </div>
+    </nav>
 
-    // 5. 🎬 SCROLL REVEAL ANIMATIONS (Intersection Observer)
-    const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add("show");
-            }
-        });
-    }, { threshold: 0.1 });
+    <div class="scroll-container">
+        <div class="container">
 
-    document.querySelectorAll(".card, .about, .faculties, .students, .title").forEach(el => {
-        observer.observe(el);
-    });
+        <a href="index.html" class="back-link">← Go to Home</a>
 
-    // 6. 🎓 STUDENT CARD STAGGERED REVEAL
-    const studentCards = document.querySelectorAll(".student-card");
-    const studentsSection = document.querySelector(".students");
+        <h1 style="
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(2rem, 5vw, 4.5rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            text-align: center;
+            margin: 1.5rem 0 2.5rem;
+            line-height: 1.1;
+        ">Academic <span style="color: var(--accent-color);">Resources</span></h1>
 
-    if (studentsSection && studentCards.length > 0) {
-        const studentObserver = new IntersectionObserver(entries => {
-            if (entries[0].isIntersecting) {
-                studentCards.forEach((card, index) => {
-                    setTimeout(() => {
-                        card.classList.add("show");
-                    }, index * 50);
-                });
-            }
-        }, { threshold: 0.1 });
-        studentObserver.observe(studentsSection);
-    }
+        <div class="resource-section" style="background: rgba(34, 197, 94, 0.05); border-color: rgba(34, 197, 94, 0.2);">
+            <h2 style="color: #22c55e;">Interactive Labs</h2>
+            <ul class="resource-list">
+                <li class="resource-item">
+                    <span><strong>C Programming Lab</strong> (5 Important Programs With Output)</span>
+                    <a href="c-programs.html" class="btn-download" style="background: #eab308; color: #020617;">View Code</a>
+                </li>
+            </ul>
+        </div>
 
-    // 7. 🎯 STUDENT PROFILE POPUP LOGIC
-    const popup = document.getElementById("popup");
-    const popupName = document.getElementById("popup-name");
-    const popupReg = document.getElementById("popup-reg");
-    const closeBtn = document.querySelector(".close-btn");
+    <div class="resource-section">
+        <h2>Syllabus</h2>
+        <ul class="resource-list">
+            <li class="resource-item">
+                <span>C Programming Syllabus</span>
+                <a href="pdfs/c-syllabus.pdf" class="btn-download" download>Download</a>
+            </li>
 
-    document.querySelectorAll(".student-card").forEach(card => {
-        card.addEventListener("click", () => {
-            const name = card.querySelector("h3").innerText;
-            const reg = card.querySelector("p").innerText;
+            <li class="resource-item">
+                <span>Minor 3 Syllabus</span>
+                <a href="pdfs/minor-1.pdf" class="btn-download" download>Download</a>
+            </li>
+        </ul>
+    </div>
 
-            if (popup && popupName && popupReg) {
-                popupName.innerText = name;
-                popupReg.innerText = reg;
-                popup.classList.add("active");
-            }
-        });
-    });
+        <div class="resource-section">
+            <h2>Major Materials</h2>
+            <ul class="resource-list">
+                <li class="resource-item">
+                    <span>C Programming Notes - PDF</span>
+                    <a href="pdfs/c-programming-notes.pdf" class="btn-download" download>Download</a>
+                </li>
+            </ul>
+        </div>
 
-    if (closeBtn) closeBtn.addEventListener("click", () => popup.classList.remove("active"));
-    if (popup) {
-        popup.addEventListener("click", (e) => {
-            if (e.target === popup) popup.classList.remove("active");
-        });
-    }
+        <div class="resource-section">
+            <h2>Minor 3 Materials</h2>
+            <ul class="resource-list">
+                <li class="resource-item">
+                    <span>Minor Paper 1</span>
+                    <a href="pdfs/graph-theory.pdf" class="btn-download" download>Download</a>
+                </li>
+            </ul>
+        </div>
 
-    // 8. 🚪 FORCE SHOW (Fix for Blank Screen)
-    setTimeout(() => {
-        document.body.style.opacity = "1";
-        document.body.classList.add("show");
-    }, 50);
-});
+        <div class="resource-section">
+            <h2>Minor 4 Materials</h2>
+            <ul class="resource-list">
+                <li class="resource-item">
+                    <span>Minor Paper 2</span>
+                    <a href="pdfs/probability.pdf" class="btn-download" download>Download</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>© 2026 Computer Science Department</p>
+    </footer>
+    
+    <!-- Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <script src="animations.js"></script>
+</body>
+</html>
