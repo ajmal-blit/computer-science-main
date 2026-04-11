@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- THREE.JS SETUP ---
     const scene = new THREE.Scene();
-    
+
     // Add subtle fog to blend into background
     scene.fog = new THREE.FogExp2(0x050505, 0.02);
 
@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    
+
     // --- LIGHTING ---
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
     scene.add(ambientLight);
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const cols = 15;
     const keySize = 1.2;
     const gap = 0.2;
-    
+
     // Dark sleek material for keys
     const material = new THREE.MeshStandardMaterial({
         color: 0x111111,
@@ -51,10 +51,10 @@ document.addEventListener("DOMContentLoaded", () => {
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
             // Give some randomness inside the grid for a tech vibe
-            if (Math.random() > 0.9) continue; 
+            if (Math.random() > 0.9) continue;
 
             const key = new THREE.Mesh(geometry, material.clone());
-            
+
             // Randomly assign emissive color to select keys
             if (Math.random() > 0.95) {
                 key.material.emissive = new THREE.Color(0xff4500);
@@ -69,14 +69,14 @@ document.addEventListener("DOMContentLoaded", () => {
             const y = 0;
 
             key.position.set(x, y, z);
-            
+
             // Save initial position for restoring later
-            key.userData = { 
+            key.userData = {
                 originalPos: { x, y, z },
-                randomOffset: { 
-                    x: (Math.random() - 0.5) * 20, 
-                    y: Math.random() * 20, 
-                    z: (Math.random() - 0.5) * 20 
+                randomOffset: {
+                    x: (Math.random() - 0.5) * 20,
+                    y: Math.random() * 20,
+                    z: (Math.random() - 0.5) * 20
                 },
                 randomRotation: {
                     x: Math.random() * Math.PI * 2,
@@ -96,12 +96,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- ANIMATION LOOP ---
     const clock = new THREE.Clock();
-    
+
     function animate() {
         requestAnimationFrame(animate);
-        
+
         const time = clock.getElapsedTime();
-        
+
         // Add subtle floating effect to entire group
         keysGroup.position.y = Math.sin(time * 0.5) * 0.5;
 
@@ -110,10 +110,10 @@ document.addEventListener("DOMContentLoaded", () => {
     animate();
 
     // --- GSAP SCROLL ANIMATIONS ---
-    
+
     // We animate the keys directly based on scroll
     // As we scroll down, the keyboard rotates up and explodes apart slightly
-    
+
     const tl = gsap.timeline({
         scrollTrigger: {
             trigger: document.querySelector(".scroll-container") || document.body,
@@ -145,7 +145,7 @@ document.addEventListener("DOMContentLoaded", () => {
             z: key.userData.originalPos.z + key.userData.randomOffset.z * 0.5,
             ease: "power1.inOut"
         }, 0);
-        
+
         tl.to(key.rotation, {
             x: key.userData.randomRotation.x,
             y: key.userData.randomRotation.y,
@@ -161,7 +161,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (title) {
             // Un-bind from strict CSS transition
             title.style.transition = 'none';
-            gsap.fromTo(title, 
+            gsap.fromTo(title,
                 { x: -100, opacity: 0, scale: 0.8 },
                 {
                     x: 0, opacity: 1, scale: 1,
@@ -195,14 +195,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- 3D TILT EFFECT ON CARDS ---
     const allCards = document.querySelectorAll('.card, .student-card');
-    
+
     allCards.forEach(card => {
         gsap.set(card, { transformPerspective: 1000 });
 
         card.addEventListener('mouseenter', () => {
             // Strip CSS transition so GSAP can take over transform instantly without lag
             card.style.transition = 'box-shadow 0.4s ease, border-color 0.4s ease, background 0.4s ease';
-            
+
             gsap.to(card, {
                 y: -12,
                 scale: 1.03,
@@ -214,14 +214,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
         card.addEventListener('mousemove', (e) => {
             const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left; 
-            const y = e.clientY - rect.top;  
-            
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
 
             // Tilt limit config (degrees)
-            const rotateX = ((y - centerY) / centerY) * -15; 
+            const rotateX = ((y - centerY) / centerY) * -15;
             const rotateY = ((x - centerX) / centerX) * 15;
 
             gsap.to(card, {
@@ -257,3 +257,4 @@ document.addEventListener("DOMContentLoaded", () => {
         renderer.setSize(window.innerWidth, window.innerHeight);
     });
 });
+
