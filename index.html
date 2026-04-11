@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computer Science | Grace Valley</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Outfit:wght@300;600;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Three.js and GSAP Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+</head>
+
+<body>
+
+    <!-- 3D Canvas Background -->
+    <canvas id="bg-canvas"></canvas>
+
+    <nav class="nav">
+        <div class="head-nav">
+            Computer <br><span>Science</span>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#" onclick="checkAccess('resources.html')">Resources</a></li>
+            <li><a href="#" onclick="checkAccess('insights.html')">Insights</a></li>
+            <li><a href="#" onclick="checkAccess('events.html')">Events</a></li>
+            <li><a href="#" onclick="checkAccess('dashboard.html')">Dashboard</a></li>
+            <li><a href="https://beta.gracevalleycollege.ac.in/">Forums</a></li>
+            <li class="mobile-only">
+                <button class="btn-nav logout-btn">Login</button>
+            </li>
+        </ul>
+
+        <button class="btn-nav logout-btn desktop-only">Login</button>
+
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <main class="scroll-container">
+        <section class="about hero-section">
+            <div class="hero-content">
+                <h2 id="welcomeMessage"></h2>
+                <h1 class="typing"></h1>
+                <p class="sub-text">Where Technology Meets Innovation.<br />Experience the Next Generation of Learning.
+                </p>
+            </div>
+        </section>
+
+        <!-- spacer for 3d model scroll effect -->
+        <section class="spacer"></section>
+
+        <section class="faculties panel">
+            <h2 class="title">Our Faculties</h2>
+            <div class="container-faculties">
+                <div class="card">
+                    <h3>Seetha Miss</h3>
+                    <p>Head of Department</p>
+                </div>
+                <div class="card">
+                    <h3>Rekha Miss</h3>
+                    <p>Tutor And Major Handler</p>
+                </div>
+                <div class="card">
+                    <h3>Ramya Miss</h3>
+                    <p>Minor 3 Handler</p>
+                </div>
+                <div class="card">
+                    <h3>Ramshi Miss</h3>
+                    <p>Minor 4 Handler</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="students panel">
+            <h2 class="title">Our Students</h2>
+            <div class="container-students">
+                <div class="student-card">
+                    <h3>Abdul Rashid M</h3>
+                    <p>Reg No : GVAZSCS001</p>
+                </div>
+                <div class="student-card">
+                    <h3>Ajmal NT</h3>
+                    <p>Reg No : GVAZSCS002</p>
+                </div>
+                <div class="student-card">
+                    <h3>Anshif Hyder</h3>
+                    <p>Reg No : GVAZSCS003</p>
+                </div>
+                <div class="student-card">
+                    <h3>Fathima Hannin MP</h3>
+                    <p>Reg No : GVAZSCS004</p>
+                </div>
+                <div class="student-card">
+                    <h3>Fathima Hanna</h3>
+                    <p>Reg No : GVAZSCS005</p>
+                </div>
+                <div class="student-card">
+                    <h3>Fathima Huda PC</h3>
+                    <p>Reg No : GVAZSCS006</p>
+                </div>
+                <div class="student-card">
+                    <h3>Jasfal C</h3>
+                    <p>Reg No : GVAZSCS007</p>
+                </div>
+                <div class="student-card">
+                    <h3>Jumana Jebin M</h3>
+                    <p>Reg No : GVAZSCS008</p>
+                </div>
+                <div class="student-card">
+                    <h3>Mohammed Fadil</h3>
+                    <p>Reg No : GVAZSCS009</p>
+                </div>
+                <div class="student-card">
+                    <h3>Mohammed Shaheer</h3>
+                    <p>Reg No : GVAZSCS010</p>
+                </div>
+                <div class="student-card">
+                    <h3>Mohammed Sinan CK</h3>
+                    <p>Reg No : GVAZSCS011</p>
+                </div>
+                <div class="student-card">
+                    <h3>Muhammed Shamil K</h3>
+                    <p>Reg No : GVAZSCS012</p>
+                </div>
+                <div class="student-card">
+                    <h3>Muhammed Aflah A</h3>
+                    <p>Reg No : GVAZSCS013</p>
+                </div>
+                <div class="student-card">
+                    <h3>Muhammed Bazilsha</h3>
+                    <p>Reg No : GVAZSCS014</p>
+                </div>
+                <div class="student-card">
+                    <h3>Muhammed Razique</h3>
+                    <p>Reg No : GVAZSCS015</p>
+                </div>
+                <div class="student-card">
+                    <h3>Muhammed Sinan NK</h3>
+                    <p>Reg No : GVAZSCS016</p>
+                </div>
+                <div class="student-card">
+                    <h3>Munshifa P</h3>
+                    <p>Reg No : GVAZSCS017</p>
+                </div>
+                <div class="student-card">
+                    <h3>Safna Sheri AT</h3>
+                    <p>Reg No : GVAZSCS018</p>
+                </div>
+                <div class="student-card">
+                    <h3>Shamnad PK</h3>
+                    <p>Reg No : GVAZSCS019</p>
+                </div>
+                <div class="student-card">
+                    <h3>Shelshal Jubin</h3>
+                    <p>Reg No : GVAZSCS020</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Popup Container (hidden by default) -->
+    <div id="popup" class="popup-modal">
+        <div class="popup-content">
+            <span class="close-btn">&times;</span>
+            <h3 id="popup-name"></h3>
+            <p id="popup-reg"></p>
+            <div class="popup-decor"></div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <h2>CS | DEPARTMENT</h2>
+            <p>© 2026 Computer Science Department</p>
+            <p class="sub-text">Established By Students Of Computer Science 2025 - 2029 Batch</p>
+        </div>
+    </footer>
+
+    <script src="animations.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

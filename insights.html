@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Insights</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- Modern Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* Mobile overrides kept local */
+        @media(max-width:768px){
+            table,thead,tbody,th,td,tr { display:block; width:100%; }
+            thead { display:none; }
+            tr { margin-bottom:18px; padding:18px; }
+            td { display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.08); padding: 12px 0; }
+            td:last-child { border:none; }
+            td::before { content:attr(data-label); font-weight:600; color:#888; }
+        }
+        
+        /* 🔒 Lock background scrolling when modal is open */
+        body.modal-open { overflow: hidden; }
+    </style>
+</head>
+<body class="show">
+
+<!-- 3D CANVAS BACKGROUND -->
+<canvas id="bg-canvas"></canvas>
+
+<nav class="nav">
+    <div class="head-nav">
+        Computer <span>Science</span>
+    </div>
+</nav>
+
+<div class="scroll-container">
+<div class="container" style="position: relative; z-index: 2;">
+    <a href="index.html" class="back-link">← Go to Home</a>
+    <h1 id="typing" class="typing" style="text-align: center;"></h1>
+
+    <div class="stats">
+        <div class="stat-card">
+            <h2 id="total-students">0</h2>
+            <p>Total Students</p>
+        </div>
+        <div class="stat-card">
+            <h2 id="average-sgpa">0.000</h2>
+            <p>Average SGPA -- FIRST SEMESTER</p>
+        </div>
+        <div class="stat-card">
+            <h2 id="top-sgpa">0.000</h2>
+            <p>Top SGPA -- FIRST SEMESTER</p>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Position</th>
+                <th>Name</th>
+                <th>Reg</th>
+                <th>SGPA</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr onclick="openProfile(1,'Ajmal Nt','GVAZSCS002','9.286')">
+                <td data-label="Position">1</td><td data-label="Name">Ajmal NT</td><td data-label="Reg">GVAZSCS002</td><td data-label="SGPA">9.286</td>
+            </tr>
+            <tr onclick="openProfile(2,'Munshifa P','GVAZSCS017','8.857')">
+                <td data-label="Position">2</td><td data-label="Name">Munshifa P</td><td data-label="Reg">GVAZSCS017</td><td data-label="SGPA">8.857</td>
+            </tr>
+            <tr onclick="openProfile(3,'Fathima Huda Pc','GVAZSCS006','8.667')">
+                <td data-label="Position">3</td><td data-label="Name">Fathima Huda PC</td><td data-label="Reg">GVAZSCS006</td><td data-label="SGPA">8.667</td>
+            </tr>
+            <tr onclick="openProfile(4,'Fathima Hannin Mp','GVAZSCS004','8.333')">
+                <td data-label="Position">4</td><td data-label="Name">Fathima Hannin MP</td><td data-label="Reg">GVAZSCS004</td><td data-label="SGPA">8.333</td>
+            </tr>
+            <tr onclick="openProfile(5,'Jumana Jebin M','GVAZSCS008','8.238')">
+                <td data-label="Position">5</td><td data-label="Name">Jumana Jebin M</td><td data-label="Reg">GVAZSCS008</td><td data-label="SGPA">8.238</td>
+            </tr>
+            <tr onclick="openProfile(6,'Fathima Hanna','GVAZSCS005','7.333')">
+                <td data-label="Position">6</td><td data-label="Name">Fathima Hanna</td><td data-label="Reg">GVAZSCS005</td><td data-label="SGPA">7.333</td>
+            </tr>
+            <tr onclick="openProfile(7,'Safna Sheri At','GVAZSCS018','7.333')">
+                <td data-label="Position">7</td><td data-label="Name">Safna Sheri AT</td><td data-label="Reg">GVAZSCS018</td><td data-label="SGPA">7.333</td>
+            </tr>
+            <tr onclick="openProfile(8,'Shelshal Jubin Kc','GVAZSCS020','7.190')">
+                <td data-label="Position">8</td><td data-label="Name">Shelshal Jubin KC</td><td data-label="Reg">GVAZSCS020</td><td data-label="SGPA">7.190</td>
+            </tr>
+            <tr onclick="openProfile(9,'Muhammed Aflah A','GVAZSCS013','6.857')">
+                <td data-label="Position">9</td><td data-label="Name">Muhammed Aflah A</td><td data-label="Reg">GVAZSCS013</td><td data-label="SGPA">6.857</td>
+            </tr>
+            <tr onclick="openProfile(10,'Jasfal C','GVAZSCS007','5.810')">
+                <td data-label="Position">10</td><td data-label="Name">Jasfal C</td><td data-label="Reg">GVAZSCS007</td><td data-label="SGPA">5.810</td>
+            </tr>
+            <tr onclick="openProfile(11,'Muhammed Razique Pk','GVAZSCS015','5.762')">
+                <td data-label="Position">11</td><td data-label="Name">Muhammed Razique PK</td><td data-label="Reg">GVAZSCS015</td><td data-label="SGPA">5.762</td>
+            </tr>
+            <tr onclick="openProfile(12,'Mohammed Shaheer','GVAZSCS010','5.333')">
+                <td data-label="Position">12</td><td data-label="Name">Mohammed Shaheer</td><td data-label="Reg">GVAZSCS010</td><td data-label="SGPA">5.333</td>
+            </tr>
+            <tr onclick="openProfile(13,'Abdul Rashid M','GVAZSCS001','0.000')">
+                <td data-label="Position">13</td><td data-label="Name">Abdul Rashid M</td><td data-label="Reg">GVAZSCS001</td><td data-label="SGPA">0.000</td>
+            </tr>
+            <tr onclick="openProfile(14,'Anshif Hyder','GVAZSCS003','0.000')">
+                <td data-label="Position">14</td><td data-label="Name">Anshif Hyder</td><td data-label="Reg">GVAZSCS003</td><td data-label="SGPA">0.000</td>
+            </tr>
+            <tr onclick="openProfile(15,'Mohammed Fadil','GVAZSCS009','0.000')">
+                <td data-label="Position">15</td><td data-label="Name">Mohammed Fadil</td><td data-label="Reg">GVAZSCS009</td><td data-label="SGPA">0.000</td>
+            </tr>
+            <tr onclick="openProfile(16,'Mohammed Sinan','GVAZSCS011','0.000')">
+                <td data-label="Position">16</td><td data-label="Name">Mohammed Sinan CK</td><td data-label="Reg">GVAZSCS011</td><td data-label="SGPA">0.000</td>
+            </tr>
+            <tr onclick="openProfile(17,'Muhammed Shamil K','GVAZSCS012','0.000')">
+                <td data-label="Position">17</td><td data-label="Name">Muhammed Shamil K</td><td data-label="Reg">GVAZSCS012</td><td data-label="SGPA">0.000</td>
+            </tr>
+            <tr onclick="openProfile(18,'Bazil Sha','GVAZSCS014','0.000')">
+                <td data-label="Position">18</td><td data-label="Name">Muhammed BazilSha T</td><td data-label="Reg">GVAZSCS014</td><td data-label="SGPA">0.000</td>
+            </tr>
+            <tr onclick="openProfile(19,'Muhammed Sinan Nk','GVAZSCS016','0.000')">
+                <td data-label="Position">19</td><td data-label="Name">Muhammed Sinan NK</td><td data-label="Reg">GVAZSCS016</td><td data-label="SGPA">0.000</td>
+            </tr>
+            <tr onclick="openProfile(20,'Shamnad','GVAZSCS019','0.000')">
+                <td data-label="Position">20</td><td data-label="Name">Shamnad PK</td><td data-label="Reg">GVAZSCS019</td><td data-label="SGPA">0.000</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</div>
+
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">✖</span>
+        <div class="profile">
+            <h2 id="pName">Name</h2>
+            <p><b>Position:</b> <span id="pPosition"></span></p>
+            <p><b>Reg No:</b> <span id="pReg"></span></p>
+            <p><b>SGPA:</b> <span id="pSgpa"></span></p>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    /* TYPING ANIMATION (Matched from index.html) */
+    const htmlString = "FIRST SEMESTER <br><span>SGPA.</span>";
+    let i = 0;
+    function typeEffect() {
+        const typingEl = document.getElementById("typing");
+        if (i < htmlString.length) {
+            let char = htmlString.charAt(i);
+
+            // If an HTML tag starts...
+            if (char === "<") {
+                let tag = "";
+                while (htmlString.charAt(i) !== ">" && i < htmlString.length) {
+                    tag += htmlString.charAt(i);
+                    i++;
+                }
+                tag += ">";
+                typingEl.innerHTML += tag;
+            } else {
+                typingEl.innerHTML += char;
+            }
+
+            i++;
+            setTimeout(typeEffect, 100);
+        }
+    }
+ 
+    /* COUNT TILL ANIMATION */
+    function animateCount(id, endValue, duration, decimals = 0) {
+        const obj = document.getElementById(id);
+        let startTimestamp = null;
+        const step = (timestamp) => {
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            obj.innerHTML = (progress * endValue).toFixed(decimals);
+            if (progress < 1) window.requestAnimationFrame(step);
+        };
+        window.requestAnimationFrame(step);
+    }
+
+    /* 📱 UPDATED JS FUNCTIONS */
+    function openProfile(Position, name, reg, sgpa) {
+        document.getElementById("modal").classList.add("show");
+        document.body.classList.add("modal-open"); 
+        
+        document.getElementById("pName").innerText = name;
+        document.getElementById("pPosition").innerText = Position;
+        document.getElementById("pReg").innerText = reg;
+        document.getElementById("pSgpa").innerText = sgpa;
+    }
+
+    function closeModal() { 
+        document.getElementById("modal").classList.remove       ("show"); 
+        document.body.classList.remove("modal-open"); 
+    }
+
+    /* WINDOW UPDATE */
+    window.onload = () => {
+        typeEffect();
+        animateCount("total-students", 20, 2000, 0); 
+        animateCount("average-sgpa", 4.453, 3000, 3); 
+        animateCount("top-sgpa", 9.286, 3000, 3); 
+    };
+
+    window.onclick = (e) => { 
+        if(e.target.id === "modal") {
+            closeModal();
+        }
+    }
+</script>
+
+<!-- Dependencies -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="animations.js"></script>
+</body>
+</html>
