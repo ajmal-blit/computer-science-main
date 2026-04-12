@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const queryForm = document.getElementById('query-form');
     const queriesList = document.getElementById('queries-list');
 
-    // Firebase Configuration
+    // 1. Firebase Configuration
     const firebaseConfig = {
         apiKey: "AIzaSyDz7PWoH4vbObyhYXhXNqi2Cr5uwjBdwJY",
         authDomain: "cs-database-42dd0.firebaseapp.com",
@@ -13,12 +13,12 @@ document.addEventListener("DOMContentLoaded", () => {
         appId: "1:265634068059:web:4437f49f445c18d574717e"
     };
 
-    // Initialize Firebase
+    // Initialize Firebase if not already initialized
     if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
     const forumRef = database.ref('cs_department_forum_queries_global');
 
-    // Auth Info
+    // Auth Info from local storage
     const loggedUserName = localStorage.getItem("loggedUserName") || "";
     const isAdmin = localStorage.getItem("loggedUserReg") === "ADMIN";
 
@@ -28,11 +28,13 @@ document.addEventListener("DOMContentLoaded", () => {
         authorInputMain.value = loggedUserName;
     }
 
-    let queries = {};
+    // This object will hold our "Open" states so the UI doesn't collapse on every update
+    let openStates = {};
 
-    // Render Queries from Firebase Object
-    const renderQueries = () => {
-        const queryKeys = Object.keys(queries).reverse(); // Newest first (based on push keys)
+    // 2. The Core Rendering Function
+    const renderQueries = (dataSnapshot) => {
+        const queries = dataSnapshot || {};
+        const queryKeys = Object.keys(queries).reverse(); // Newest first
         
         if (queryKeys.length === 0) {
             queriesList.innerHTML = '<div class="no-queries">No queries yet. Be the first to ask!</div>';
@@ -43,6 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const query = queries[key];
             const answers = query.answers || {};
             const answerKeys = Object.keys(answers);
+            const isActive = openStates[key] ? 'active' : '';
             
             return `
                 <div class="query-card" data-id="${key}">
@@ -62,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         ${isAdmin ? `<button class="answer-btn" style="border-color: #ef4444; color: #ef4444;" onclick="deleteQuery('${key}')">Delete</button>` : ''}
                     </div>
 
-                    <div id="answers-${key}" class="answers-container">
+                    <div id="answers-${key}" class="answers-container ${isActive}">
                         ${answerKeys.map(ansKey => {
                             const ans = answers[ansKey];
                             return `
@@ -90,16 +93,19 @@ document.addEventListener("DOMContentLoaded", () => {
         }).join('');
     };
 
-    // Firebase Listener
+    // 3. REAL-TIME LISTENER
+    // This is the "Bug Fix": It listens for any change and immediately re-renders
     forumRef.on('value', (snapshot) => {
-        queries = snapshot.val() || {};
-        renderQueries();
+        const data = snapshot.val();
+        renderQueries(data);
     });
 
-    // Global handles for internal functions
+    // 4. Global UI Interaction Handles
     window.toggleAnswers = (key) => {
         const container = document.getElementById(`answers-${key}`);
         container.classList.toggle('active');
+        // Save state so it persists during a real-time refresh
+        openStates[key] = container.classList.contains('active');
     };
 
     window.showAnswerForm = (key) => {
@@ -107,6 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const form = document.getElementById(`answer-form-container-${key}`);
         container.classList.add('active');
         form.classList.add('active');
+        openStates[key] = true;
     };
 
     window.submitAnswer = (queryKey) => {
@@ -125,6 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
             timestamp: new Date().toLocaleString()
         };
 
+        // Firebase .push() triggers the 'value' listener above automatically
         forumRef.child(queryKey).child('answers').push(newAnswer);
     };
 
@@ -140,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // Handle Query Submission
+    // Handle New Query Submission
     queryForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const authorName = document.getElementById('author-name').value;
@@ -151,7 +159,6 @@ document.addEventListener("DOMContentLoaded", () => {
             role: (authorName.toLowerCase().includes('miss') || authorName.toLowerCase().includes('teacher') || authorName.toLowerCase().includes('admin')) ? 'Teacher' : 'Student',
             text: queryContent,
             timestamp: new Date().toLocaleString()
-            // answers will be pushed later
         };
 
         forumRef.push(newQuery).then(() => {
@@ -161,10 +168,4 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     });
-
-    // Visibility fallback
-    setTimeout(() => {
-        document.body.style.opacity = "1";
-        document.body.classList.add("show");
-    }, 100);
 });
