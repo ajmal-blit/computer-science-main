@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Resources | Computer Science</title>
+    
+    <!-- Modern Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    
+    <script>
+        if (localStorage.getItem("isLoggedIn") !== "true") {
+            window.location.replace("login.html");
+        }
+    </script>
+</head>
+<body class="show">
+
+    <!-- 3D CANVAS BACKGROUND -->
+    <canvas id="bg-canvas"></canvas>
+
+    <nav class="nav">
+        <div class="head-nav">
+            Computer <span>Science</span>
+        </div>
+    </nav>
+
+    <div class="scroll-container">
+        <div class="container">
+
+        <a href="index.html" class="back-link">← Go to Home</a>
+
+        <h1 style="
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(2rem, 5vw, 4.5rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            text-align: center;
+            margin: 1.5rem 0 2.5rem;
+            line-height: 1.1;
+        ">Academic <span style="color: var(--accent-color);">Resources</span></h1>
+
+        <div class="resource-section" style="background: rgba(34, 197, 94, 0.05); border-color: rgba(34, 197, 94, 0.2);">
+            <h2 style="color: #22c55e;">Interactive Labs</h2>
+            <ul class="resource-list">
+                <li class="resource-item">
+                    <span><strong>C Programming Lab</strong> (5 Important Programs With Output)</span>
+                    <a href="c-programs.html" class="btn-download" style="background: #eab308; color: #020617;">View Code</a>
+                </li>
+            </ul>
+        </div>
+
+    <div class="resource-section">
+        <h2>Syllabus</h2>
+        <ul class="resource-list">
+            <li class="resource-item">
+                <span>C Programming Syllabus</span>
+                <a href="pdfs/c-syllabus.pdf" class="btn-download" download>Download</a>
+            </li>
+
+            <li class="resource-item">
+                <span>Minor 3 Syllabus</span>
+                <a href="pdfs/minor-1.pdf" class="btn-download" download>Download</a>
+            </li>
+        </ul>
+    </div>
+
+        <div class="resource-section">
+            <h2>Major Materials</h2>
+            <ul class="resource-list">
+                <li class="resource-item">
+                    <span>C Programming Notes - PDF</span>
+                    <a href="pdfs/c-programming-notes.pdf" class="btn-download" download>Download</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="resource-section">
+            <h2>Minor 3 Materials</h2>
+            <ul class="resource-list">
+                <li class="resource-item">
+                    <span>Minor Paper 1</span>
+                    <a href="pdfs/graph-theory.pdf" class="btn-download" download>Download</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="resource-section">
+            <h2>Minor 4 Materials</h2>
+            <ul class="resource-list">
+                <li class="resource-item">
+                    <span>Minor Paper 2</span>
+                    <a href="pdfs/probability.pdf" class="btn-download" download>Download</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>© 2026 Computer Science Department</p>
+    </footer>
+    
+    <!-- Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Music Player FAB -->
+    <button id="music-fab" title="Open Music Player">
+        <div class="music-fab-pulse"></div>
+        <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" />
+        </svg>
+    </button>
+
+    <!-- Music Player Panel -->
+    <div id="music-panel" class="music-panel">
+        <div class="mp-header">
+            <span class="mp-label">NOW PLAYING</span>
+            <button id="mp-close-btn" class="mp-close">&times;</button>
+        </div>
+
+        <div id="mp-song-list" class="mp-song-list"></div>
+
+        <div class="mp-now-playing">
+            <div id="mp-disc" class="mp-disc">
+                <div class="mp-disc-inner">CS</div>
+            </div>
+            <div class="mp-info">
+                <div id="mp-song-title" class="mp-song-title">Loading...</div>
+                <div id="mp-song-artist" class="mp-song-artist">Please wait</div>
+            </div>
+        </div>
+
+        <div class="mp-progress-wrap">
+            <span id="mp-current" class="mp-time">0:00</span>
+            <input type="range" id="mp-seek" class="mp-seek" value="0" min="0" max="100">
+            <span id="mp-duration" class="mp-time">0:00</span>
+        </div>
+
+        <div class="mp-controls">
+            <button id="mp-prev" class="mp-ctrl-btn" title="Previous">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M6 6h2v12H6zm3.5 6L19 18V6z" />
+                </svg>
+            </button>
+            <button id="mp-play" class="mp-ctrl-btn mp-play-btn" title="Play/Pause">
+                <svg id="mp-play-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8 5v14l11-7z" />
+                </svg>
+            </button>
+            <button id="mp-next" class="mp-ctrl-btn" title="Next">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="mp-volume-wrap">
+            <span class="mp-vol-icon">🔈</span>
+            <input type="range" id="mp-volume" class="mp-seek" value="0.7" min="0" max="1" step="0.1">
+            <span class="mp-vol-icon">🔊</span>
+        </div>
+
+        <audio id="mp-audio" src=""></audio>
+    </div>
+
+    <script src="animations.js"></script>
+    <script src="music-player.js"></script>
+</body>
+</html>

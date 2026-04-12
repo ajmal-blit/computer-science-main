@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login | Computer Science</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Outfit:wght@300;600;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="login.css">
+    
+    <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-database-compat.js"></script>
+    
+    <!-- Three.js and GSAP Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+</head>
+<body>
+
+    <!-- 3D Canvas Background (shares from our animations.js logic) -->
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="login-container">
+        <!-- GSAP uses login-card to fade up -->
+        <div class="login-card" style="opacity: 0">
+            <div class="login-header">
+                <h2>Student Login</h2>
+                <p>Welcome back. Authenticate to proceed.</p>
+            </div>
+
+            <div id="errorMessage" class="error-message">Invalid credentials. Please try again.</div>
+
+            <form id="loginForm">
+                <div class="input-group" style="opacity: 0">
+                    <label for="regInput">Registration Number</label>
+                    <input type="text" id="regInput" placeholder="e.g. GVAZSCS001" required autocomplete="username">
+                </div>
+                
+                <div class="input-group" style="opacity: 0">
+                    <label for="passInput">Password</label>
+                    <input type="password" id="passInput" placeholder="••••••••" required autocomplete="current-password">
+                </div>
+
+                <button type="submit" class="btn-submit" id="submitBtn" style="opacity: 0">Sign In</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Reusing the 3D animation abstract keys -->
+    <script src="animations.js"></script>
+    <script src="login.js"></script>
+    
+    <!-- GSAP Load Animations specifically for the Login prompt -->
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const tl = gsap.timeline();
+        
+        tl.fromTo(".login-card", 
+            { y: 50, opacity: 0 },
+            { y: 0, opacity: 1, duration: 1, ease: "power3.out" }
+        )
+        .fromTo(".input-group", 
+            { y: 20, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.6, stagger: 0.1, ease: "power2.out" },
+            "-=0.5"
+        )
+        .fromTo(".btn-submit", 
+            { y: 20, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.6, ease: "power2.out" },
+            "-=0.4"
+        );
+    });
+    </script>
+</body>
+</html>
