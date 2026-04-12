@@ -1229,3 +1229,232 @@ tbody tr:hover {
 }
 
 
+
+/* --- FORUM PAGE STYLES --- */
+.forum-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 10rem 2rem 5rem;
+    position: relative;
+    z-index: 2;
+}
+
+.forum-header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.forum-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 800;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+}
+
+.forum-title span {
+    color: var(--accent-color);
+}
+
+.post-query-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 4rem;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    display: block;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--accent-secondary);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.forum-input, .forum-textarea {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--glass-border);
+    padding: 1rem 1.2rem;
+    border-radius: 12px;
+    color: white;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+.forum-input:focus, .forum-textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    background: rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 15px rgba(255, 69, 0, 0.2);
+}
+
+.forum-textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.submit-btn {
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 1rem 2.5rem;
+    border-radius: 30px;
+    font-weight: 800;
+    font-family: 'Outfit', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: block;
+    width: fit-content;
+    margin-left: auto;
+}
+
+.submit-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 10px 20px rgba(255, 69, 0, 0.4);
+    filter: brightness(1.1);
+}
+
+.queries-list {
+    display: grid;
+    gap: 2rem;
+}
+
+.query-card {
+    background: var(--surface-color);
+    border: 1px solid var(--glass-border);
+    border-radius: 18px;
+    padding: 2rem;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+}
+
+.query-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--accent-color);
+    opacity: 0.7;
+}
+
+.query-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.query-author {
+    color: var(--accent-secondary);
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.query-text {
+    font-size: 1.2rem;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 1.5rem;
+    color: #eee;
+}
+
+.query-actions {
+    display: flex;
+    gap: 1rem;
+    border-top: 1px solid var(--glass-border);
+    padding-top: 1.5rem;
+}
+
+.answer-btn {
+    background: transparent;
+    border: 1px solid var(--glass-border);
+    color: #eee;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.answer-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--accent-secondary);
+    color: var(--accent-secondary);
+}
+
+.answers-container {
+    margin-top: 2rem;
+    padding-left: 2rem;
+    border-left: 1px dashed var(--glass-border);
+    display: none;
+}
+
+.answers-container.active {
+    display: block;
+}
+
+.answer-item {
+    background: rgba(255, 255, 255, 0.02);
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.answer-meta {
+    font-size: 0.75rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.answer-author.teacher {
+    color: #ffd700;
+    border: 1px solid #ffd700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.65rem;
+    margin-left: 0.5rem;
+}
+
+.answer-text {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #ccc;
+}
+
+.answer-form {
+    margin-top: 1.5rem;
+    display: none;
+}
+
+.answer-form.active {
+    display: block;
+}
+
+.no-queries {
+    text-align: center;
+    padding: 4rem;
+    color: #555;
+    font-style: italic;
+}
