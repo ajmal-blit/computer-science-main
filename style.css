@@ -484,6 +484,16 @@ body.show {
 
 .footer .sub-text {
     margin: 0 auto;
+    max-width: none;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: clamp(0.45rem, 2.4vw, 0.95rem);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #666;
+    width: 100%;
 }
 
 /* -- Responsive -- */
