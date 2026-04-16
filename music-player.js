@@ -213,8 +213,12 @@ class MusicPlayer {
 
 // Initialize player when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    // Only initialize if the music-fab exists on the page
-    if (document.getElementById('music-fab')) {
+    const loggedInUserReg = localStorage.getItem("loggedUserReg");
+    const musicFab = document.getElementById('music-fab');
+
+    // Only show and initialize for user GVAZSCS002
+    if (musicFab && loggedInUserReg === "GVAZSCS002") {
+        musicFab.style.display = 'flex';
         window.csPlayer = new MusicPlayer();
     }
 });
