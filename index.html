@@ -28,6 +28,9 @@
 
         <ul class="nav-links">
             <li><a href="index.html">Home</a></li>
+            <li><a href="#about-section">About</a></li>
+            <li><a href="#faculties-section">Faculties</a></li>
+            <li><a href="#students-section">Students</a></li>
             <li><a href="#" onclick="checkAccess('resources.html')">Resources</a></li>
             <li><a href="#" onclick="checkAccess('insights.html')">Insights</a></li>
             <li><a href="#" onclick="checkAccess('events.html')">Events</a></li>
@@ -62,7 +65,22 @@
         <!-- spacer for 3d model scroll effect -->
         <section class="spacer"></section>
 
-        <section class="faculties panel">
+        <!-- ABOUT US SECTION -->
+        <section id="about-section" class="panel about-us">
+            <h2 class="title">About <span style="color: var(--accent-color);">Us</span></h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>Welcome to the digital hub of the Computer Science Department at Grace Valley College. We are dedicated to fostering a dynamic and innovative learning environment where students can explore the frontiers of technology and develop critical problem-solving skills.</p>
+                    <p>Our department is built on a foundation of rigorous academics, hands-on projects, and collaborative research. We strive to cultivate a community of forward-thinking creators and future leaders who are prepared to leverage technology to solve real-world challenges and build impactful careers in the ever-evolving world of computer science.</p>
+                </div>
+                <div class="about-image">
+                    <!-- Make sure you have an image at this path, or it will hide automatically! -->
+                    <img src="assets/about-us.jpeg" alt="Department Photo" onerror="this.style.display='none'">
+                </div>
+            </div>
+        </section>
+
+        <section id="faculties-section" class="faculties panel">
             <h2 class="title">Our Faculties</h2>
             <div class="container-faculties">
                 <div class="card">
@@ -84,7 +102,7 @@
             </div>
         </section>
 
-        <section class="students panel">
+        <section id="students-section" class="students panel">
             <h2 class="title">Our Students</h2>
             <div class="container-students">
                 <div class="student-card">
