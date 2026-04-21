@@ -44,8 +44,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 3. ⌨️ TYPING EFFECT
     const typingContainer = document.querySelector(".typing");
-    let welcomeText = "Welcome to<br><span style='color: var(--accent-color)'>Computer Science</span>";
+    let welcomeText = "Welcome to<br><span style='color: #00e5ff'>Computer Science</span>";
     let i = 0;
+    let currentText = "";
 
     function typeEffect() {
         if (typingContainer && i < welcomeText.length) {
@@ -57,16 +58,30 @@ document.addEventListener("DOMContentLoaded", () => {
                     i++;
                 }
                 tag += '>';
-                typingContainer.innerHTML += tag;
+                currentText += tag;
                 i++; // Move to next char after '>'
             } else {
-                typingContainer.innerHTML += welcomeText.charAt(i);
+                currentText += welcomeText.charAt(i);
                 i++;
             }
+            // Update full string so the browser wraps the text inside the span correctly
+            typingContainer.innerHTML = currentText;
             setTimeout(typeEffect, 100); // Slightly faster for a smoother feel
         }
     }
     if (typingContainer) typeEffect();
+
+    // 3.5 📜 HEADER SCROLL EFFECT
+    const navBar = document.querySelector(".nav");
+    if (navBar) {
+        window.addEventListener("scroll", () => {
+            if (window.scrollY > 50) {
+                navBar.classList.add("scrolled");
+            } else {
+                navBar.classList.remove("scrolled");
+            }
+        });
+    }
 
     // 4. 📱 MOBILE NAVIGATION (SLIDING ANIMATION)
     const ham = document.querySelector(".hamburger");
