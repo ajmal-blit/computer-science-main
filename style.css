@@ -129,7 +129,12 @@ img { max-width: 100%; display: block; }
   box-shadow: var(--shadow-sm) !important; padding: .5rem !important;
 }
 .menu-toggle span, .hamburger span {
-  display: block; width: 22px; height: 2px; background: var(--ink); margin: 4px;
+  display: block !important; 
+  width: 24px !important; 
+  height: 3px !important; 
+  min-height: 3px !important;
+  background: var(--ink) !important; 
+  margin: 0 !important;
 }
 
 /* ── Hero Section ── */
@@ -1481,7 +1486,7 @@ table { min-width: 100% !important; }
   body { padding-bottom: 74px !important; }
   .top-strip { position: sticky !important; top: 0 !important; z-index: 9500 !important; }
   .masthead, .nav, .site-header { position: sticky !important; top: 32px !important; z-index: 9000 !important; min-height: 70px !important; }
-  .menu-toggle, .hamburger { display: flex !important; flex-direction: column !important; justify-content: center !important; align-items: center !important; gap: 0 !important; }
+  .menu-toggle, .hamburger { display: flex !important; flex-direction: column !important; justify-content: center !important; align-items: center !important; gap: 5px !important; padding: 0.5rem !important; }
   .site-nav, .nav-links, .main-nav {
     position: fixed !important;
     top: 104px !important;
