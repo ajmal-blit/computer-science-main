@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
     camera.lookAt(0, 0, 0);
 
     const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(document.documentElement.clientWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     
     // Photorealistic Rendering Settings
@@ -608,8 +608,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Responsive Canvas Resizing
     window.addEventListener("resize", () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.aspect = document.documentElement.clientWidth / window.innerHeight;
         camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setSize(document.documentElement.clientWidth, window.innerHeight);
     });
 });
