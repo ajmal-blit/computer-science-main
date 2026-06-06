@@ -88,10 +88,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const nav = document.querySelector(".nav-links");
 
     if (ham && nav) {
-        ham.addEventListener("click", () => {
-            nav.classList.toggle("active");
-            ham.classList.toggle("is-active");
-        });
+        if (!ham.hasAttribute('data-mobile-bound')) {
+            ham.setAttribute('data-mobile-bound', 'true');
+            ham.addEventListener("click", (e) => {
+                e.stopPropagation(); // Prevents conflict with final-polish.js
+                nav.classList.toggle("active");
+                ham.classList.toggle("is-active");
+            });
+        }
     }
 
     // 5. 🎬 SCROLL REVEAL ANIMATIONS (Intersection Observer)
