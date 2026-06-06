@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Portal Access | Computer Science</title>
+<!-- Heavy Brutalist Fonts for Login -->
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bebas+Neue&family=Inter:wght@400;700;900&display=swap" rel="stylesheet"/>
+<link href="style.css" rel="stylesheet"/>
+</head>
+<body class="login-page-fixed">
+
+    <div class="login-strip">
+        <span>UNAUTHORIZED ACCESS PROHIBITED</span>
+        <span>RESTRICTED DEPARTMENT PORTAL</span>
+        <span>STUDENT ID REQUIRED</span>
+        <span>SECURE CONNECTION</span>
+    </div>
+
+    <header class="login-masthead">
+        <a href="index.html" class="login-brand">CS <span>DEPT.</span></a>
+        <a href="index.html" class="login-home">Return Home</a>
+    </header>
+    
+    <main class="login-stage">
+        <section class="login-poster">
+            <div class="poster-kicker">Department Gateway</div>
+            <h1>ENTER<br>THE<br><span>PORTAL</span></h1>
+            <div class="poster-copy">
+                Access academic resources, view event schedules, and join the official student discussion forum. Valid registration number required to proceed.
+            </div>
+            <div class="poster-badges">
+                <b>01</b>
+                <b>CS</b>
+                <b>25</b>
+            </div>
+        </section>
+        
+        <section class="login-panel">
+            <div class="panel-number">AUTH_NODE_01</div>
+            <div class="login-card">
+                <div class="login-header">
+                    <h2>LOG IN</h2>
+                    <p class="form-kicker">Authenticate to continue</p>
+                </div>
+                
+                <div id="errorMessage" class="error-message">Invalid Credentials. Try again.</div>
+                
+                <form id="loginForm">
+                    <div class="input-group">
+                        <label for="regInput">Reg Number</label>
+                        <input type="text" id="regInput" placeholder="e.g. GVAZSCS001" required autocomplete="off"/>
+                    </div>
+                    <div class="input-group">
+                        <label for="passInput">Passcode</label>
+                        <input type="password" id="passInput" placeholder="••••••••" required/>
+                    </div>
+                    <button type="submit" id="submitBtn" class="btn-submit">Authenticate →</button>
+                </form>
+                
+            </div>
+        </section>
+    </main>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <!-- Authentication Logic -->
+    <script src="login.js"></script>
+</body>
+</html>
