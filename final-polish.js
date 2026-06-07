@@ -1,6 +1,5 @@
 // FINAL BUG FIX PASS: flat event slider, mobile table safety, and robust menu behavior.
 document.addEventListener('DOMContentLoaded', () => {
-  document.body.style.opacity = '1';
 
   // Make sure the menu opens/closes reliably even if previous scripts attached handlers.
   const navLinks = document.querySelector('.site-nav,.nav-links');
@@ -76,6 +75,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const drawer = document.querySelector('.department-drawer');
     const nav = document.querySelector('.site-nav,.nav-links');
     if (nav && nav.classList.contains('active') && !e.target.closest('.masthead,.nav,.site-nav,.nav-links,.menu-toggle,.hamburger')) nav.classList.remove('active');
-    if (drawer && drawer.classList.contains('open') && !e.target.closest('.department-drawer,.department-trigger')) drawer.classList.remove('open');
+    if (drawer && drawer.classList.contains('open')) {
+      const isOutside = !e.target.closest('.department-drawer,.department-trigger');
+      const isOverlayClick = e.target === drawer && e.clientX < drawer.getBoundingClientRect().left;
+      if (isOutside || isOverlayClick) {
+        drawer.classList.remove('open');
+      }
+    }
   });
 });
