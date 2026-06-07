@@ -153,10 +153,4 @@ document.addEventListener("DOMContentLoaded", () => {
             if (e.target === popup) popup.classList.remove("active");
         });
     }
-
-    // 8. 🚪 FORCE SHOW (Fix for Blank Screen)
-    setTimeout(() => {
-        document.body.style.opacity = "1";
-        document.body.classList.add("show");
-    }, 50);
 });
