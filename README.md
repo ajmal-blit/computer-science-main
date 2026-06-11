@@ -1,163 +1,260 @@
 # 💻 Computer Science Department Website
 
-### Grace Valley College of Arts & Science, Maravattam
+## Grace Valley College of Arts & Science, Maravattam
 
-A modern, interactive web platform designed for the **Computer Science Department** to connect students, faculty, and academic resources in one unified system.
+A modern student-built digital portal for the **Computer Science Department** of Grace Valley College of Arts & Science.
+The website connects students, faculty, academic resources, events, discussions, and department updates in one clean platform.
+
+🌐 **Live Website:** https://computer-science-main.vercel.app
 
 ---
 
 ## 🚀 Overview
 
-This project is a full-featured department website that goes beyond static pages. It integrates **interactive tools, real-time features, and AI assistance** to create a dynamic digital environment for students.
+The **Computer Science Department Website** is an independent student-built initiative created for the **CS 2025–2029 batch**.
 
-The platform is built with a focus on:
+It acts as a central academic hub where students can access study materials, view department events, check student insights, use the dashboard, and participate in forum discussions.
 
-* Clean UI/UX
-* Real-time interaction
-* Scalability for future expansion
+The portal is built with a focus on:
 
----
-
-## ✨ Features
-
-### 🎯 Core Features
-
-* 📢 Dynamic homepage with announcements & news ticker
-* 🧑‍🎓 Student & faculty information sections
-* 📅 Event schedules and updates
-* 📂 Academic resources (notes, materials)
+* Clean and modern UI
+* Student-friendly navigation
+* Academic resource sharing
+* Department event showcase
+* Batch information and insights
+* Responsive design for desktop and mobile
 
 ---
 
-### 💬 Forum System
+## ✨ Main Features
 
-* Create posts and discussions
-* Comment and reply system
-* Like/unlike functionality (user-limited)
-* Clean threaded UI
-* Local persistence (can upgrade to database)
+### 🏠 Homepage
 
----
-
-### 🤖 AI Assistant
-
-* Integrated chatbot for instant help
-* Answers department-related queries
-* Connected to backend AI API (Groq / OpenAI compatible)
+* Modern landing page for the Computer Science Department
+* Department introduction and vision section
+* Student-built portal branding
+* Faculty and student highlights
+* Event preview section
+* Quick navigation to important pages
 
 ---
 
-### 🎨 UI/UX
+### 📚 Academic Resources
+
+The resources page provides study materials and academic files for students.
+
+Includes:
+
+* C Programming lab programs
+* C Programming syllabus
+* Minor subject syllabus
+* Major study materials
+* Graph Theory materials
+* Probability materials
+
+---
+
+### 📅 Department Events
+
+The events page showcases department activities, workshops, launches, and memories.
+
+Current event sections include:
+
+* **Web Forge**
+
+  * HTML and CSS development program
+  * Conducted in the Computer Lab
+  * Focused on basic web development
+
+* **Website Launch**
+
+  * Official launch of the department portal
+  * Conducted in the Smart Room
+  * Highlights the digital academic hub
+
+---
+
+### 📊 Student Insights
+
+The insights page is designed for student performance tracking and leaderboard-style academic analysis.
+
+Features include:
+
+* SGPA ranking section
+* Batch performance area
+* Student progress table
+* Sorting options for rankings
+* Live data loading support
+
+---
+
+### 🧑‍🎓 Student Dashboard
+
+The dashboard works as a command center for student-related information.
+
+Includes:
+
+* Student profile section
+* Register number display
+* First semester SGPA area
+* Attendance overview
+* Task analysis section
+* Semester results section
+* Admin panel support
+
+---
+
+### 💬 Student Forum
+
+The forum page allows students to post questions and discuss academic topics.
+
+Features include:
+
+* Ask a question section
+* Post query option
+* Recent queries section
+* Peer and faculty discussion support
+
+---
+
+### 👩‍🏫 Faculty Section
+
+The website includes a faculty menu with department teachers and handlers.
+
+Faculty listed:
+
+* Seetha Miss — Head of Department
+* Rekha Miss — Tutor and Major Handler
+* Ramya Miss — Minor 3 Handler
+* Ramshi Miss — Minor 4 Handler
+
+---
+
+## 🎨 UI/UX Highlights
 
 * Dark modern theme
-* Smooth animations & transitions
-* Responsive design (mobile + desktop)
-* Interactive components (cards, popups, chat)
+* Smooth section-based layout
+* Responsive navigation
+* Department-style branding
+* Interactive cards and menus
+* Clean academic portal design
+* Mobile and desktop support
 
 ---
 
 ## 🧱 Tech Stack
 
-**Frontend:**
+### Frontend
 
 * HTML5
-* CSS3 (custom styling)
-* JavaScript (Vanilla JS)
+* CSS3
+* JavaScript
 
-**Backend (optional integration):**
+### Hosting
 
-* Node.js
-* Express.js
+* Vercel
 
-**AI Integration:**
+### Storage / Data
 
-* Groq API / OpenAI API
-
-**Storage:**
-
-* LocalStorage (current)
-* PostgreSQL (planned upgrade)
+* LocalStorage
+* Database-ready structure for future upgrades
 
 ---
 
 ## 📁 Project Structure
 
+```bash
+project-root/
+│
+├── index.html
+├── resources.html
+├── events.html
+├── insights.html
+├── dashboard.html
+├── forum.html
+│
+├── css/
+│   └── style.css
+│
+├── js/
+│   └── script.js
+│
+├── assets/
+│   ├── images/
+│   ├── documents/
+│   └── icons/
+│
+└── README.md
+```
 
 ---
 
 ## ⚙️ Setup & Installation
 
-### 1. Clone the repository
+### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/your-repo-name.git
-cd your-repo-name
+git clone https://github.com/your-username/your-repository-name.git
 ```
+
+### 2. Open the Project
+
+```bash
+cd your-repository-name
+```
+
+### 3. Run the Website
+
+Open `index.html` directly in your browser.
+
+Recommended method:
+
+Use the **Live Server** extension in VS Code.
 
 ---
 
-### 2. Run Frontend
+## 🌐 Deployment
 
-Open:
+The project is deployed using **Vercel**.
 
-```bash
-Frontend/index.html
-```
-
-OR use Live Server (recommended)
-
----
-
-### 3. Setup Backend (for AI Assistant)
+Live site:
 
 ```bash
-cd backend
-npm install
+https://computer-science-main.vercel.app
 ```
-
-Run server:
-
-```bash
-node server.js
-```
-
-## 📸 Screenshots (Optional)
-
-Add screenshots here:
-
-* Homepage
-* Forum
-* AI Chat
-* Mobile view
-
----
-
-## 🧠 Future Improvements
-
-* 🔐 User authentication system
-* 🗄 PostgreSQL database integration
-* 📊 Trending algorithm for posts
-* 🔔 Notifications system
-* 💬 Real-time chat (WebSockets)
-* 🧑‍💼 Admin dashboard
 
 ---
 
 ## 🤝 Contribution
 
 Contributions are welcome.
-Feel free to fork, improve, and submit pull requests.
+
+To contribute:
+
+1. Fork the repository
+2. Create a new branch
+3. Make your changes
+4. Commit your updates
+5. Submit a pull request
 
 ---
 
 ## 📄 License
 
-This project is open-source and available under the MIT License.
+This project is open-source and available under the **MIT License**.
 
 ---
 
 ## 👨‍💻 Author
 
-Developed by the Computer Science Batch 2025-2028
+Developed by the **Computer Science Batch 2025–2029**
+Grace Valley College of Arts & Science, Maravattam
+
+---
+
+## 💬 Motto
+
+**Together We Learn**
+**Code · Create · Collaborate**
 
 ---
