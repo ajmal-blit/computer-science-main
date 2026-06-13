@@ -1,7 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
   'use strict';
 
-  const database = CSAuth.initFirebase();
+  let database;
+  try {
+    database = CSAuth.initFirebase();
+  } catch (err) {
+    console.warn("Firebase not ready immediately, will init on submit");
+  }
+
   const loginForm = document.getElementById('loginForm');
   const submitBtn = document.getElementById('submitBtn');
   const errorMessage = document.getElementById('errorMessage');
@@ -25,22 +31,34 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function isLocked() {
-    const lockedUntil = Number(sessionStorage.getItem(LOCK_KEY) || '0');
-    return lockedUntil && lockedUntil > Date.now();
+    try {
+      const lockedUntil = Number(sessionStorage.getItem(LOCK_KEY) || '0');
+      return lockedUntil && lockedUntil > Date.now();
+    } catch (e) {
+      return false;
+    }
   }
 
   function recordFailure() {
-    const fails = Number(sessionStorage.getItem(FAIL_KEY) || '0') + 1;
-    sessionStorage.setItem(FAIL_KEY, String(fails));
-    if (fails >= MAX_FAILS) {
-      sessionStorage.setItem(LOCK_KEY, String(Date.now() + LOCK_MS));
-      sessionStorage.setItem(FAIL_KEY, '0');
+    try {
+      const fails = Number(sessionStorage.getItem(FAIL_KEY) || '0') + 1;
+      sessionStorage.setItem(FAIL_KEY, String(fails));
+      if (fails >= MAX_FAILS) {
+        sessionStorage.setItem(LOCK_KEY, String(Date.now() + LOCK_MS));
+        sessionStorage.setItem(FAIL_KEY, '0');
+      }
+    } catch (e) {
+      console.warn('Storage blocked:', e);
     }
   }
 
   function clearFailures() {
-    sessionStorage.removeItem(FAIL_KEY);
-    sessionStorage.removeItem(LOCK_KEY);
+    try {
+      sessionStorage.removeItem(FAIL_KEY);
+      sessionStorage.removeItem(LOCK_KEY);
+    } catch (e) {
+      console.warn('Storage blocked:', e);
+    }
   }
 
   loginForm.addEventListener('submit', (e) => {
@@ -50,6 +68,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isLocked()) {
       showError('Too many failed attempts. Please wait a few minutes and try again.');
       return;
+    }
+
+    if (!database) {
+      try {
+        database = CSAuth.initFirebase();
+      } catch (err) {
+        showError('Firebase SDK is blocked or not loaded. Please disable adblockers or check your connection.');
+        return;
+      }
     }
 
     const regNo = CSAuth.normalizeRegNo(regInput.value);
@@ -83,7 +110,11 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }).catch((error) => {
       console.error('Firebase Login Error:', error);
-      showError('Connection failed. Please try again.');
+      if (error && error.code === 'PERMISSION_DENIED') {
+        showError('Access denied: Firebase Database rules are blocking the login read. Please check your rules.');
+      } else {
+        showError('Connection failed. Please try again.');
+      }
       resetButton(originalText);
     });
   });
