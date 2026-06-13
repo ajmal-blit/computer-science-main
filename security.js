@@ -27,7 +27,7 @@
   }
   function isValidRegNo(value) {
     const reg = normalizeRegNo(value);
-    return reg === 'ADMIN' || /^[A-Z0-9\-\_]{4,20}$/.test(reg);
+    return reg === 'ADMIN' || /^GVAZSCS\d{3}$/.test(reg);
   }
 
   function createSession(user) {
@@ -88,11 +88,7 @@
 
   function requireAuth() {
     const session = getSession();
-    if (!session) {
-      const current = (window.location.pathname.split('/').pop() || 'index.html') + window.location.search + window.location.hash;
-      const next = current && !current.includes('login.html') ? '?next=' + encodeURIComponent(current) : '';
-      window.location.replace('login.html' + next);
-    }
+    if (!session) window.location.replace('login.html');
     return session;
   }
 
