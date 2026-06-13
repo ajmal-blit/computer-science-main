@@ -17,7 +17,7 @@
   });
 
   function now() { return Date.now(); }
-  function normalizeRegNo(value) { return String(value || '').trim().toUpperCase(); }
+  function normalizeRegNo(value) { return String(value || '').replace(/\s+/g, '').toUpperCase(); }
   function cleanText(value, maxLen = 120) {
     return String(value || '')
       .replace(/[\u0000-\u001f\u007f]/g, '')
@@ -36,33 +36,41 @@
     const role = cleanText(user.role || (regNo === 'ADMIN' ? 'Admin' : 'Student'), 30);
     const issuedAt = now();
     const session = { regNo, name, role, issuedAt, expiresAt: issuedAt + MAX_SESSION_AGE_MS };
-    sessionStorage.setItem(SESSION_KEY, JSON.stringify(session));
-
-    // Legacy keys are kept only for old UI compatibility. Sensitive logic must use CSAuth.getSession().
-    localStorage.setItem('isLoggedIn', 'true');
-    localStorage.setItem('loggedUserName', name);
-    localStorage.setItem('loggedUserReg', regNo);
-    localStorage.setItem('cs_session_expires', String(session.expiresAt));
+    try {
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify(session));
+      // Legacy keys are kept only for old UI compatibility. Sensitive logic must use CSAuth.getSession().
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('loggedUserName', name);
+      localStorage.setItem('loggedUserReg', regNo);
+      localStorage.setItem('cs_session_expires', String(session.expiresAt));
+    } catch (e) {
+      console.warn('Session storage failed (cookies might be blocked):', e);
+    }
     return session;
   }
 
   function getSession() {
-    let raw = sessionStorage.getItem(SESSION_KEY);
+    let raw = null;
+    try {
+      raw = sessionStorage.getItem(SESSION_KEY);
 
-    // Controlled migration from older login data. Reject expired or malformed legacy sessions.
-    if (!raw && localStorage.getItem('isLoggedIn') === 'true') {
-      const expires = Number(localStorage.getItem('cs_session_expires') || '0');
-      const legacyReg = normalizeRegNo(localStorage.getItem('loggedUserReg'));
-      if (expires > now() && isValidRegNo(legacyReg)) {
-        raw = JSON.stringify({
-          regNo: legacyReg,
-          name: cleanText(localStorage.getItem('loggedUserName') || 'Student', 80),
-          role: legacyReg === 'ADMIN' ? 'Admin' : 'Student',
-          issuedAt: expires - MAX_SESSION_AGE_MS,
-          expiresAt: expires
-        });
-        sessionStorage.setItem(SESSION_KEY, raw);
+      // Controlled migration from older login data. Reject expired or malformed legacy sessions.
+      if (!raw && localStorage.getItem('isLoggedIn') === 'true') {
+        const expires = Number(localStorage.getItem('cs_session_expires') || '0');
+        const legacyReg = normalizeRegNo(localStorage.getItem('loggedUserReg'));
+        if (expires > now() && isValidRegNo(legacyReg)) {
+          raw = JSON.stringify({
+            regNo: legacyReg,
+            name: cleanText(localStorage.getItem('loggedUserName') || 'Student', 80),
+            role: legacyReg === 'ADMIN' ? 'Admin' : 'Student',
+            issuedAt: expires - MAX_SESSION_AGE_MS,
+            expiresAt: expires
+          });
+          sessionStorage.setItem(SESSION_KEY, raw);
+        }
       }
+    } catch (e) {
+      console.warn('Session storage access blocked:', e);
     }
 
     if (!raw) return null;
@@ -80,9 +88,13 @@
   }
 
   function logout(redirect = true) {
-    sessionStorage.removeItem(SESSION_KEY);
-    LEGACY_KEYS.forEach((key) => localStorage.removeItem(key));
-    localStorage.removeItem('cs_session_expires');
+    try {
+      sessionStorage.removeItem(SESSION_KEY);
+      LEGACY_KEYS.forEach((key) => localStorage.removeItem(key));
+      localStorage.removeItem('cs_session_expires');
+    } catch (e) {
+      console.warn('Storage clear failed:', e);
+    }
     if (redirect) window.location.href = 'login.html';
   }
 
