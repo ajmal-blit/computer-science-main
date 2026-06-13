@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   'use strict';
 
+  const database = CSAuth.initFirebase();
   const loginForm = document.getElementById('loginForm');
   const submitBtn = document.getElementById('submitBtn');
   const errorMessage = document.getElementById('errorMessage');
@@ -11,27 +12,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const LOCK_KEY = 'cs_login_locked_until';
   const MAX_FAILS = 5;
   const LOCK_MS = 5 * 60 * 1000;
-  const LOGIN_TIMEOUT_MS = 7000;
-  const DEFAULT_LOGIN_TEXT = 'Authenticate →';
-
-  let database = null;
 
   function showError(message) {
-    if (!errorMessage) return;
     errorMessage.style.display = 'block';
     errorMessage.textContent = message;
   }
 
-  function hideError() {
-    if (errorMessage) errorMessage.style.display = 'none';
-  }
-
   function resetButton(text) {
-    if (submitBtn) {
-      submitBtn.innerText = text || DEFAULT_LOGIN_TEXT;
-      submitBtn.disabled = false;
-    }
-    if (passInput) passInput.value = '';
+    submitBtn.innerText = text;
+    submitBtn.disabled = false;
+    passInput.value = '';
   }
 
   function isLocked() {
@@ -53,78 +43,9 @@ document.addEventListener('DOMContentLoaded', () => {
     sessionStorage.removeItem(LOCK_KEY);
   }
 
-  function getDatabase() {
-    if (database) return database;
-    if (!window.CSAuth || typeof CSAuth.initFirebase !== 'function') {
-      throw new Error('Security helper is not loaded.');
-    }
-    database = CSAuth.initFirebase();
-    return database;
-  }
-
-  function withTimeout(promise, ms) {
-    return new Promise((resolve, reject) => {
-      const timeoutId = setTimeout(() => {
-        reject(new Error('Login request timed out. Using local fallback if available.'));
-      }, ms);
-
-      Promise.resolve(promise).then(
-        (value) => {
-          clearTimeout(timeoutId);
-          resolve(value);
-        },
-        (error) => {
-          clearTimeout(timeoutId);
-          reject(error);
-        }
-      );
-    });
-  }
-
-  function getRedirectTarget() {
-    const params = new URLSearchParams(window.location.search);
-    const next = params.get('next');
-    if (next && /^[a-z0-9\-_/]+\.html(?:[?#].*)?$/i.test(next) && !next.includes('login.html')) {
-      return next;
-    }
-    return 'dashboard.html';
-  }
-
-  function loginSuccess(regNo, userData) {
-    clearFailures();
-    submitBtn.innerText = 'Loading...';
-    CSAuth.createSession({
-      regNo,
-      name: userData.name || regNo,
-      role: userData.role || 'Student'
-    });
-    window.location.href = getRedirectTarget();
-  }
-
-  function tryLocalFallback(regNo, password) {
-    if (!window.CSLocalData || typeof CSLocalData.verifyFallbackLogin !== 'function') return null;
-    return CSLocalData.verifyFallbackLogin(regNo, password);
-  }
-
-  function verifyWithFirebase(regNo) {
-    try {
-      const db = getDatabase();
-      return withTimeout(db.ref('globalStudentDB/' + regNo).once('value'), LOGIN_TIMEOUT_MS)
-        .then((snapshot) => snapshot && typeof snapshot.val === 'function' ? snapshot.val() : null);
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  }
-
-  if (!loginForm || !submitBtn || !regInput || !passInput || !window.CSAuth) {
-    console.error('Login form or security helper is missing.');
-    showError('Login page setup error. Please redeploy the latest files.');
-    return;
-  }
-
   loginForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    hideError();
+    errorMessage.style.display = 'none';
 
     if (isLocked()) {
       showError('Too many failed attempts. Please wait a few minutes and try again.');
@@ -140,44 +61,30 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    const originalText = submitBtn.innerText || DEFAULT_LOGIN_TEXT;
+    const originalText = submitBtn.innerText;
     submitBtn.innerText = 'Authenticating...';
     submitBtn.disabled = true;
 
-    verifyWithFirebase(regNo)
-      .then((userData) => {
-        if (userData) {
-          if (String(userData.password || '') === password) {
-            loginSuccess(regNo, userData);
-            return;
-          }
-          recordFailure();
-          showError('Invalid Registration Number or Password.');
-          resetButton(originalText);
-          return;
-        }
-
-        const fallbackUser = tryLocalFallback(regNo, password);
-        if (fallbackUser) {
-          loginSuccess(regNo, fallbackUser);
-          return;
-        }
-
+    database.ref('globalStudentDB/' + regNo).once('value').then((snapshot) => {
+      const userData = snapshot.val();
+      if (userData && String(userData.password || '') === password) {
+        clearFailures();
+        submitBtn.innerText = 'Loading .....';
+        CSAuth.createSession({
+          regNo,
+          name: userData.name || regNo,
+          role: userData.role || (regNo === 'ADMIN' ? 'Admin' : 'Student')
+        });
+        setTimeout(() => { window.location.href = 'index.html'; }, 500);
+      } else {
         recordFailure();
         showError('Invalid Registration Number or Password.');
         resetButton(originalText);
-      })
-      .catch((error) => {
-        console.warn('Firebase login unavailable:', error);
-        const fallbackUser = tryLocalFallback(regNo, password);
-        if (fallbackUser) {
-          loginSuccess(regNo, fallbackUser);
-          return;
-        }
-
-        recordFailure();
-        showError('Login connection failed. Try again, or use Reg No as passcode if fallback mode is enabled.');
-        resetButton(originalText);
-      });
+      }
+    }).catch((error) => {
+      console.error('Firebase Login Error:', error);
+      showError('Connection failed. Please try again.');
+      resetButton(originalText);
+    });
   });
 });
