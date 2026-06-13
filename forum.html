@@ -6,12 +6,8 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Student Forum | CS Department</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Space+Grotesk:wght@300;400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet"/>
-<script>
-        /* Gatekeeper check: Redirect if session is missing */
-        if (localStorage.getItem("isLoggedIn") !== "true") {
-            window.location.replace("login.html");
-        }
-    </script>
+<script src="security.js"></script>
+<script>CSAuth.requireAuth();</script>
 <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-database-compat.js"></script>
 <link href="style.css" rel="stylesheet"/>
