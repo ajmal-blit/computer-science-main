@@ -6,7 +6,12 @@
 // 1. 🛡️ GATEKEEPER FUNCTION (Defined globally so HTML can access it)
 function checkAccess(page) {
     const session = window.CSAuth && typeof CSAuth.getSession === "function" ? CSAuth.getSession() : null;
-    const isLoggedIn = Boolean(session) || localStorage.getItem("isLoggedIn") === "true";
+    let isLoggedIn = false;
+    try {
+        isLoggedIn = Boolean(session) || localStorage.getItem("isLoggedIn") === "true";
+    } catch (e) {
+        console.warn("Storage blocked:", e);
+    }
 
     if (isLoggedIn) {
         window.location.href = page;
@@ -20,8 +25,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 2. ✨ SESSION & AUTH UI LOGIC
     const session = window.CSAuth && typeof CSAuth.getSession === "function" ? CSAuth.getSession() : null;
-    const isLoggedIn = Boolean(session) || localStorage.getItem("isLoggedIn") === "true";
-    const userName = session?.name || localStorage.getItem("loggedUserName");
+    let isLoggedIn = false;
+    let userName = null;
+    try {
+        isLoggedIn = Boolean(session) || localStorage.getItem("isLoggedIn") === "true";
+        userName = session?.name || localStorage.getItem("loggedUserName");
+    } catch (e) {
+        console.warn("Storage blocked:", e);
+    }
     const authButtons = document.querySelectorAll(".logout-btn");
     const welcomeMessage = document.getElementById("welcomeMessage");
 
@@ -35,10 +46,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     CSAuth.logout(true);
                     return;
                 }
-                localStorage.removeItem("isLoggedIn");
-                localStorage.removeItem("loggedUserName");
-                localStorage.removeItem("loggedUserReg");
-                localStorage.removeItem("cs_session_expires");
+                try {
+                    localStorage.removeItem("isLoggedIn");
+                    localStorage.removeItem("loggedUserName");
+                    localStorage.removeItem("loggedUserReg");
+                    localStorage.removeItem("cs_session_expires");
+                } catch(e) {}
                 window.location.href = "login.html";
             };
         });
