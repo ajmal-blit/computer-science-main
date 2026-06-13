@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   'use strict';
 
-  const database = CSAuth.initFirebase();
   const loginForm = document.getElementById('loginForm');
   const submitBtn = document.getElementById('submitBtn');
   const errorMessage = document.getElementById('errorMessage');
@@ -12,16 +11,22 @@ document.addEventListener('DOMContentLoaded', () => {
   const LOCK_KEY = 'cs_login_locked_until';
   const MAX_FAILS = 5;
   const LOCK_MS = 5 * 60 * 1000;
+  const LOGIN_TIMEOUT_MS = 12000;
+
+  let database = null;
 
   function showError(message) {
+    if (!errorMessage) return;
     errorMessage.style.display = 'block';
     errorMessage.textContent = message;
   }
 
   function resetButton(text) {
-    submitBtn.innerText = text;
-    submitBtn.disabled = false;
-    passInput.value = '';
+    if (submitBtn) {
+      submitBtn.innerText = text || 'Authenticate →';
+      submitBtn.disabled = false;
+    }
+    if (passInput) passInput.value = '';
   }
 
   function isLocked() {
@@ -43,9 +48,34 @@ document.addEventListener('DOMContentLoaded', () => {
     sessionStorage.removeItem(LOCK_KEY);
   }
 
+  function getDatabase() {
+    if (database) return database;
+    if (!window.CSAuth || typeof CSAuth.initFirebase !== 'function') {
+      throw new Error('Security helper is not loaded.');
+    }
+    database = CSAuth.initFirebase();
+    return database;
+  }
+
+  function withTimeout(promise, ms) {
+    let timeoutId;
+    const timeout = new Promise((_, reject) => {
+      timeoutId = setTimeout(() => {
+        reject(new Error('Login request timed out. Check Firebase/CSP connection.'));
+      }, ms);
+    });
+    return Promise.race([promise, timeout]).finally(() => clearTimeout(timeoutId));
+  }
+
+  if (!loginForm || !submitBtn || !regInput || !passInput) {
+    console.error('Login form elements are missing.');
+    showError('Login page setup error. Please redeploy the latest files.');
+    return;
+  }
+
   loginForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    errorMessage.style.display = 'none';
+    if (errorMessage) errorMessage.style.display = 'none';
 
     if (isLocked()) {
       showError('Too many failed attempts. Please wait a few minutes and try again.');
@@ -65,26 +95,38 @@ document.addEventListener('DOMContentLoaded', () => {
     submitBtn.innerText = 'Authenticating...';
     submitBtn.disabled = true;
 
-    database.ref('globalStudentDB/' + regNo).once('value').then((snapshot) => {
-      const userData = snapshot.val();
-      if (userData && String(userData.password || '') === password) {
-        clearFailures();
-        submitBtn.innerText = 'Loading .....';
-        CSAuth.createSession({
-          regNo,
-          name: userData.name || regNo,
-          role: userData.role || (regNo === 'ADMIN' ? 'Admin' : 'Student')
-        });
-        setTimeout(() => { window.location.href = 'index.html'; }, 500);
-      } else {
-        recordFailure();
-        showError('Invalid Registration Number or Password.');
-        resetButton(originalText);
-      }
-    }).catch((error) => {
-      console.error('Firebase Login Error:', error);
-      showError('Connection failed. Please try again.');
+    let db;
+    try {
+      db = getDatabase();
+    } catch (error) {
+      console.error('Firebase init error:', error);
+      showError('Login service failed to load. Please refresh and try again.');
       resetButton(originalText);
-    });
+      return;
+    }
+
+    withTimeout(db.ref('globalStudentDB/' + regNo).once('value'), LOGIN_TIMEOUT_MS)
+      .then((snapshot) => {
+        const userData = snapshot.val();
+        if (userData && String(userData.password || '') === password) {
+          clearFailures();
+          submitBtn.innerText = 'Loading .....';
+          CSAuth.createSession({
+            regNo,
+            name: userData.name || regNo,
+            role: userData.role || (regNo === 'ADMIN' ? 'Admin' : 'Student')
+          });
+          window.location.href = 'index.html';
+        } else {
+          recordFailure();
+          showError('Invalid Registration Number or Password.');
+          resetButton(originalText);
+        }
+      })
+      .catch((error) => {
+        console.error('Firebase Login Error:', error);
+        showError('Connection failed. Please refresh and try again.');
+        resetButton(originalText);
+      });
   });
 });
