@@ -27,7 +27,7 @@
   }
   function isValidRegNo(value) {
     const reg = normalizeRegNo(value);
-    return reg === 'ADMIN' || /^GVAZSCS\d{3}$/.test(reg);
+    return reg === 'ADMIN' || /^[A-Z0-9\-\_]{4,20}$/.test(reg);
   }
 
   function createSession(user) {
