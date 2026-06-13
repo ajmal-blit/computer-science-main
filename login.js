@@ -108,13 +108,21 @@ document.addEventListener('DOMContentLoaded', () => {
     withTimeout(db.ref('globalStudentDB/' + regNo).once('value'), LOGIN_TIMEOUT_MS)
       .then((snapshot) => {
         const userData = snapshot.val();
-        if (userData && String(userData.password || '') === password) {
+        let dbPass = '';
+        if (userData !== null) {
+          if (typeof userData === 'object') {
+            dbPass = String(userData.password || userData.pass || userData.Password || '').trim();
+          } else {
+            dbPass = String(userData).trim();
+          }
+        }
+        if (userData !== null && dbPass === password) {
           clearFailures();
           submitBtn.innerText = 'Loading .....';
           CSAuth.createSession({
             regNo,
-            name: userData.name || regNo,
-            role: userData.role || (regNo === 'ADMIN' ? 'Admin' : 'Student')
+            name: (typeof userData === 'object' ? userData.name : null) || regNo,
+            role: (typeof userData === 'object' ? userData.role : null) || (regNo === 'ADMIN' ? 'Admin' : 'Student')
           });
           window.location.href = 'index.html';
         } else {
@@ -125,7 +133,11 @@ document.addEventListener('DOMContentLoaded', () => {
       })
       .catch((error) => {
         console.error('Firebase Login Error:', error);
-        showError('Connection failed. Please refresh and try again.');
+        if (error.message && error.message.includes('permission_denied')) {
+          showError('Database access denied. Check Firebase rules.');
+        } else {
+          showError('Connection failed. Please refresh and try again.');
+        }
         resetButton(originalText);
       });
   });
