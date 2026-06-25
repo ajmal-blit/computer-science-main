@@ -1383,6 +1383,10 @@ body.login-page-fixed {
   }
   .barrel-card h3 { font-size: 2.35rem !important; }
 
+   .login-strip > span {
+      margin-right: 10px;
+   }
+
   .login-stage {
     width: min(100% - 1rem, 1180px) !important;
     grid-template-columns: 1fr !important;
