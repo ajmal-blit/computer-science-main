@@ -168,8 +168,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function updateStats() {
-        document.getElementById('total-students-stat').innerText = studentData.length;
-        document.getElementById('top-rank-stat').innerText = studentData[0].sgpa.toFixed(3);
+        //document.getElementById('total-students-stat').innerText = studentData.length;
+        //document.getElementById('top-rank-stat').innerText = studentData[0].sgpa.toFixed(3);
         
         const totalSgpa = studentData.reduce((sum, s) => sum + s.sgpa, 0);
         const avg = studentData.length > 0 ? (totalSgpa / studentData.length).toFixed(3) : "0.000";
